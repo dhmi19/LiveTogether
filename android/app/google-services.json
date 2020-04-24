@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "237487584442",
+    "firebase_url": "https://apartmentapp-8f3fb.firebaseio.com",
+    "project_id": "apartmentapp-8f3fb",
+    "storage_bucket": "apartmentapp-8f3fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237487584442:android:b0e2be748d800dddee7e83",
+        "android_client_info": {
+          "package_name": "mittal.dhruv.lester_apartments"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237487584442-gotq9ef6aq0au0vkou7q37rk56rvgv9b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJFkMfMG8_e9F41-hBVeQZVuJoxZMTJ_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237487584442-gotq9ef6aq0au0vkou7q37rk56rvgv9b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "237487584442-h479hnvkfubhvdmrdfuudf1va71ehcnt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mittal.dhruv.apartmentApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
