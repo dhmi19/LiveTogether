@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lester_apartments/services/auth.dart';
 
 class ShoppingListWidget extends StatefulWidget {
 
@@ -8,7 +9,7 @@ class ShoppingListWidget extends StatefulWidget {
 
 class _ShoppingListWidgetState extends State<ShoppingListWidget> {
 
-
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +18,23 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
       appBar: AppBar(
         backgroundColor: Colors.orangeAccent,
         elevation: 0,
-        leading: Icon(Icons.menu),
-        title: Text("Shopping List")
+        leading: Builder(
+             builder: (BuildContext context) {
+               return IconButton(
+                 icon: const Icon(Icons.menu),
+                 onPressed: () { Scaffold.of(context).openDrawer(); },
+                 tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+               );
+             },
+           ),
+        // FlatButton.icon(onPressed: () => {}, icon: Icon(Icons.menu), label: Text("")),
+        title: Text("Shopping List"),
+        centerTitle: true,
+        actions: <Widget>[
+          FlatButton.icon(onPressed: () async {
+            await _auth.signOut();
+          }, icon: Icon(Icons.exit_to_app), label: Text(""))
+        ],
       ),
       body: SafeArea(
         child: Container(

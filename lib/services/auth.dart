@@ -15,6 +15,13 @@ class AuthService {
     }
   }
 
+
+  // auth change user stream
+  // Gets a FirebaseUser from the stream and then converts it to a custom User
+  Stream<User> get user{
+    return _auth.onAuthStateChanged.map((FirebaseUser user) => _userFromFirebaseUser(user));
+  }
+
   //Sign in anonymously
   Future signInAnon() async {
     try{
@@ -33,7 +40,15 @@ class AuthService {
 
   // register with email and password
 
-  // sign out
-
+  // sign  out
+  Future signOut() async{
+    try{
+      return await _auth.signOut();
+    }catch(error){
+      print("Not able to sign out");
+      print(error.toString());
+      return null;
+    }
+  }
 
 }
