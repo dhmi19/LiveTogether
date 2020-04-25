@@ -5,6 +5,9 @@ class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  String email = '';
+  String password = '';
+
 
   //Create User object given a firebaseUser
   User _userFromFirebaseUser(FirebaseUser user){

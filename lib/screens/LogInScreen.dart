@@ -14,10 +14,8 @@ class LoginPage extends StatefulWidget{
 
 class _LoginPageState extends State<LoginPage>{
 
-  var _userName;
-  final nameController = new TextEditingController();
-  var valid = false;
-  var apartment = "None";
+  String _email = '';
+  String _password = '';
 
   final AuthService _auth = AuthService();
 
@@ -88,12 +86,36 @@ class _LoginPageState extends State<LoginPage>{
                                         border: Border(bottom: BorderSide(color: Colors.green))
                                     ),
                                     child: TextFormField(
-                                      controller: nameController,
                                       decoration: InputDecoration(
-                                          hintText: "Enter your full name",
+                                          hintText: "Email ID",
                                           hintStyle: TextStyle(color: Colors.grey),
                                           border: InputBorder.none
                                       ),
+                                      onChanged: (val){
+                                        setState(() {
+                                          _email = val;
+                                        });
+                                      },
+                                    ),
+                                  ),
+
+                                  Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        border: Border(bottom: BorderSide(color: Colors.green))
+                                    ),
+                                    child: TextFormField(
+                                      obscureText: true,
+                                      decoration: InputDecoration(
+                                          hintText: "Password",
+                                          hintStyle: TextStyle(color: Colors.grey),
+                                          border: InputBorder.none
+                                      ),
+                                      onChanged: (val){
+                                        setState(() {
+                                          _password = val;
+                                        });
+                                      },
                                     ),
                                   )
                                 ],
@@ -101,64 +123,29 @@ class _LoginPageState extends State<LoginPage>{
                             ),
                             SizedBox(height: 40,),
 
-                            Column(
-                              children: <Widget>[
-                                Material(
-                                  color: Colors.orange[900],
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: InkWell(
-                                    onTap: (){
-                                      setState(() {
-                                        _userName = nameController.text;
-                                      });
-                                      valid = check_userName(_userName);
-                                      if(valid){
-                                        Navigator.of(context).pushNamed('/IntroductionScreen', arguments: _userName);
-                                      }else{
-                                        print("Sorry, this app is not for you");
-                                      }
-
-                                      //enterApplication(_userName);
-                                    },
-
-                                    child: Container(
-                                      height: 50,
-                                      margin: EdgeInsets.symmetric(horizontal: 50),
-                                      child: Center(
-                                          child: Text("Enter", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                                SizedBox(height: 20,),
-
-                                Material(
-                                  color: Colors.blueGrey[600],
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      dynamic result = await _auth.signInAnon();
-
-                                      if(result == null){
-                                        print("Error signing in as gues");
-                                      }else{
-                                        print(result.uid);
-                                        Navigator.of(context).pushNamed('/IntroductionScreen', arguments: "Guest");
-                                      }
-                                      //enterApplication(_userName);
-                                    },
-                                    child: Container(
-                                      height: 50,
-                                      margin: EdgeInsets.symmetric(horizontal: 50),
-                                      child: Center(
-                                          child: Text("Sign in as Guest", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            RaisedButton(
+                              color: Colors.orange[900],
+                              child: Text("Enter", style: TextStyle(color: Colors.white),),
+                              onPressed: () async {
+                                print(_email+ ","+ _password);
+                              },
                             ),
+
+                            RaisedButton(
+                              color: Colors.orange[900],
+                              child: Text("Enter as Guest", style: TextStyle(color: Colors.white),),
+                              onPressed: () async {
+                                dynamic result = await _auth.signInAnon();
+
+                                if(result == null){
+                                  print("Error signing in as guest");
+                                }else{
+                                  print(result.uid);
+                                  Navigator.of(context).pushReplacementNamed('/IntroductionScreen', arguments: "Guest");
+                                }
+                              },
+                            ),
+
                             SizedBox(height: 80,),
 
                           ],
@@ -172,19 +159,5 @@ class _LoginPageState extends State<LoginPage>{
           )
       ),
     );
-  }
-
-  bool check_userName(userName) {
-
-    var lowerCaseUserName = userName.toString().toLowerCase();
-
-    if(lowerCaseUserName.startsWith("omar") || lowerCaseUserName.startsWith("dhruv") || lowerCaseUserName.startsWith("tahmeed")
-        || lowerCaseUserName.startsWith("khush") || lowerCaseUserName.startsWith("cindy") || lowerCaseUserName.startsWith("codey")
-        || lowerCaseUserName.startsWith("abhi")){
-
-      return true;
-    } else{
-      return false;
-    }
   }
 }

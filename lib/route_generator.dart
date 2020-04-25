@@ -9,14 +9,19 @@ class RouteGenerator{
   static Route<dynamic> generateRoute(RouteSettings settings){
     final args = settings.arguments;
     print(settings.name);
+
     switch(settings.name){
       case '/':
         return MaterialPageRoute(builder: (_) =>  Wrapper());
+
       case '/IntroductionScreen':
         if(args is String){
           return MaterialPageRoute(builder: (_) => HomeScreen(userName: args));
         }
         //if args is invalid
+        return MaterialPageRoute(builder: (_) => LoginPage());
+
+      case '/LoginPage':
         return MaterialPageRoute(builder: (_) => LoginPage());
 
       default: //If not route is found, go to login

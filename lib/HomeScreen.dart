@@ -53,7 +53,6 @@ class _HomeScreenState extends State<HomeScreen>{
               title: Text("Chores List"),
               backgroundColor: Colors.blueGrey
           ),
-
         ],
         onTap: (index) {
           setState(() {
