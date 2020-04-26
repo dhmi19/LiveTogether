@@ -37,9 +37,9 @@ class _SignInScreenState extends State<SignInScreen>{
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   colors: [
-                    Colors.orange[900],
-                    Colors.orange[600],
-                    Colors.orange[400]
+                    Colors.purple[900],
+                    Colors.purple[600],
+                    Colors.purple[400]
                   ]
               )
           ),
@@ -145,7 +145,39 @@ class _SignInScreenState extends State<SignInScreen>{
                                 ],
                               ),
                             ),
-                            SizedBox(height: 40,),
+
+                            SizedBox(height: 30,),
+
+                            Center(
+                              child: GestureDetector(
+                                child: Text("Forgot password? Click here to reset", style: TextStyle(decoration: TextDecoration.underline, color: Colors.grey[800]),),
+
+                                onTap: () async {
+
+                                  if(_email == ''){
+                                    showDialog(
+                                        context: context,
+                                        child: AlertDialog(
+                                          title: Text("Invalid email ID"),
+                                          content: const Text('Please enter an email ID to reset password'),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text('Ok'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                    );
+                                  }else{
+                                    await _auth.resetPassword(_email, context);
+                                  }
+                                },
+                              ),
+                            ),
+
+                            SizedBox(height: 30,),
 
                             Container(
                               width: 200,
@@ -181,24 +213,6 @@ class _SignInScreenState extends State<SignInScreen>{
                                 onPressed: () async {
                                   widget.toggleView();
                                   //Navigator.of(context).pushReplacementNamed('/RegisterScreen');
-                                },
-                              ),
-                            ),
-
-                            Container(
-                              width: 200,
-                              child: RaisedButton(
-                                color: Colors.blueGrey[700],
-                                child: Text("Enter as Guest", style: TextStyle(color: Colors.white),),
-                                onPressed: () async {
-                                  dynamic result = await _auth.signInAnon();
-
-                                  if(result == null){
-                                    print("Error signing in as guest");
-                                  }else{
-                                    print(result.uid);
-                                    Navigator.of(context).pushReplacementNamed('/IntroductionScreen', arguments: "Guest");
-                                  }
                                 },
                               ),
                             ),

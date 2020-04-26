@@ -180,24 +180,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
 
-                            Container(
-                              width: 200,
-                              child: RaisedButton(
-                                color: Colors.blueGrey[400],
-                                child: Text("Enter as Guest", style: TextStyle(color: Colors.white),),
-                                onPressed: () async {
-                                  dynamic result = await _auth.signInAnon();
-
-                                  if(result == null){
-                                    print("Error signing in as guest");
-                                  }else{
-                                    print(result.uid);
-                                    Navigator.of(context).pushReplacementNamed('/IntroductionScreen', arguments: "Guest");
-                                  }
-                                },
-                              ),
-                            ),
-
                             SizedBox(height: 20,),
 
                             Text(_error, style: TextStyle(color: Colors.red, fontSize: 14.0),),
