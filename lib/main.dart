@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/models/user.dart';
-import 'package:lester_apartments/route_generator.dart';
+import 'package:lester_apartments/services/route_generator.dart';
 import 'package:lester_apartments/screens/wrapper.dart';
 import 'package:lester_apartments/services/auth.dart';
 import 'package:provider/provider.dart';

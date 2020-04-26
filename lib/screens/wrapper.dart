@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'package:lester_apartments/HomeScreen.dart';
+import 'package:lester_apartments/authentication/authenticate.dart';
+import 'package:lester_apartments/screens/HomeScreen.dart';
 import 'package:lester_apartments/models/user.dart';
-import 'package:lester_apartments/screens/LogInScreen.dart';
 import 'package:provider/provider.dart';
 
 class Wrapper extends StatelessWidget {
@@ -13,7 +13,7 @@ class Wrapper extends StatelessWidget {
 
     // return either the Home or Authenticate widget
     if(user == null){
-      return LoginPage();
+      return Authenticate();
     }else{
       return HomeScreen();
     }

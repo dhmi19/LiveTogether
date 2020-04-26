@@ -33,7 +33,7 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
         actions: <Widget>[
           FlatButton.icon(onPressed: () async {
             await _auth.signOut();
-
+            //TODO: FIX this plsss
           }, icon: Icon(Icons.exit_to_app), label: Text(""))
         ],
       ),

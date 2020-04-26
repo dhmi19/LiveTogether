@@ -1,27 +1,31 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/services/auth.dart';
+import 'package:lester_apartments/shared/loading.dart';
 
+class RegisterScreen extends StatefulWidget {
 
+  final Function toggleView;
 
-class LoginPage extends StatefulWidget{
-
+  RegisterScreen({this.toggleView});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
-
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginPageState extends State<LoginPage>{
+class _RegisterScreenState extends State<RegisterScreen> {
 
   String _email = '';
   String _password = '';
+  String _error = '';
+  bool _loading = false;
 
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return _loading ? Loading() : Scaffold(
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 0), //Check this
           width: double.infinity,
@@ -29,9 +33,9 @@ class _LoginPageState extends State<LoginPage>{
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   colors: [
-                    Colors.orange[900],
-                    Colors.orange[800],
-                    Colors.orange[400]
+                    Colors.blue[900],
+                    Colors.blue[600],
+                    Colors.blue[400]
                   ]
               )
           ),
@@ -45,9 +49,9 @@ class _LoginPageState extends State<LoginPage>{
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Login", style: TextStyle(color: Colors.white, fontSize: 40, ),),
+                    Text("Register", style: TextStyle(color: Colors.white, fontSize: 40,),),
                     SizedBox(height: 10,),
-                    Text("Welcome Home", style: TextStyle(color: Colors.white, fontSize: 30, ),)
+                    Text("Make living with friends easier", style: TextStyle(color: Colors.white, fontSize: 25, ),)
                   ],
                 ),
               ),
@@ -62,10 +66,11 @@ class _LoginPageState extends State<LoginPage>{
                     child: Padding(
                       padding: EdgeInsets.all(20),
                       child: Form(
+                        key: _formKey,
                         child: Column(
                           children: <Widget>[
 
-                            SizedBox(height: 80,),
+                            SizedBox(height: 10,),
 
                             Container(
                               padding: EdgeInsets.all(20),
@@ -86,6 +91,13 @@ class _LoginPageState extends State<LoginPage>{
                                         border: Border(bottom: BorderSide(color: Colors.green))
                                     ),
                                     child: TextFormField(
+                                      validator: (val) {
+                                        if(val.isEmpty){
+                                          return "Enter Email ID";
+                                        }else{
+                                          return null;
+                                        }
+                                      },
                                       decoration: InputDecoration(
                                           hintText: "Email ID",
                                           hintStyle: TextStyle(color: Colors.grey),
@@ -105,6 +117,13 @@ class _LoginPageState extends State<LoginPage>{
                                         border: Border(bottom: BorderSide(color: Colors.green))
                                     ),
                                     child: TextFormField(
+                                      validator: (val) {
+                                        if(val.length < 6){
+                                          return "Password must be more than 6 letters";
+                                        }else{
+                                          return null;
+                                        }
+                                      },
                                       obscureText: true,
                                       decoration: InputDecoration(
                                           hintText: "Password",
@@ -123,30 +142,67 @@ class _LoginPageState extends State<LoginPage>{
                             ),
                             SizedBox(height: 40,),
 
-                            RaisedButton(
-                              color: Colors.orange[900],
-                              child: Text("Enter", style: TextStyle(color: Colors.white),),
-                              onPressed: () async {
-                                print(_email+ ","+ _password);
-                              },
+                            Container(
+                              width: 200,
+                              child: RaisedButton(
+                                color: Colors.orange[900],
+                                child: Text("Register", style: TextStyle(color: Colors.white),),
+                                onPressed: () async {
+
+                                  setState(() {
+                                    _loading = true;
+                                  });
+
+                                  if(_formKey.currentState.validate()) {
+                                    dynamic result = await _auth.registerWithEmailAndPassword(_email, _password);
+
+                                    if(result == null){
+                                      setState(() {
+                                        _error = 'Please supply valid email';
+                                        _loading = false;
+                                      });
+                                    }
+                                    //print(_email + "," + _password);
+                                  }
+                                },
+                              ),
                             ),
 
-                            RaisedButton(
-                              color: Colors.orange[900],
-                              child: Text("Enter as Guest", style: TextStyle(color: Colors.white),),
-                              onPressed: () async {
-                                dynamic result = await _auth.signInAnon();
-
-                                if(result == null){
-                                  print("Error signing in as guest");
-                                }else{
-                                  print(result.uid);
-                                  Navigator.of(context).pushReplacementNamed('/IntroductionScreen', arguments: "Guest");
-                                }
-                              },
+                            Container(
+                              width: 200,
+                              child: RaisedButton(
+                                color: Colors.blue[600],
+                                child: Text("Return to Sign In ", style: TextStyle(color: Colors.white),),
+                                onPressed: () async {
+                                  widget.toggleView();
+                                  //Navigator.of(context).pushReplacementNamed('/SignInScreen');
+                                },
+                              ),
                             ),
 
-                            SizedBox(height: 80,),
+                            Container(
+                              width: 200,
+                              child: RaisedButton(
+                                color: Colors.blueGrey[400],
+                                child: Text("Enter as Guest", style: TextStyle(color: Colors.white),),
+                                onPressed: () async {
+                                  dynamic result = await _auth.signInAnon();
+
+                                  if(result == null){
+                                    print("Error signing in as guest");
+                                  }else{
+                                    print(result.uid);
+                                    Navigator.of(context).pushReplacementNamed('/IntroductionScreen', arguments: "Guest");
+                                  }
+                                },
+                              ),
+                            ),
+
+                            SizedBox(height: 20,),
+
+                            Text(_error, style: TextStyle(color: Colors.red, fontSize: 14.0),),
+
+                            SizedBox(height: 60,),
 
                           ],
                         ),

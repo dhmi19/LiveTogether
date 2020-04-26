@@ -1,5 +1,5 @@
-import 'package:lester_apartments/ChoresListWidget.dart';
-import 'package:lester_apartments/ShoppingListWidget.dart';
+import 'package:lester_apartments/screens/ChoresListWidget.dart';
+import 'package:lester_apartments/screens/ShoppingListWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_bottom_navigation_bar/gradient_bottom_navigation_bar.dart';
