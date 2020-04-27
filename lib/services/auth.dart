@@ -35,7 +35,13 @@ class AuthService {
 
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
-      return _userFromFirebaseUser(user);
+
+      if(user.isEmailVerified){
+        return _userFromFirebaseUser(user);
+      }else{
+        return null;
+      }
+
     }catch(error){
       print(error.toString());
       return null;
@@ -44,7 +50,7 @@ class AuthService {
 
 
   // register with email and password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(String email, String password, BuildContext context) async {
     try{
 
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -55,6 +61,7 @@ class AuthService {
       //Create a new document for the registered user:
       await DatabaseService(uid: user.uid).updateUserData(user.email, "hi", "username1", "apartment1");
 
+      print("User Made");
       return _userFromFirebaseUser(user);
     }catch(error){
       print(error.toString());
@@ -75,22 +82,30 @@ class AuthService {
 
   //Reset password:
   Future resetPassword(String email, BuildContext context) async{
-    await _auth.sendPasswordResetEmail(email: email);
-    showDialog(
-      context: context,
-        child: AlertDialog(
-          title: Text("Email Sent!"),
-          content: Text("Please follow the link sent to "+ email),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Ok'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        )
-    );
+
+    try{
+      await _auth.sendPasswordResetEmail(email: email);
+
+      showDialog(
+          context: context,
+          child: AlertDialog(
+            title: Text("Email Sent!"),
+            content: Text("Please follow the link sent to "+ email),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          )
+      );
+    }
+    catch(error){
+      print(error);
+    }
+
   }
 
 }

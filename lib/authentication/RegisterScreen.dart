@@ -154,7 +154,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   });
 
                                   if(_formKey.currentState.validate()) {
-                                    dynamic result = await _auth.registerWithEmailAndPassword(_email, _password);
+
+                                    dynamic result = await _auth.registerWithEmailAndPassword(_email, _password, context);
 
                                     if(result == null){
                                       setState(() {
