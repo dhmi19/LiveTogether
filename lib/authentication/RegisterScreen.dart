@@ -17,6 +17,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String _email = '';
   String _password = '';
   String _error = '';
+  String _username = '';
+
   bool _loading = false;
 
   final AuthService _auth = AuthService();
@@ -136,7 +138,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         });
                                       },
                                     ),
-                                  )
+                                  ),
+
+                                  Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        border: Border(bottom: BorderSide(color: Colors.green))
+                                    ),
+                                    child: TextFormField(
+                                      validator: (val) {
+                                        if(val.length < 6){
+                                          return "Username must be more than 6 letters";
+                                        }else{
+                                          return null;
+                                        }
+                                      },
+                                      obscureText: true,
+                                      decoration: InputDecoration(
+                                          hintText: "Username",
+                                          hintStyle: TextStyle(color: Colors.grey),
+                                          border: InputBorder.none
+                                      ),
+                                      onChanged: (val){
+                                        setState(() {
+                                          _username = val;
+                                        });
+                                      },
+                                    ),
+                                  ),
+
+
                                 ],
                               ),
                             ),
@@ -155,7 +186,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                                   if(_formKey.currentState.validate()) {
 
-                                    dynamic result = await _auth.registerWithEmailAndPassword(_email, _password, context);
+                                    dynamic result = await _auth.registerWithEmailAndPassword(_email, _password, _username);
+
+                                    print(result);
 
                                     if(result == null){
                                       setState(() {
@@ -165,6 +198,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     }
                                     //print(_email + "," + _password);
                                   }
+
+
+
                                 },
                               ),
                             ),

@@ -14,7 +14,7 @@ class AuthService {
   //Create User object given a firebaseUser
   User _userFromFirebaseUser(FirebaseUser user){
     if(user != null){
-      return User(uid: user.uid);
+      return User(uid: user.uid, isEmailVerified: user.isEmailVerified);
     }else{
       return null;
     }
@@ -34,10 +34,12 @@ class AuthService {
     try{
 
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      FirebaseUser user = result.user;
+      FirebaseUser firebaseUser = result.user;
 
-      if(user.isEmailVerified){
-        return _userFromFirebaseUser(user);
+      print("is user verified? " + firebaseUser.isEmailVerified.toString());
+
+      if(firebaseUser.isEmailVerified){
+        return _userFromFirebaseUser(firebaseUser);
       }else{
         return null;
       }
@@ -50,7 +52,7 @@ class AuthService {
 
 
   // register with email and password
-  Future registerWithEmailAndPassword(String email, String password, BuildContext context) async {
+  Future registerWithEmailAndPassword(String email, String password, String username) async {
     try{
 
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -59,9 +61,9 @@ class AuthService {
       await user.sendEmailVerification();
 
       //Create a new document for the registered user:
-      await DatabaseService(uid: user.uid).updateUserData(user.email, "hi", "username1", "apartment1");
+      await DatabaseService(uid: user.uid).updateUserRegistrationData(user.email, password, username);
 
-      print("User Made");
+      //print("User Made");
       return _userFromFirebaseUser(user);
     }catch(error){
       print(error.toString());

@@ -12,13 +12,12 @@ class DatabaseService {
 
 
 
-  Future updateUserData(String email, String password, String username, String apartment) async{
+  Future updateUserRegistrationData(String email, String password, String username) async{
 
     return await userCollection.document(uid).setData({
       'email': email,
       'password': password,
       'username': username,
-      'apartment': apartment
     });
   }
 

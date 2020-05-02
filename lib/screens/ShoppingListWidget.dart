@@ -13,44 +13,74 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white12,
-      appBar: AppBar(
-        backgroundColor: Colors.orangeAccent,
-        elevation: 0,
-        leading: Builder(
-             builder: (BuildContext context) {
-               return IconButton(
-                 icon: const Icon(Icons.menu),
-                 onPressed: () { Scaffold.of(context).openDrawer(); },
-                 tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-               );
-             },
-           ),
-        // FlatButton.icon(onPressed: () => {}, icon: Icon(Icons.menu), label: Text("")),
-        title: Text("Shopping List"),
-        centerTitle: true,
-        actions: <Widget>[
-          FlatButton.icon(onPressed: () async {
-            await _auth.signOut();
-            //TODO: FIX this plsss
-          }, icon: Icon(Icons.exit_to_app), label: Text(""))
-        ],
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          colors: [
+            Colors.greenAccent[400],
+            Colors.greenAccent[200],
+            Colors.greenAccent[100]
+          ]
+        )
       ),
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          iconTheme: IconThemeData(color: Colors.black),
+          elevation: 0,
+
+          // FlatButton.icon(onPressed: () => {}, icon: Icon(Icons.menu), label: Text("")),
+          title: Text("Shopping List", style: TextStyle(color: Colors.black),),
+
+          centerTitle: true,
+
+          actions: <Widget>[
+            FlatButton.icon(onPressed: () async {
+              await _auth.signOut();
+            }, icon: Icon(Icons.exit_to_app), label: Text(""))
+          ],
+        ),
+
+
+        body: SafeArea(
+          child: Container(
+            color: Colors.transparent,
+          ),
+        ),
+
+        drawer: Drawer(
+
+          child: ListView(
+            padding: EdgeInsets.zero,
             children: <Widget>[
-              Container(
-                height: 150,
-                width: 150,
+              DrawerHeader(
+                child: Text('Drawer Header'),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.redAccent,
+                  color: Colors.blue,
                 ),
-                child: Text("Hi", textAlign: TextAlign.center,),
-              )
+              ),
+
+              ListTile(
+                title: Text('View my Apartment'),
+                trailing: Icon(Icons.people),
+                onTap: () {
+                  // Update the state of the app
+                  // ...
+                  // Then close the drawer
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text('Item 2'),
+                onTap: () {
+                  // Update the state of the app
+                  // ...
+                  // Then close the drawer
+                  Navigator.pop(context);
+                },
+              ),
             ],
           ),
         ),
