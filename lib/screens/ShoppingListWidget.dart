@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/services/auth.dart';
+import 'package:lester_apartments/shared/DrawerWidget.dart';
 
 class ShoppingListWidget extends StatefulWidget {
 
@@ -16,11 +17,11 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.bottomCenter,
+          begin: Alignment.topCenter,
           colors: [
-            Colors.greenAccent[400],
-            Colors.greenAccent[200],
-            Colors.greenAccent[100]
+            Colors.redAccent[400],
+            Colors.redAccent[200],
+            Colors.redAccent[100]
           ]
         )
       ),
@@ -45,45 +46,23 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
 
 
         body: SafeArea(
-          child: Container(
-            color: Colors.transparent,
-          ),
-        ),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 100,),
 
-        drawer: Drawer(
-
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                child: Text('Drawer Header'),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(80)),
+                    ),
+                  ),
                 ),
-              ),
-
-              ListTile(
-                title: Text('View my Apartment'),
-                trailing: Icon(Icons.people),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: Text('Item 2'),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
+              ],
+            )
         ),
+
+        drawer: DrawerWidget()
       ),
     );
   }

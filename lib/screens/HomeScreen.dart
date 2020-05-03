@@ -1,8 +1,11 @@
-import 'package:lester_apartments/screens/ChoresListWidget.dart';
+import 'package:lester_apartments/screens/HomeScreenWidget.dart';
+import 'package:lester_apartments/screens/PeopleWidget.dart';
+import 'package:lester_apartments/screens/SharedNotesWidget.dart';
 import 'package:lester_apartments/screens/ShoppingListWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gradient_bottom_navigation_bar/gradient_bottom_navigation_bar.dart';
+
+import 'AlertWidget.dart';
 
 void main() => runApp(
     MaterialApp(
@@ -23,11 +26,14 @@ class HomeScreen extends StatefulWidget{
 
 class _HomeScreenState extends State<HomeScreen>{
 
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   final tabs = [
     ShoppingListWidget(),
-    ChoresListWidget()
+    SharedNotesWidget(),
+    HomeScreenWidget(),
+    AlertWidget(),
+    PeopleWidget()
   ];
 
   @override
@@ -36,23 +42,41 @@ class _HomeScreenState extends State<HomeScreen>{
     return Scaffold(
       body: tabs[_currentIndex],
 
-      bottomNavigationBar: GradientBottomNavigationBar(
-
+      bottomNavigationBar: BottomNavigationBar(
+        selectedIconTheme: IconThemeData(color: Colors.black),
+        unselectedIconTheme: IconThemeData(color: Colors.red),
+        selectedItemColor: Colors.black,
+        type: BottomNavigationBarType.shifting,
+        backgroundColor: Colors.transparent,
         currentIndex: _currentIndex,
-        backgroundColorStart: Colors.orange[400],
-        backgroundColorEnd: Colors.orange[100],
         iconSize: 30,
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.add_shopping_cart),
               title: Text("Shopping List"),
-              backgroundColor: Colors.blueGrey
+              backgroundColor: Colors.white
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.assignment_ind),
-              title: Text("Chores List"),
-              backgroundColor: Colors.blueGrey
+              icon: Icon(Icons.view_list),
+              title: Text("Shared Notes"),
+              backgroundColor: Colors.white
           ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Text("Home"),
+              backgroundColor: Colors.white
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.alarm),
+              title: Text("Alerts"),
+              backgroundColor: Colors.white
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              title: Text("Roommates"),
+              backgroundColor: Colors.white
+          ),
+
         ],
         onTap: (index) {
           setState(() {
