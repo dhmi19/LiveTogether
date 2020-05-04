@@ -10,11 +10,14 @@ class AuthService {
   String email = '';
   String password = '';
 
+  static User currentUser;
+
 
   //Create User object given a firebaseUser
   User _userFromFirebaseUser(FirebaseUser user){
     if(user != null){
-      return User(uid: user.uid, isEmailVerified: user.isEmailVerified);
+      currentUser = User(uid: user.uid, isEmailVerified: user.isEmailVerified);
+      return currentUser;
     }else{
       return null;
     }
@@ -49,6 +52,7 @@ class AuthService {
       return null;
     }
   }
+
 
 
   // register with email and password
