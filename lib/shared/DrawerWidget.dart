@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lester_apartments/services/route_generator.dart';
 
 class DrawerWidget extends StatefulWidget {
   @override
@@ -31,12 +32,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           ListTile(
-            title: Text('Item 2'),
+            title: Text('View my profile'),
             onTap: () {
-              // Update the state of the app
-              // ...
-              // Then close the drawer
               Navigator.pop(context);
+              Navigator.of(context).pushNamed('/MyProfileScreen');
             },
           ),
         ],

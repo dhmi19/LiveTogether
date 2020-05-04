@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:lester_apartments/services/auth.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 
-class PeopleWidget extends StatefulWidget {
+class RommatesWidget extends StatefulWidget {
   @override
-  _PeopleWidgetState createState() => _PeopleWidgetState();
+  _RommatesWidgetState createState() => _RommatesWidgetState();
 }
 
-class _PeopleWidgetState extends State<PeopleWidget> {
+class _RommatesWidgetState extends State<RommatesWidget> {
 
   final AuthService _auth = AuthService();
 

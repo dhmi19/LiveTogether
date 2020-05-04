@@ -1,8 +1,8 @@
 import 'package:lester_apartments/screens/HomeScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:lester_apartments/main.dart';
 import 'package:lester_apartments/authentication/SignInScreen.dart';
 import 'package:lester_apartments/authentication/RegisterScreen.dart';
+import 'package:lester_apartments/screens/MyProfileScreen.dart';
 import 'package:lester_apartments/screens/wrapper.dart';
 
 class RouteGenerator{
@@ -27,6 +27,9 @@ class RouteGenerator{
 
       case '/RegisterScreen':
         return MaterialPageRoute(builder: (_) => RegisterScreen());
+
+      case '/MyProfileScreen':
+        return MaterialPageRoute(builder: (_) => MyProfileScreen());
 
       default: //If not route is found, go to login
         return MaterialPageRoute(builder: (_) => SignInScreen());
