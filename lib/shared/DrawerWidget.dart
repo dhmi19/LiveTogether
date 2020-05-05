@@ -62,10 +62,20 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               Navigator.of(context).pushNamed('/MyProfileScreen');
             },
           ),
+
+          ListTile(
+            title: Text('Leave Apartment'),
+            trailing: Icon(Icons.directions_run),
+            onTap: () async {
+              Navigator.of(context).pop();
+            },
+          ),
+
           ListTile(
             title: Text('Log Out'),
             trailing: Icon(Icons.exit_to_app),
             onTap: () async {
+              //TODO: Make apartment data null in static context
               Navigator.of(context).pop();
               await _auth.signOut();
             },

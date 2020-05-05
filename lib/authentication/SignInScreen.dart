@@ -33,6 +33,8 @@ class _SignInScreenState extends State<SignInScreen>{
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 0), //Check this
           width: double.infinity,
+          color: Colors.blue[500],
+          /*
           decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -43,6 +45,7 @@ class _SignInScreenState extends State<SignInScreen>{
                   ]
               )
           ),
+          */
           child: Column(
 
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,20 +83,20 @@ class _SignInScreenState extends State<SignInScreen>{
                             Container(
                               padding: EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                  color: Colors.grey[100],
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [BoxShadow(
-                                      color: Color.fromRGBO(225, 95, 27, 0.2),
+                                  /*boxShadow: [BoxShadow(
+                                      color: Color.fromRGBO(106, 191, 76, 0.5),
                                       blurRadius: 20,
                                       offset: Offset(0, 10)
-                                  )]
+                                  )]*/
                               ),
                               child: Column(
                                 children: <Widget>[
                                   Container(
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(color: Colors.green))
+                                        border: Border(bottom: BorderSide(color: Colors.blue[500]))
                                     ),
                                     child: TextFormField(
                                       validator: (val) {
@@ -119,7 +122,7 @@ class _SignInScreenState extends State<SignInScreen>{
                                   Container(
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(color: Colors.green))
+                                        border: Border(bottom: BorderSide(color: Colors.blue[500]))
                                     ),
                                     child: TextFormField(
                                       validator: (val) {
@@ -182,7 +185,8 @@ class _SignInScreenState extends State<SignInScreen>{
                             Container(
                               width: 200,
                               child: RaisedButton(
-                                color: Colors.orange[900],
+
+                                color: Colors.blue[500],
                                 child: Text("Sign In", style: TextStyle(color: Colors.white),),
                                 onPressed: () async {
                                   if(_formKey.currentState.validate()) {
@@ -191,7 +195,7 @@ class _SignInScreenState extends State<SignInScreen>{
                                       _loading = true;
                                     });
                                     dynamic result = await _auth.signInWithEmailAndPassword(_email, _password);
-
+                                    //TODO: Update Apartment to which ever apartment the user belongs to
                                     if (result == null) {
                                       setState(() {
                                         _error = "Couldn't sign in with those credentials";
@@ -208,7 +212,7 @@ class _SignInScreenState extends State<SignInScreen>{
                             Container(
                               width: 200,
                               child: RaisedButton(
-                                color: Colors.blue[600],
+                                color: Colors.red[400],
                                 child: Text("Make a new account", style: TextStyle(color: Colors.white),),
                                 onPressed: () async {
                                   widget.toggleView();

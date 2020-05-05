@@ -1,5 +1,5 @@
 import 'package:lester_apartments/screens/HomeScreenWidget.dart';
-import 'package:lester_apartments/screens/PeopleWidget.dart';
+import 'package:lester_apartments/screens/RoommatesWidget.dart';
 import 'package:lester_apartments/screens/SharedNotesWidget.dart';
 import 'package:lester_apartments/screens/ShoppingListWidget.dart';
 import 'package:flutter/cupertino.dart';

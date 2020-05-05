@@ -17,6 +17,10 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+
+        color: Colors.blue[400],
+
+        /*
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           colors: [
@@ -25,6 +29,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
             Colors.red[200]
           ]
         )
+            */
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -44,7 +49,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
         body: SafeArea(
           child: Column(
             children: <Widget>[
-              SizedBox(height: 30,),
+              SizedBox(height: 10,),
 
               Text("Welcome Home", style: TextStyle(fontSize: 40, color: Colors.white),),
 
@@ -53,7 +58,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.grey[200],
                   ),
 
                   child: SingleChildScrollView(
@@ -74,7 +79,6 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey
                             ),
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
@@ -91,7 +95,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        color: Colors.blue,
+                                        color: Color.fromRGBO(235, 87, 88, 0.9),
                                       ),
                                     ),
                                   ),
@@ -103,7 +107,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        color: Colors.blue,
+                                        color: Color.fromRGBO(235, 87, 88, 0.9),
                                       ),
                                     ),
                                   ),
@@ -115,7 +119,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        color: Colors.blue,
+                                        color: Color.fromRGBO(235, 87, 88, 0.9),
                                       ),
                                     ),
                                   ),
@@ -139,7 +143,6 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: Colors.grey
                             ),
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
@@ -156,7 +159,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        color: Colors.blue,
+                                        color: Color.fromRGBO(235, 87, 88, 0.9),
                                       ),
                                     ),
                                   ),
@@ -168,7 +171,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        color: Colors.blue,
+                                        color: Color.fromRGBO(235, 87, 88, 0.9),
                                       ),
                                     ),
                                   ),
@@ -180,7 +183,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        color: Colors.blue,
+                                        color: Color.fromRGBO(235, 87, 88, 0.9),
                                       ),
                                     ),
                                   ),
@@ -204,7 +207,6 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: Colors.grey
                             ),
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
@@ -221,7 +223,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        color: Colors.blue,
+                                        color: Color.fromRGBO(235, 87, 88, 0.9),
                                       ),
                                     ),
                                   ),
@@ -233,7 +235,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        color: Colors.blue,
+                                        color: Color.fromRGBO(235, 87, 88, 0.9),
                                       ),
                                     ),
                                   ),
@@ -245,7 +247,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        color: Colors.blue,
+                                        color: Color.fromRGBO(235, 87, 88, 0.9),
                                       ),
                                     ),
                                   ),

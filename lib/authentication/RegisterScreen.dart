@@ -31,6 +31,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 0), //Check this
           width: double.infinity,
+          color: Colors.red[400],
+          /*
           decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -41,6 +43,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ]
               )
           ),
+
+           */
           child: Column(
 
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,20 +81,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Container(
                               padding: EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                  color: Colors.grey[100],
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [BoxShadow(
-                                      color: Color.fromRGBO(225, 95, 27, 0.2),
-                                      blurRadius: 20,
-                                      offset: Offset(0, 10)
-                                  )]
                               ),
                               child: Column(
                                 children: <Widget>[
                                   Container(
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(color: Colors.green))
+                                        border: Border(bottom: BorderSide(color: Colors.red[400]))
                                     ),
                                     child: TextFormField(
                                       validator: (val) {
@@ -116,7 +115,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   Container(
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(color: Colors.green))
+                                        border: Border(bottom: BorderSide(color: Colors.red[400]))
                                     ),
                                     child: TextFormField(
                                       validator: (val) {
@@ -143,7 +142,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   Container(
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(color: Colors.green))
+                                        border: Border(bottom: BorderSide(color: Colors.red[400]))
                                     ),
                                     child: TextFormField(
                                       validator: (val) {
@@ -176,7 +175,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Container(
                               width: 200,
                               child: RaisedButton(
-                                color: Colors.orange[900],
+                                color: Colors.red[400],
                                 child: Text("Register", style: TextStyle(color: Colors.white),),
                                 onPressed: () async {
 
@@ -208,7 +207,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Container(
                               width: 200,
                               child: RaisedButton(
-                                color: Colors.blue[600],
+                                color: Colors.blue[500],
                                 child: Text("Return to Sign In ", style: TextStyle(color: Colors.white),),
                                 onPressed: () async {
                                   widget.toggleView();
