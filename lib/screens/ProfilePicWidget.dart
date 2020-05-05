@@ -24,7 +24,8 @@ class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
     if(users != null){
       for(var user in users.documents){
         if(user.documentID == AuthService.currentUser.uid){
-          _image = user.data['profilePictureURL'];
+          AuthService.currentUser.profilePictureURL = user.data['profilePictureURL'];
+          _image = AuthService.currentUser.profilePictureURL;
           print(_image);
         }
       }

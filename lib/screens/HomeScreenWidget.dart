@@ -16,7 +16,16 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red[600],
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          colors: [
+            Colors.red[700],
+            Colors.red[500],
+            Colors.red[200]
+          ]
+        )
+      ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -29,11 +38,6 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
 
           centerTitle: true,
 
-          actions: <Widget>[
-            FlatButton.icon(onPressed: () async {
-              await _auth.signOut();
-            }, icon: Icon(Icons.exit_to_app, color: Colors.white,), label: Text(""))
-          ],
         ),
 
 

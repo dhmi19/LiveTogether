@@ -29,18 +29,29 @@ class DatabaseService {
   }
 
   Future updateProfilePicture(String imageURL) async{
-    return await userCollection.document(uid).setData({
+
+    AuthService.currentUser.profilePictureURL = imageURL;
+
+    return await userCollection.document(uid).updateData({
       'profilePictureURL': imageURL
     });
   }
 
-  /*Future updateProfilePicture(String imageURL) async{
-
-    String uid = AuthService.currentUser.uid;
-
-    return await userCollection.document(uid).setData({
-      'profilePictureURL': imageURL,
-    });
-  }*/
-
+  Future updateUserDetails(String email, String password, String username) async{
+    if(email.length != 0) {
+      await userCollection.document(uid).updateData({
+      'email': email
+      });
+    }
+    if(password.length != 0) {
+      await userCollection.document(uid).updateData({
+      'password': password
+      });
+    }
+    if(username.length != 0) {
+      await userCollection.document(uid).updateData({
+      'username': username
+      });
+    }
+  }
 }

@@ -36,11 +36,6 @@ class _AlertWidgetState extends State<AlertWidget> {
 
             centerTitle: true,
 
-            actions: <Widget>[
-              FlatButton.icon(onPressed: () async {
-                await _auth.signOut();
-              }, icon: Icon(Icons.exit_to_app), label: Text(""))
-            ],
           ),
 
 

@@ -68,7 +68,10 @@ class AuthService {
       await DatabaseService(uid: user.uid).updateUserRegistrationData(user.email, password, username);
 
       //print("User Made");
-      return _userFromFirebaseUser(user);
+      User myUser = _userFromFirebaseUser(user);
+      myUser.userName = username;
+
+      return myUser;
     }catch(error){
       print(error.toString());
       return null;
@@ -79,6 +82,7 @@ class AuthService {
   // sign  out
   Future signOut() async{
     try{
+      currentUser = null;
       return await _auth.signOut();
     }catch(error){
       print("Not able to sign out");
