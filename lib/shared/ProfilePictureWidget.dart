@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -17,10 +18,11 @@ class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
   @override
   Widget build(BuildContext context) {
 
-    final users = Provider.of<QuerySnapshot>(context);
+    var currentUser = Provider.of<FirebaseUser>(context);
 
-    print("Current userID: "+ AuthService.currentUser.uid);
+    print("Current userID: "+ currentUser.uid);
 
+    /*
     if(users != null){
       for(var user in users.documents){
         if(user.documentID == AuthService.currentUser.uid){
@@ -31,6 +33,9 @@ class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
       }
     }
 
+     */
+
+    _image = currentUser.photoUrl;
 
     return CircleAvatar(
       radius: 100,

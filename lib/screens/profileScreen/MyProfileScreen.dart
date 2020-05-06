@@ -1,10 +1,10 @@
 
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:lester_apartments/main.dart';
 import 'package:lester_apartments/screens/ProfilePicWidget.dart';
 import 'package:lester_apartments/services/auth.dart';
 import 'package:path/path.dart';
@@ -138,6 +138,33 @@ Future getImageFromCamera() async {
                           ),
                           child: Column(
                             children: <Widget>[
+
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    border: Border(bottom: BorderSide(color: Colors.green))
+                                ),
+                                child: TextFormField(
+                                  validator: (val) {
+                                    if(val.length != 0 && val.length < 6){
+                                      return "Email ID must be more than 6 characters";
+                                    }else{
+                                      return null;
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                      hintText: "Enter new email ID",
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      border: InputBorder.none
+                                  ),
+                                  onChanged: (val){
+                                    setState(() {
+                                      _email = val;
+                                    });
+                                  },
+                                ),
+                              ),
+
                               Container(
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
