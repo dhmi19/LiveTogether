@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lester_apartments/screens/HomeScreenWidget.dart';
 import 'package:lester_apartments/screens/RoommatesWidget.dart';
 import 'package:lester_apartments/screens/SharedNotesWidget.dart';
 import 'package:lester_apartments/screens/ShoppingListWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'AlertWidget.dart';
 
@@ -28,16 +30,20 @@ class _HomeScreenState extends State<HomeScreen>{
 
   int _currentIndex = 2;
 
+  static FirebaseUser currentUser;
+
   final tabs = [
     ShoppingListWidget(),
     SharedNotesWidget(),
     HomeScreenWidget(),
     AlertWidget(),
-    RommatesWidget()
+    RommatesWidget(currentUser: currentUser),
   ];
 
   @override
   Widget build(BuildContext context) {
+
+    currentUser = Provider.of<FirebaseUser>(context);
 
     return Scaffold(
       body: tabs[_currentIndex],

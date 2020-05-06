@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/models/user.dart';
@@ -21,7 +22,7 @@ void main() => runApp(
 class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User>.value(
+    return StreamProvider<FirebaseUser>.value(
       value: AuthService().user, //Listens to the Auth User stream to provide data to the rest of the widget tree
       child: MaterialApp(
         initialRoute: '/',

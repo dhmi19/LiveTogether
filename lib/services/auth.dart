@@ -10,24 +10,23 @@ class AuthService {
   String email = '';
   String password = '';
 
-  static User currentUser;
-
-
   //Create User object given a firebaseUser
-  User _userFromFirebaseUser(FirebaseUser user){
+  /*User _userFromFirebaseUser(FirebaseUser user){
     if(user != null){
-      currentUser = User(uid: user.uid, isEmailVerified: user.isEmailVerified);
+      currentUser = User(user.uid, user.isEmailVerified, user.displayName, user.photoUrl);
       return currentUser;
     }else{
       return null;
     }
   }
 
+   */
+
 
   // auth change user stream
   // Gets a FirebaseUser from the stream and then converts it to a custom User
-  Stream<User> get user{
-    return _auth.onAuthStateChanged.map((FirebaseUser user) => _userFromFirebaseUser(user));
+  Stream<FirebaseUser> get user{
+    return _auth.onAuthStateChanged;
   }
 
 
@@ -39,10 +38,10 @@ class AuthService {
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       FirebaseUser firebaseUser = result.user;
 
-      print("is user verified? " + firebaseUser.isEmailVerified.toString());
+      //print("is user verified? " + firebaseUser.isEmailVerified.toString());
 
       if(firebaseUser.isEmailVerified){
-        return _userFromFirebaseUser(firebaseUser);
+        return firebaseUser;
       }else{
         return null;
       }
@@ -61,6 +60,10 @@ class AuthService {
 
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
+      UserUpdateInfo userUpdateInfo = new UserUpdateInfo();
+      userUpdateInfo.photoUrl = "assets/temp_profile_pic.jpg";
+      userUpdateInfo.displayName = username;
+      user.updateProfile(userUpdateInfo);
 
       await user.sendEmailVerification();
 
@@ -68,10 +71,9 @@ class AuthService {
       await DatabaseService(uid: user.uid).updateUserRegistrationData(user.email, password, username);
 
       //print("User Made");
-      User myUser = _userFromFirebaseUser(user);
-      myUser.userName = username;
+      //User myUser = _userFromFirebaseUser(user);
 
-      return myUser;
+      return user;
     }catch(error){
       print(error.toString());
       return null;
@@ -82,7 +84,6 @@ class AuthService {
   // sign  out
   Future signOut() async{
     try{
-      currentUser = null;
       return await _auth.signOut();
     }catch(error){
       print("Not able to sign out");

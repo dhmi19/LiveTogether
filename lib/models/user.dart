@@ -1,12 +1,37 @@
 
 class User {
 
-  final String uid;
-  final bool isEmailVerified;
+  String _uid;
+  bool _isEmailVerified;
+  String _displayName;
+  String _profilePictureURL;
 
-  String userName;
-  String profilePictureURL;
+  User(this._uid, this._isEmailVerified, this._displayName,
+      this._profilePictureURL);
 
-  User({this.uid, this.isEmailVerified});
+  String get profilePictureURL => _profilePictureURL;
+
+  set profilePictureURL(String value) {
+    _profilePictureURL = value;
+  }
+
+  String get displayName => _displayName;
+
+  set displayName(String value) {
+    _displayName = value;
+  }
+
+  bool get isEmailVerified => _isEmailVerified;
+
+  set isEmailVerified(bool value) {
+    _isEmailVerified = value;
+  }
+
+  String get uid => _uid;
+
+  set uid(String value) {
+    _uid = value;
+  }
+
 
 }

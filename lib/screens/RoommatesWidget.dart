@@ -1,9 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/services/auth.dart';
 import 'package:lester_apartments/services/database.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 
 class RommatesWidget extends StatefulWidget {
+
+  final FirebaseUser currentUser;
+
+  const RommatesWidget({this.currentUser});
+
   @override
   _RommatesWidgetState createState() => _RommatesWidgetState();
 }
@@ -135,7 +141,7 @@ class _RommatesWidgetState extends State<RommatesWidget> {
                                                     onPressed: () async {
                                                       if (_formKey.currentState.validate()) {
                                                         //TODO: Check if apartment name is taken
-                                                        final result = await DatabaseService(uid: AuthService.currentUser.uid).createNewApartment(_apartmentName);
+                                                        final result = await DatabaseService(uid: widget.currentUser.uid).createNewApartment(_apartmentName);
                                                         print(result);
                                                         if(result != null){
                                                           Navigator.of(context).pop();

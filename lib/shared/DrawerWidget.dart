@@ -1,7 +1,10 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/services/auth.dart';
+import 'package:lester_apartments/shared/ProfilePictureWidget.dart';
+import 'package:provider/provider.dart';
 
 class DrawerWidget extends StatefulWidget {
   @override
@@ -10,12 +13,17 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
 
-  String _image = AuthService.currentUser.profilePictureURL;
 
   final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
+    String _image;
+
+    //TODO: The current user is not updating so it is referencing old photo url
+    var currentUser = Provider.of<FirebaseUser>(context);
+    _image = currentUser.photoUrl;
+    print("The drawer is showing: "+_image);
 
     return Drawer(
       child: ListView(
@@ -31,7 +39,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   Text("Options", style: TextStyle(fontSize: 20, color: Colors.white),),
 
                   SizedBox(height: 20,),
-
+/*
                   CircleAvatar(
                     radius: 60,
                     backgroundColor: Colors.purple,
@@ -45,11 +53,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       ),
                     ),
                   )
+                  */
+                  ProfilePictureWidget(radius: 60.0)
                 ],
               ),
 
               decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.red[400],
               ),
             ),
           ),
