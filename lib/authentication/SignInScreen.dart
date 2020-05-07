@@ -33,7 +33,7 @@ class _SignInScreenState extends State<SignInScreen>{
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 0), //Check this
           width: double.infinity,
-          color: Colors.blue[500],
+          color: Theme.of(context).colorScheme.secondary,
           /*
           decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -66,7 +66,7 @@ class _SignInScreenState extends State<SignInScreen>{
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.primary,
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(60), topRight: Radius.circular(60)),
                   ),
                   child: SingleChildScrollView(
@@ -83,7 +83,7 @@ class _SignInScreenState extends State<SignInScreen>{
                             Container(
                               padding: EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Color.fromRGBO(240, 239, 239, 1.0),
                                   borderRadius: BorderRadius.circular(10),
                                   /*boxShadow: [BoxShadow(
                                       color: Color.fromRGBO(106, 191, 76, 0.5),
@@ -96,7 +96,7 @@ class _SignInScreenState extends State<SignInScreen>{
                                   Container(
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(color: Colors.blue[500]))
+                                        border: Border(bottom: BorderSide(color: Theme.of(context).colorScheme.secondary))
                                     ),
                                     child: TextFormField(
                                       validator: (val) {
@@ -108,7 +108,7 @@ class _SignInScreenState extends State<SignInScreen>{
                                       },
                                       decoration: InputDecoration(
                                           hintText: "Email ID",
-                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintStyle: TextStyle(color: Theme.of(context).colorScheme.primaryVariant),
                                           border: InputBorder.none
                                       ),
                                       onChanged: (val){
@@ -122,7 +122,7 @@ class _SignInScreenState extends State<SignInScreen>{
                                   Container(
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(color: Colors.blue[500]))
+                                        border: Border(bottom: BorderSide(color: Theme.of(context).colorScheme.secondary))
                                     ),
                                     child: TextFormField(
                                       validator: (val) {
@@ -135,7 +135,7 @@ class _SignInScreenState extends State<SignInScreen>{
                                       obscureText: true,
                                       decoration: InputDecoration(
                                           hintText: "Password",
-                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintStyle: TextStyle(color: Theme.of(context).colorScheme.primaryVariant),
                                           border: InputBorder.none
                                       ),
                                       onChanged: (val){
@@ -153,7 +153,12 @@ class _SignInScreenState extends State<SignInScreen>{
 
                             Center(
                               child: GestureDetector(
-                                child: Text("Forgot password? Click here to reset", style: TextStyle(decoration: TextDecoration.underline, color: Colors.grey[800]),),
+                                child: Text(
+                                  "Forgot password? Click here to reset",
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline, color: Theme.of(context).colorScheme.primaryVariant
+                                  ),
+                                ),
 
                                 onTap: () async {
 
@@ -161,11 +166,17 @@ class _SignInScreenState extends State<SignInScreen>{
                                     showDialog(
                                         context: context,
                                         child: AlertDialog(
-                                          title: Text("Invalid email ID"),
-                                          content: const Text('Please enter an email ID to reset password'),
+                                          title: Text("Invalid email ID", style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
+                                          content: const Text(
+                                            'Please enter an email ID to reset password', 
+                                            style: TextStyle(color: Color.fromRGBO(62, 61, 62, 1)),
+                                          ),
                                           actions: <Widget>[
                                             FlatButton(
-                                              child: Text('Ok'),
+                                              child: Text(
+                                                'Ok',
+                                              style: TextStyle(color: Color.fromRGBO(62, 61, 62, 1)),
+                                              ),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
@@ -184,9 +195,8 @@ class _SignInScreenState extends State<SignInScreen>{
 
                             Container(
                               width: 200,
-                              child: RaisedButton(
-
-                                color: Colors.blue[500],
+                              child: FlatButton(
+                                color: Theme.of(context).colorScheme.secondary,
                                 child: Text("Sign In", style: TextStyle(color: Colors.white),),
                                 onPressed: () async {
                                   if(_formKey.currentState.validate()) {
@@ -206,18 +216,20 @@ class _SignInScreenState extends State<SignInScreen>{
                                     //print(_email + "," + _password);
                                   }
                                 },
+                                splashColor: Theme.of(context).colorScheme.primary,
                               ),
                             ),
 
                             Container(
                               width: 200,
-                              child: RaisedButton(
-                                color: Colors.red[400],
-                                child: Text("Make a new account", style: TextStyle(color: Colors.white),),
+                              child: FlatButton(
+                                color: Theme.of(context).colorScheme.secondary,
+                                child: Text("Make a new account", style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                                 onPressed: () async {
                                   widget.toggleView();
                                   //Navigator.of(context).pushReplacementNamed('/RegisterScreen');
                                 },
+                                splashColor: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
 

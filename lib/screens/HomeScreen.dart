@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:lester_apartments/screens/HomeScreenWidget.dart';
+import 'package:lester_apartments/screens/homePage/HomeScreenWidget.dart';
 import 'package:lester_apartments/screens/RoommatesWidget.dart';
 import 'package:lester_apartments/screens/SharedNotesWidget.dart';
 import 'package:lester_apartments/screens/ShoppingListWidget.dart';
@@ -33,10 +33,10 @@ class _HomeScreenState extends State<HomeScreen>{
   static FirebaseUser currentUser;
 
   final tabs = [
-    ShoppingListWidget(),
-    SharedNotesWidget(),
-    HomeScreenWidget(),
-    AlertWidget(),
+    ShoppingListWidget(currentUser: currentUser),
+    SharedNotesWidget(currentUser: currentUser),
+    HomeScreenWidget(currentUser: currentUser),
+    AlertWidget(currentUser: currentUser),
     RommatesWidget(currentUser: currentUser),
   ];
 
@@ -49,9 +49,9 @@ class _HomeScreenState extends State<HomeScreen>{
       body: tabs[_currentIndex],
 
       bottomNavigationBar: BottomNavigationBar(
-        selectedIconTheme: IconThemeData(color: Colors.black),
-        unselectedIconTheme: IconThemeData(color: Colors.red),
-        selectedItemColor: Colors.black,
+        selectedIconTheme: IconThemeData(color: Theme.of(context).colorScheme.primaryVariant),
+        unselectedIconTheme: IconThemeData(color: Theme.of(context).colorScheme.secondaryVariant),
+        selectedItemColor: Theme.of(context).colorScheme.primaryVariant,
         type: BottomNavigationBarType.shifting,
         backgroundColor: Colors.transparent,
         currentIndex: _currentIndex,
@@ -60,27 +60,27 @@ class _HomeScreenState extends State<HomeScreen>{
           BottomNavigationBarItem(
               icon: Icon(Icons.add_shopping_cart),
               title: Text("Shopping List"),
-              backgroundColor: Colors.white
+              backgroundColor: Theme.of(context).colorScheme.primary
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.view_list),
               title: Text("Shared Notes"),
-              backgroundColor: Colors.white
+              backgroundColor: Theme.of(context).colorScheme.primary
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
               title: Text("Home"),
-              backgroundColor: Colors.white
+              backgroundColor: Theme.of(context).colorScheme.primary
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.alarm),
               title: Text("Alerts"),
-              backgroundColor: Colors.white
+              backgroundColor: Theme.of(context).colorScheme.primary
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.people),
               title: Text("Roommates"),
-              backgroundColor: Colors.white
+              backgroundColor: Theme.of(context).colorScheme.primary
           ),
 
         ],

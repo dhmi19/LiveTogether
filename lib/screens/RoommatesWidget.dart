@@ -24,25 +24,18 @@ class _RommatesWidgetState extends State<RommatesWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              colors: [
-                Colors.redAccent[400],
-                Colors.redAccent[200],
-                Colors.redAccent[100]
-              ]
-          )
-      ),
+
+      color: Theme.of(context).colorScheme.onBackground,
+
       child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
-            iconTheme: IconThemeData(color: Colors.white),
+            iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primaryVariant),
             elevation: 0,
 
             // FlatButton.icon(onPressed: () => {}, icon: Icon(Icons.menu), label: Text("")),
-            title: Text("Roommates", style: TextStyle(color: Colors.white),),
+            title: Text("", style: TextStyle(color: Colors.white),),
 
             centerTitle: true,
 
@@ -56,7 +49,7 @@ class _RommatesWidgetState extends State<RommatesWidget> {
 
                     SizedBox(height: 20,),
 
-                    Text("Apartment Name", style: TextStyle(fontSize: 30, color: Colors.white)),
+                    Text("Apartment Name", style: TextStyle(fontSize: 30, color: Theme.of(context).colorScheme.primaryVariant)),
 
                     SizedBox(height: 20,),
 
@@ -73,7 +66,7 @@ class _RommatesWidgetState extends State<RommatesWidget> {
                           child: Column(
                             children: <Widget>[
                               SizedBox(height: 20,),
-                              Text("People in your apartment: ", style: TextStyle(fontSize: 20),)
+                              Text("People in your apartment: ", style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primaryVariant),)
                             ],
                           ),
                         ),
@@ -89,7 +82,7 @@ class _RommatesWidgetState extends State<RommatesWidget> {
 
                           ButtonTheme(
                             child: FlatButton(
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.onSecondary,
                               child: Text("New Apartment", style: TextStyle(fontSize: 15),),
                               onPressed: (){
                                 showDialog(
@@ -107,10 +100,10 @@ class _RommatesWidgetState extends State<RommatesWidget> {
                                                 Navigator.of(context).pop();
                                               },
                                               child: CircleAvatar(
-                                                child: Icon(Icons.close),
-                                                backgroundColor: Colors.blue[500],
+                                                child: Icon(Icons.close, color: Colors.white,),
+                                                backgroundColor: Theme.of(context).colorScheme.secondaryVariant,
                                               ),
-                                              splashColor: Colors.red[400],
+                                              splashColor: Colors.white,
                                             ),
                                           ),
 
@@ -124,7 +117,7 @@ class _RommatesWidgetState extends State<RommatesWidget> {
                                                   child: TextFormField(
                                                     decoration: InputDecoration(
                                                       hintText: "Apartment Name",
-                                                      hintStyle: TextStyle(color: Colors.blue)
+                                                      hintStyle: TextStyle(color: Theme.of(context).colorScheme.primaryVariant)
                                                     ),
                                                     onChanged: (val){
                                                       setState(() {
@@ -137,6 +130,7 @@ class _RommatesWidgetState extends State<RommatesWidget> {
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
                                                   child: RaisedButton(
+                                                    color: Theme.of(context).colorScheme.onSecondary,
                                                     child: Text("Submit"),
                                                     onPressed: () async {
                                                       if (_formKey.currentState.validate()) {
@@ -184,6 +178,7 @@ class _RommatesWidgetState extends State<RommatesWidget> {
                                                         }
                                                       }
                                                     },
+                                                    splashColor: Theme.of(context).colorScheme.primary,
                                                   ),
                                                 )
                                               ],
@@ -200,7 +195,7 @@ class _RommatesWidgetState extends State<RommatesWidget> {
                           ),
 
                           FlatButton(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onSecondary,
                             child: Text("Add Roommate", style: TextStyle(fontSize: 15),),
                             onPressed: (){
 

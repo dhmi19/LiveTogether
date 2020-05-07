@@ -44,13 +44,8 @@ class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
      */
 
     return CircleAvatar(
-      radius: widget.radius,
-      backgroundColor: Colors.blue,
-      child: CircleAvatar(
         radius: widget.radius - 5,
         backgroundImage: (_image != null)? NetworkImage(_image) : NetworkImage("https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80"),
-      ),
-
-    );
+      );
   }
 }

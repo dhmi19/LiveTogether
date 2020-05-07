@@ -1,8 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/services/auth.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 
 class SharedNotesWidget extends StatefulWidget {
+
+  final FirebaseUser currentUser;
+
+  const SharedNotesWidget({this.currentUser});
+
   @override
   _SharedNotesWidgetState createState() => _SharedNotesWidgetState();
 }
@@ -14,16 +20,7 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              colors: [
-                Colors.redAccent[400],
-                Colors.redAccent[200],
-                Colors.redAccent[100]
-              ]
-          )
-      ),
+      color: Theme.of(context).colorScheme.onBackground,
       child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -40,20 +37,8 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> {
 
 
           body: SafeArea(
-            child: Container(child: Column(
-              children: <Widget>[
-                SizedBox(height: 100,),
-
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(topRight: Radius.circular(80)),
-                    ),
-                  ),
-                ),
-              ],
-            )
+            child: Container(
+              color: Colors.transparent,
             ),
           ),
 

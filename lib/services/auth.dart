@@ -10,18 +10,6 @@ class AuthService {
   String email = '';
   String password = '';
 
-  //Create User object given a firebaseUser
-  /*User _userFromFirebaseUser(FirebaseUser user){
-    if(user != null){
-      currentUser = User(user.uid, user.isEmailVerified, user.displayName, user.photoUrl);
-      return currentUser;
-    }else{
-      return null;
-    }
-  }
-
-   */
-
 
   // auth change user stream
   // Gets a FirebaseUser from the stream and then converts it to a custom User

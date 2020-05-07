@@ -31,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 0), //Check this
           width: double.infinity,
-          color: Colors.red[400],
+          color: Theme.of(context).colorScheme.primary,
           /*
           decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -55,9 +55,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Register", style: TextStyle(color: Colors.white, fontSize: 40,),),
+                    Text("Register", style: TextStyle(color: Theme.of(context).colorScheme.primaryVariant, fontSize: 40,),),
                     SizedBox(height: 10,),
-                    Text("Make living with friends easier", style: TextStyle(color: Colors.white, fontSize: 25, ),)
+                    Text("Make living with friends easier", style: TextStyle(color: Theme.of(context).colorScheme.primaryVariant, fontSize: 25, ),)
                   ],
                 ),
               ),
@@ -65,7 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.secondaryVariant,
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(60), topRight: Radius.circular(60)),
                   ),
                   child: SingleChildScrollView(
@@ -81,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Container(
                               padding: EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                  color: Colors.white,
+                                color: Theme.of(context).colorScheme.secondaryVariant,
                                   borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
@@ -89,7 +89,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   Container(
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(color: Colors.red[400]))
+                                        border: Border(bottom: BorderSide(color: Colors.white))
                                     ),
                                     child: TextFormField(
                                       validator: (val) {
@@ -101,7 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       },
                                       decoration: InputDecoration(
                                           hintText: "Email ID",
-                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintStyle: TextStyle(color: Colors.white),
                                           border: InputBorder.none
                                       ),
                                       onChanged: (val){
@@ -115,7 +115,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   Container(
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(color: Colors.red[400]))
+                                        border: Border(bottom: BorderSide(color: Colors.white))
                                     ),
                                     child: TextFormField(
                                       validator: (val) {
@@ -128,7 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       obscureText: true,
                                       decoration: InputDecoration(
                                           hintText: "Password",
-                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintStyle: TextStyle(color: Colors.white),
                                           border: InputBorder.none
                                       ),
                                       onChanged: (val){
@@ -142,7 +142,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   Container(
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(color: Colors.red[400]))
+                                        border: Border(bottom: BorderSide(color: Colors.white))
                                     ),
                                     child: TextFormField(
                                       validator: (val) {
@@ -155,7 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       obscureText: true,
                                       decoration: InputDecoration(
                                           hintText: "Username",
-                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintStyle: TextStyle(color: Colors.white),
                                           border: InputBorder.none
                                       ),
                                       onChanged: (val){
@@ -175,8 +175,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Container(
                               width: 200,
                               child: RaisedButton(
-                                color: Colors.red[400],
-                                child: Text("Register", style: TextStyle(color: Colors.white),),
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                child: Text("Register", style: TextStyle(color: Theme.of(context).colorScheme.primaryVariant,),),
                                 onPressed: () async {
 
                                   setState(() {
@@ -207,8 +207,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Container(
                               width: 200,
                               child: RaisedButton(
-                                color: Colors.blue[500],
-                                child: Text("Return to Sign In ", style: TextStyle(color: Colors.white),),
+                                color: Theme.of(context).colorScheme.primary,
+                                child: Text("Return to Sign In ", style: TextStyle(color: Theme.of(context).colorScheme.primaryVariant),),
                                 onPressed: () async {
                                   widget.toggleView();
                                   //Navigator.of(context).pushReplacementNamed('/SignInScreen');
