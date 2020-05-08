@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:lester_apartments/services/auth.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 
-import 'HomePageSlideShow.dart';
 
 class HomeScreenWidget extends StatefulWidget {
 
@@ -20,8 +19,6 @@ class HomeScreenWidget extends StatefulWidget {
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
 
   final PageController ctrl = PageController();
-
-  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {

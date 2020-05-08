@@ -49,14 +49,14 @@ class AuthService {
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
       UserUpdateInfo userUpdateInfo = new UserUpdateInfo();
-      userUpdateInfo.photoUrl = "assets/temp_profile_pic.jpg";
+      userUpdateInfo.photoUrl = "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80";
       userUpdateInfo.displayName = username;
       user.updateProfile(userUpdateInfo);
 
       await user.sendEmailVerification();
 
       //Create a new document for the registered user:
-      await DatabaseService(uid: user.uid).updateUserRegistrationData(user.email, password, username);
+      //await DatabaseService(uid: user.uid).updateUserRegistrationData(user.email, password, username);
 
       //print("User Made");
       //User myUser = _userFromFirebaseUser(user);

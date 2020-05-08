@@ -35,7 +35,7 @@ class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
      */
 
     _image = currentUser.photoUrl;
-
+    print(_image);
     /*
     child: (_image != null)? Image.network(_image, fit: BoxFit.fill,)
         :Image.network("https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80",

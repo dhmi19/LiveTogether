@@ -44,7 +44,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
 
     String imageURL = await FirebaseStorage.instance.ref().child(fileName).getDownloadURL();
     print("location of image in storage is: "+ imageURL);
-    DatabaseService(uid: _uid).updateProfilePicture(imageURL);
+    DatabaseService().updateProfilePicture(imageURL);
 
     setState(() {
       print("profile picture uploaded, changes should be visible now.");
@@ -246,7 +246,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                           onPressed: () async {
 
                             if(_formKey.currentState.validate()) {
-                              await DatabaseService(uid: _uid).updateUserDetails(_email, _password, _username);
+                              await DatabaseService().updateUserDetails(_email, _password, _username);
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context){

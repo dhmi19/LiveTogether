@@ -17,6 +17,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   final AuthService _auth = AuthService();
 
+
   @override
   Widget build(BuildContext context) {
     String _image;
@@ -43,21 +44,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     Text(currentUser.displayName, style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primaryVariant),),
 
                     SizedBox(height: 20,),
-/*
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Colors.purple,
-                      child: ClipOval(
-                        child: SizedBox(
-                          width: 100.0,
-                          height: 100.0,
-                          child: (_image != null)? Image.network(_image, fit: BoxFit.fill,)
-                              :Image.network("https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80",
-                            fit: BoxFit.fill,),
-                        ),
-                      ),
-                    )
-                    */
+
                     ProfilePictureWidget(radius: 60.0)
                   ],
                 ),
@@ -80,8 +67,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
             ListTile(
               title: Text('Leave Apartment'),
+              //TODO: Make it into abhi icon
               trailing: Icon(Icons.directions_run),
               onTap: () async {
+
                 Navigator.of(context).pop();
               },
             ),

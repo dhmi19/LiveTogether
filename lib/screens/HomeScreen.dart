@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lester_apartments/screens/homePage/HomeScreenWidget.dart';
-import 'package:lester_apartments/screens/RoommatesWidget.dart';
+import 'package:lester_apartments/screens/roommatesSceen/RoommatesWidget.dart';
 import 'package:lester_apartments/screens/SharedNotesWidget.dart';
 import 'package:lester_apartments/screens/ShoppingListWidget.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,9 +17,6 @@ void main() => runApp(
 );
 
 class HomeScreen extends StatefulWidget{
-
-  final String userName;
-  HomeScreen({@required this.userName});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -44,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen>{
   Widget build(BuildContext context) {
 
     currentUser = Provider.of<FirebaseUser>(context);
+    print("At homescreen, the current user is: " + currentUser.toString());
 
     return Scaffold(
       body: tabs[_currentIndex],

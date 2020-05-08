@@ -17,7 +17,7 @@ class RouteGenerator{
 
       case '/IntroductionScreen':
         if(args is String){
-          return MaterialPageRoute(builder: (_) => HomeScreen(userName: args));
+          return MaterialPageRoute(builder: (_) => HomeScreen());
         }
         //if args is invalid
         return MaterialPageRoute(builder: (_) => SignInScreen());
