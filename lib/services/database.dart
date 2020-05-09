@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lester_apartments/models/apartment.dart';
 
 class DatabaseService {
 
@@ -7,6 +8,22 @@ class DatabaseService {
   //final CollectionReference userCollection = Firestore.instance.collection('users');
   final CollectionReference apartmentCollection = Firestore.instance.collection('apartments');
 
+
+  //Apartment List from snapshot
+  List<Apartment> _apartmentListFromSnapshot(QuerySnapshot snapshot){
+    return snapshot.documents.map((document){
+      return Apartment(
+        apartmentName: document.documentID ?? '',
+        roommateList: document.data["roommateList"] ?? []
+      );
+    }).toList();
+  }
+
+
+  //Get Apartment Streams
+  Stream<List<Apartment>> get apartments {
+    return apartmentCollection.snapshots().map(_apartmentListFromSnapshot);
+  }
 
   /*Future updateUserRegistrationData(String email, String password, String username) async{
 
@@ -143,6 +160,7 @@ class DatabaseService {
     }
 
   }
+
 }
 
 

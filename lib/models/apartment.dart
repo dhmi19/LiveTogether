@@ -3,7 +3,9 @@ class Apartment {
 
   String apartmentName;
 
-  var roommateList = new List();
+  List roommateList;
+
+  Apartment({this.apartmentName, this.roommateList});
 
   Function addRoommmate(String emailID){
     roommateList.add(emailID);
