@@ -1,10 +1,13 @@
+
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/models/apartment.dart';
 
 class RoommateTile extends StatelessWidget {
-  final Apartment apartment;
 
-  RoommateTile({this.apartment});
+  final Apartment apartment;
+  List roommateList;
+  int index;
+  RoommateTile({this.apartment, this.roommateList, this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +20,7 @@ class RoommateTile extends StatelessWidget {
             radius: 25.0,
             backgroundColor: Colors.red,
           ),
-          title: Text(apartment.apartmentName),
-          subtitle: Text(apartment.roommateList.toString()),
-
+          title: Text(roommateList[index]),
         ),
       ),
     );

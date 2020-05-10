@@ -13,33 +13,36 @@ class RoommateList extends StatefulWidget {
 }
 
 class _RoommateListState extends State<RoommateList> {
+
+  List _roommateList = [];
+  Apartment _apartment;
+
   @override
   Widget build(BuildContext context) {
 
-    final users =Provider.of<FirebaseUser>(context);
+    final user =Provider.of<FirebaseUser>(context);
 
     final apartments = Provider.of<List<Apartment>>(context);
-    //print(apartments.documents);
 
-    /*
-    for(var doc in apartments.documents){
-      print(doc.data);
-      print(users.displayName);
+
+    if(apartments != null){
+      apartments.forEach((apartment) {
+        print(apartment.apartmentName);
+        print(apartment.roommateList.toString());
+        print(user.displayName);
+        if(apartment.roommateList.contains(user.displayName)){
+          _roommateList = apartment.roommateList;
+          _apartment = apartment;
+        }
+      });
     }
-
-     */
-
-    print("RoommateList: "+ apartments.toString());
-    apartments.forEach((apartment) {
-      print(apartment.apartmentName);
-    });
 
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: apartments.length,
+      itemCount: _roommateList.length,
       itemBuilder: (context, index) {
-        return RoommateTile(apartment: apartments[index]);
+        return RoommateTile(apartment: _apartment, roommateList: _roommateList, index: index);
       }
     );
   }
