@@ -33,7 +33,6 @@ class _RoommateListState extends State<RoommateList> {
 
         for(var roommate in apartment.roommateList){
           if(roommate["displayName"] == user.displayName){
-            print("hiiiii");
             _roommateList = apartment.roommateList;
             _apartment = apartment;
           }
