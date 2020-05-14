@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>237487584442-dkmfdpqqp6ei6m4t1hfki5cmtiu4klop.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.237487584442-dkmfdpqqp6ei6m4t1hfki5cmtiu4klop</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>237487584442-35eeu9g2dji7n39peosjna6maa0gdnl0.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCLoAAkjbd4brbVc7vA3UmPEMvqngR26pU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>237487584442</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>mittal.dhruv.lesterApartments</string>
+	<key>PROJECT_ID</key>
+	<string>apartmentapp-8f3fb</string>
+	<key>STORAGE_BUCKET</key>
+	<string>apartmentapp-8f3fb.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:237487584442:ios:8968e10f8cf33c85ee7e83</string>
+	<key>DATABASE_URL</key>
+	<string>https://apartmentapp-8f3fb.firebaseio.com</string>
+</dict>
+</plist>

@@ -149,7 +149,7 @@ class DatabaseService {
 
   }
 
-  Future checkIfUserHasAnApartment(String userName) async{
+  Future checkIfUserHasAnApartment(String userName) async {
 
     final documentSnapshot = await apartmentCollection.where("roommateList", arrayContains: userName).getDocuments();
 
