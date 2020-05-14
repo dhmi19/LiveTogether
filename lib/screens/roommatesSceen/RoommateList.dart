@@ -27,9 +27,6 @@ class _RoommateListState extends State<RoommateList> {
 
     if(apartments != null){
       apartments.forEach((apartment) {
-        print(apartment.apartmentName);
-        print(apartment.roommateList.toString());
-        print(user.displayName);
 
         for(var roommate in apartment.roommateList){
           if(roommate["displayName"] == user.displayName){
@@ -45,7 +42,7 @@ class _RoommateListState extends State<RoommateList> {
       shrinkWrap: true,
       itemCount: _roommateList.length,
       itemBuilder: (context, index) {
-        return RoommateTile(apartment: _apartment, roommateList: _roommateList, index: index);
+        return RoommateTile(apartment: _apartment, roommateList: _roommateList, index: index, currentUser: user,);
       }
     );
   }

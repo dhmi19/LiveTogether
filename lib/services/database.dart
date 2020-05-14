@@ -15,10 +15,6 @@ class DatabaseService {
   //Apartment List from snapshot
   List<Apartment> _apartmentListFromSnapshot(QuerySnapshot snapshot){
 
-    for(var document in snapshot.documents){
-      print(document.data);
-    }
-
      List list = snapshot.documents.map((document){
       return Apartment(
         apartmentName: document.documentID ?? '',
@@ -118,7 +114,6 @@ class DatabaseService {
 
     //Check if currentUser has an apartment already
     final isCurrentUserHomeless = await checkIfUserHasAnApartment(currentUser.uid);
-    print("is current user homeless? "+ isCurrentUserHomeless.toString());
 
     if(isCurrentUserHomeless){
       return null;
@@ -127,16 +122,13 @@ class DatabaseService {
     //Check if roommate is already in an apartment
     final isRoommateHomeless = await checkIfUserHasAnApartment(newRoommateUsername);
 
-    print("is new roommate homeless? "+ isRoommateHomeless.toString());
 
     if(!isRoommateHomeless){
 
       //Get apartment name:
       String _apartmentName;
       String _loggedInUserProfilePic = currentUser.photoUrl;
-      print("database.dart (137): "+ _loggedInUserProfilePic);
 
-      //TODO: Not able to get apartment name
       final documentSnapshot = await apartmentCollection.where(
           "roommateList",
           arrayContains: {
@@ -162,8 +154,7 @@ class DatabaseService {
 
       //Update roommate list:
       DocumentReference documentReference =  apartmentCollection.document(_apartmentName);
-      print(_apartmentName);
-      print(documentReference.documentID);
+
       await documentReference.updateData({
         "roommateList": FieldValue.arrayUnion([{
           'displayName': newRoommateUsername,

@@ -9,6 +9,7 @@ import 'package:lester_apartments/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 
+import 'ApartmentNameTitle.dart';
 import 'RoommateList.dart';
 
 class RommatesWidget extends StatefulWidget {
@@ -56,7 +57,7 @@ class _RommatesWidgetState extends State<RommatesWidget> {
 
                       SizedBox(height: 20,),
 
-                      Text("Apartment Name", style: TextStyle(fontSize: 30, color: Theme.of(context).colorScheme.primaryVariant)),
+                      ApartmentNameRoommateScreen(),
 
                       SizedBox(height: 20,),
 
@@ -74,7 +75,9 @@ class _RommatesWidgetState extends State<RommatesWidget> {
                               children: <Widget>[
                                 SizedBox(height: 20,),
                                 Text("People in your apartment: ", style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primaryVariant),),
-                                RoommateList()
+                                Expanded(
+                                    child: RoommateList()
+                                )
                               ],
                             ),
                           ),
@@ -107,3 +110,5 @@ class _RommatesWidgetState extends State<RommatesWidget> {
     );
   }
 }
+
+

@@ -26,10 +26,6 @@ class _HomePageRoommateListState extends State<HomePageRoommateList> {
 
     if(apartments != null){
       apartments.forEach((apartment) {
-        print(apartment.apartmentName);
-        print(apartment.roommateList.toString());
-        print(user.displayName);
-
         for(var roommate in apartment.roommateList){
           if(roommate["displayName"] == user.displayName){
             _roommateList = apartment.roommateList;
@@ -48,8 +44,6 @@ class _HomePageRoommateListState extends State<HomePageRoommateList> {
         List<Widget> homePageProfilePictureHeader = [];
 
         for(var roommate in _roommateList){
-          print("Inside streambuilder: "+ roommate.toString());
-
           final roommateCircleAvatar = Padding(
             padding: EdgeInsets.all(8.0),
             child: CircleAvatar(
