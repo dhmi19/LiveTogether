@@ -14,7 +14,7 @@ class HomePageRoommateList extends StatefulWidget {
 class _HomePageRoommateListState extends State<HomePageRoommateList> {
 
   List _roommateList = [];
-  Apartment _apartment;
+  //Apartment _apartment;
 
 
   @override
@@ -33,7 +33,7 @@ class _HomePageRoommateListState extends State<HomePageRoommateList> {
         for(var roommate in apartment.roommateList){
           if(roommate["displayName"] == user.displayName){
             _roommateList = apartment.roommateList;
-            _apartment = apartment;
+            //_apartment = apartment;
             break;
           }
         }
@@ -45,40 +45,32 @@ class _HomePageRoommateListState extends State<HomePageRoommateList> {
 
       builder: (context, snapshot) {
 
-        List<CircleAvatar> profilePictureList = [];
+        List<Widget> homePageProfilePictureHeader = [];
 
         for(var roommate in _roommateList){
           print("Inside streambuilder: "+ roommate.toString());
 
-          final roommateCircleAvatar = CircleAvatar(
-            radius: 50.0,
-            backgroundImage: NetworkImage(roommate["profilePictureURL"]),
+          final roommateCircleAvatar = Padding(
+            padding: EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              radius: 40.0,
+              backgroundImage: NetworkImage(roommate["profilePictureURL"]),
+            ),
           );
-          profilePictureList.add(roommateCircleAvatar);
+
+          homePageProfilePictureHeader.add(roommateCircleAvatar);
         }
 
         return Container(
-          height: 120,
+          height: 100,
           child: ListView(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            children: profilePictureList,
+            children: homePageProfilePictureHeader,
           ),
         );
       },
     );
 
-    /*
-    return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        itemCount: _roommateList.length,
-        itemBuilder: (context, index) {
-          return HomeProfileTile(apartment: _apartment, roommateList: _roommateList, index: index);
-        }
-    );
-
-     */
   }
 }
