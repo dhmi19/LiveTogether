@@ -49,7 +49,6 @@ class _RommatesWidgetState extends State<RommatesWidget> {
 
             ),
 
-
             body: SafeArea(
                 child: SingleChildScrollView(
                   child: Column(

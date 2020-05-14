@@ -20,7 +20,7 @@ class _RoommateListState extends State<RoommateList> {
   @override
   Widget build(BuildContext context) {
 
-    final user =Provider.of<FirebaseUser>(context);
+    final user = Provider.of<FirebaseUser>(context);
 
     final apartments = Provider.of<List<Apartment>>(context);
 
@@ -30,9 +30,13 @@ class _RoommateListState extends State<RoommateList> {
         print(apartment.apartmentName);
         print(apartment.roommateList.toString());
         print(user.displayName);
-        if(apartment.roommateList.contains(user.displayName)){
-          _roommateList = apartment.roommateList;
-          _apartment = apartment;
+
+        for(var roommate in apartment.roommateList){
+          if(roommate["displayName"] == user.displayName){
+            print("hiiiii");
+            _roommateList = apartment.roommateList;
+            _apartment = apartment;
+          }
         }
       });
     }

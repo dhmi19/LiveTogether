@@ -5,6 +5,7 @@ class User {
   bool _isEmailVerified;
   String _displayName;
   String _profilePictureURL;
+  String apartmentName;
 
   User(this._uid, this._isEmailVerified, this._displayName,
       this._profilePictureURL);

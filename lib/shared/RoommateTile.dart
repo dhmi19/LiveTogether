@@ -18,9 +18,9 @@ class RoommateTile extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             radius: 25.0,
-            backgroundColor: Colors.red,
+            backgroundImage: NetworkImage(roommateList[index]["profilePictureURL"]),
           ),
-          title: Text(roommateList[index]),
+          title: Text(roommateList[index]["displayName"]),
         ),
       ),
     );
