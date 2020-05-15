@@ -53,9 +53,9 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
               children: <Widget>[
                 SizedBox(height: 10,),
 
-                Text("Welcome Home", style: TextStyle(fontSize: 40, color: Theme.of(context).colorScheme.primaryVariant),),
+                //Text("Welcome Home", style: TextStyle(fontSize: 40, color: Theme.of(context).colorScheme.primaryVariant),),
 
-                SizedBox(height: 30,),
+                //SizedBox(height: 30,),
 
                 Expanded(
                   child: Container(
@@ -64,30 +64,25 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                     ),
 
                     child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
 
-                          HomePageRoommateList(),
+                            HomePageRoommateList(),
 
-                          SizedBox(height: 20,),
+                            SizedBox(height: 20,),
 
-                          Text(
-                            "My Home:",
-                            style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primaryVariant),
-                            textAlign: TextAlign.left,
-                          ),
+                            Text(
+                              "My Home:",
+                              style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primaryVariant,
+                              fontFamily: 'Oswald'),
+                            ),
 
-                          SizedBox(
-                            height: 350,
-                            width: 350,
-                            //child: HomePageSlideShow(currentUser),
-                          ),
-
-                          SizedBox(height: 20,),
-
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

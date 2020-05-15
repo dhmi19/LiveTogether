@@ -34,18 +34,7 @@ class _SignInScreenState extends State<SignInScreen>{
           padding: EdgeInsets.symmetric(vertical: 0), //Check this
           width: double.infinity,
           color: Theme.of(context).colorScheme.secondary,
-          /*
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  colors: [
-                    Colors.purple[900],
-                    Colors.purple[600],
-                    Colors.purple[400]
-                  ]
-              )
-          ),
-          */
+
           child: Column(
 
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,11 +74,6 @@ class _SignInScreenState extends State<SignInScreen>{
                               decoration: BoxDecoration(
                                   color: Color.fromRGBO(240, 239, 239, 1.0),
                                   borderRadius: BorderRadius.circular(10),
-                                  /*boxShadow: [BoxShadow(
-                                      color: Color.fromRGBO(106, 191, 76, 0.5),
-                                      blurRadius: 20,
-                                      offset: Offset(0, 10)
-                                  )]*/
                               ),
                               child: Column(
                                 children: <Widget>[
@@ -198,7 +182,7 @@ class _SignInScreenState extends State<SignInScreen>{
                               width: 200,
                               child: FlatButton(
                                 color: Theme.of(context).colorScheme.secondary,
-                                child: Text("Sign In", style: TextStyle(color: Colors.white),),
+                                child: Text("Sign In", style: TextStyle(color: Colors.white, fontFamily: 'Oswald'),),
                                 onPressed: () async {
                                   if(_formKey.currentState.validate()) {
 

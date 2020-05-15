@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lester_apartments/screens/homePage/HomeScreenWidget.dart';
 import 'package:lester_apartments/screens/roommatesSceen/RoommatesWidget.dart';
 import 'package:lester_apartments/screens/SharedNotesWidget.dart';
-import 'package:lester_apartments/screens/ShoppingListWidget.dart';
+import 'package:lester_apartments/screens/shoppingListScreen/ShoppingListWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

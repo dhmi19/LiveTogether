@@ -152,7 +152,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           return null;
                                         }
                                       },
-                                      obscureText: true,
                                       decoration: InputDecoration(
                                           hintText: "Username",
                                           hintStyle: TextStyle(color: Colors.white),
@@ -186,8 +185,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   if(_formKey.currentState.validate()) {
 
                                     dynamic result = await _auth.registerWithEmailAndPassword(_email, _password, _username);
-
-                                    print(result);
 
                                     if(result == null){
                                       setState(() {

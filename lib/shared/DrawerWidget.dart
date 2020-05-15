@@ -17,7 +17,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   final AuthService _auth = AuthService();
 
-
   @override
   Widget build(BuildContext context) {
     String _image;
@@ -25,7 +24,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     //TODO: The current user is not updating so it is referencing old photo url
     var currentUser = Provider.of<FirebaseUser>(context);
     _image = currentUser.photoUrl;
-    print("The drawer is showing: "+_image);
 
     return Drawer(
 

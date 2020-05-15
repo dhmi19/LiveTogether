@@ -47,7 +47,7 @@ class _HomePageRoommateListState extends State<HomePageRoommateList> {
           final roommateCircleAvatar = Padding(
             padding: EdgeInsets.all(8.0),
             child: CircleAvatar(
-              radius: 40.0,
+              radius: 30.0,
               backgroundImage: NetworkImage(roommate["profilePictureURL"]),
             ),
           );
@@ -56,7 +56,7 @@ class _HomePageRoommateListState extends State<HomePageRoommateList> {
         }
 
         return Container(
-          height: 100,
+          height: 80,
           child: ListView(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,

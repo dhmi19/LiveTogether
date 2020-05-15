@@ -26,8 +26,6 @@ class AuthService {
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       FirebaseUser firebaseUser = result.user;
 
-      //print("is user verified? " + firebaseUser.isEmailVerified.toString());
-
       if(firebaseUser.isEmailVerified){
         return firebaseUser;
       }else{
@@ -51,18 +49,16 @@ class AuthService {
       UserUpdateInfo userUpdateInfo = new UserUpdateInfo();
       userUpdateInfo.photoUrl = "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80";
       userUpdateInfo.displayName = username;
-      user.updateProfile(userUpdateInfo);
+      await user.updateProfile(userUpdateInfo);
 
       await user.sendEmailVerification();
 
       //Create a new document for the registered user:
-      //await DatabaseService(uid: user.uid).updateUserRegistrationData(user.email, password, username);
-
-      //print("User Made");
-      //User myUser = _userFromFirebaseUser(user);
+      await DatabaseService().createNewUserDocument(email, username, "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80", user.uid);
 
       return user;
-    }catch(error){
+    }
+    catch(error){
       print(error.toString());
       return null;
     }
