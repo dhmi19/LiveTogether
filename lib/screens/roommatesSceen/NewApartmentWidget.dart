@@ -78,46 +78,14 @@ class _NewApartmentWidgetState extends State<NewApartmentWidget> {
                                   if (_formKey.currentState.validate()) {
                                     //TODO: Check if apartment name is taken
                                     final result = await DatabaseService().createNewApartment(_apartmentName);
-                                    print(result);
-                                    if(result != null){
-                                      Navigator.of(context).pop();
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context){
-                                            return AlertDialog(
-                                              title: Text("Success"),
-                                              content: Text("Your apartment was made! You can now add your roommates"),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  child: Text("OK"),
-                                                  onPressed: (){
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                )
-                                              ],
-                                            );
-                                          }
-                                      );
 
-                                    }else{
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context){
-                                            return AlertDialog(
-                                              title: Text("Error"),
-                                              content: Text("The apartment name already exists, please make a new group name"),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  child: Text("OK"),
-                                                  onPressed: (){
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                )
-                                              ],
-                                            );
-                                          }
-                                      );
-                                    }
+                                    Navigator.of(context).pop();
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context){
+                                          return NewApartmentAlertDialog(isSuccess: result[0], description: result[1],);
+                                        }
+                                    );
                                   }
                                 },
                                 splashColor: Theme.of(context).colorScheme.primary,
@@ -134,6 +102,30 @@ class _NewApartmentWidgetState extends State<NewApartmentWidget> {
 
         },
       ),
+    );
+  }
+}
+
+class NewApartmentAlertDialog extends StatelessWidget {
+
+  final bool isSuccess;
+  final String description;
+
+  NewApartmentAlertDialog({this.isSuccess, this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(isSuccess? "Success": "Error"),
+      content: Text(description),
+      actions: <Widget>[
+        FlatButton(
+          child: Text("OK"),
+          onPressed: (){
+            Navigator.of(context).pop();
+          },
+        )
+      ],
     );
   }
 }

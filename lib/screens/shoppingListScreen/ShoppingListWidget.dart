@@ -61,41 +61,48 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                 child: StreamBuilder<QuerySnapshot>(
                   stream: Firestore.instance.collection("groceries").snapshots(),
                   builder: (context, snapshot){
+                    try{
+                      List groceryList = [];
 
-                    List groceryList = [];
+                      if(!snapshot.hasData){
+                        return Text("Sorry, data was not found");
+                      }
 
-                    if(!snapshot.hasData){
-                      return Text("Sorry, data was not found");
-                    }
-
-                    if(snapshot.hasData){
-                      final List<DocumentSnapshot> apartments = snapshot.data.documents;
-                      for(DocumentSnapshot apartment in apartments){
-                        List<dynamic> tempRoommateList = apartment.data["roommateList"];
-                        if(tempRoommateList.contains(currentUser.displayName)){
-                          groceryList = apartment.data["groceryList"];
+                      if(snapshot.hasData){
+                        final List<DocumentSnapshot> apartments = snapshot.data.documents;
+                        for(DocumentSnapshot apartment in apartments){
+                          List<dynamic> tempRoommateList = apartment.data["roommateList"];
+                          if(tempRoommateList.contains(currentUser.displayName)){
+                            groceryList = apartment.data["groceryList"];
+                          }
                         }
                       }
+
+                      List<GroceryItemTile> groceryListTextWidgets = [];
+
+                      if(groceryList.isNotEmpty){
+                        groceryList.forEach((element) {
+
+                          groceryListTextWidgets.add(
+                              GroceryItemTile(item: element['itemName'], quantity: element['itemCount'], description: element['description'],)
+                          );
+                        });
+                      }
+
+                      return GridView.count(
+                          crossAxisCount: 2,
+                          padding: EdgeInsets.all(20.0),
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          children: groceryListTextWidgets
+                      );
+                    }
+                    catch(error){
+                      return Center(
+                        child: Text("Sorry, an error occurred"),
+                      );
                     }
 
-                    List<GroceryItemTile> groceryListTextWidgets = [];
-
-                    if(groceryList.isNotEmpty){
-                      groceryList.forEach((element) {
-
-                        groceryListTextWidgets.add(
-                            GroceryItemTile(item: element['itemName'], quantity: element['itemCount'], description: element['description'],)
-                        );
-                      });
-                    }
-
-                    return GridView.count(
-                      crossAxisCount: 2,
-                      padding: EdgeInsets.all(20.0),
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      children: groceryListTextWidgets
-                    );
                   },
                 ),
               )

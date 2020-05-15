@@ -143,14 +143,14 @@ class DatabaseService {
     String newRoommateProfilePicURL;
 
     //Check if currentUser has an apartment already
-    final isCurrentUserHomeless = await checkIfUserHasAnApartment(currentUser.uid);
+    final isCurrentUserHomeless = await doesUserHaveAnApartment(currentUser.uid);
 
     if(isCurrentUserHomeless){
       return null;
     }
 
     //Check if roommate is already in an apartment
-    final isRoommateHomeless = await checkIfUserHasAnApartment(newRoommateUsername);
+    final isRoommateHomeless = await doesUserHaveAnApartment(newRoommateUsername);
 
 
     if(!isRoommateHomeless){
@@ -197,13 +197,14 @@ class DatabaseService {
       await userCollection.document(documentId).updateData({'apartment': _apartmentName});
       
       return true;
-    }else{
+    }
+    else{
       return null;
     }
 
   }
 
-  Future createNewApartment(String apartmentName) async{
+  Future<List> createNewApartment(String apartmentName) async{
 
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
 
@@ -214,12 +215,16 @@ class DatabaseService {
       profilePictureURL = defaultProfilePictureURL;
     }
 
-    final isUserHomeless = await checkIfUserHasAnApartment(currentUser.displayName);
+    final isUserHomeless = await doesUserHaveAnApartment(currentUser.displayName);
+
+    if(isUserHomeless == false){
+      return [false, "You already have an apartment"];
+    }
 
 
     final documentSnapshot = await apartmentCollection.document(apartmentName).get();
 
-    if((documentSnapshot == null || !documentSnapshot.exists) && isUserHomeless == false){
+    if((documentSnapshot == null || !documentSnapshot.exists) && isUserHomeless == true){
       await apartmentCollection.document(apartmentName).setData({"roommateList": [{
         'displayName': currentUser.displayName,
         'profilePictureURL': profilePictureURL
@@ -235,24 +240,27 @@ class DatabaseService {
       await groceriesCollection.document(apartmentName).setData({
         "roommateList": [currentUser.displayName]
       });
-
-      return true;
+      return [true, "Welcome to your new apartment!"];
     }
     else{
-      return null;
+      return [false,  "Sorry, there was an error. Please try again later!"];
     }
 
   }
 
-  Future checkIfUserHasAnApartment(String userName) async {
+  Future doesUserHaveAnApartment(String userName) async {
 
-    final documentSnapshot = await apartmentCollection.where("roommateList", arrayContains: userName).getDocuments();
+    final currentUser = await FirebaseAuth.instance.currentUser();
 
-    if(documentSnapshot.documents.isEmpty){
-      return false;
-    }else{
+    final DocumentSnapshot documentSnapshot = await userCollection.document(currentUser.uid).get();
+    final String apartmentName = documentSnapshot.data['apartment'];
+
+    if(apartmentName == ""){
       return true;
+    }else{
+      return false;
     }
+
 
   }
 
