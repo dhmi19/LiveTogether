@@ -1,10 +1,10 @@
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/services/auth.dart';
+import 'package:lester_apartments/services/database.dart';
 import 'package:lester_apartments/shared/ProfilePictureWidget.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DrawerWidget extends StatefulWidget {
 
@@ -65,10 +65,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
             ListTile(
               title: Text('Leave Apartment'),
-              //TODO: Make it into abhi icon
-              trailing: Icon(Icons.directions_run),
+              trailing: FaIcon(FontAwesomeIcons.doorOpen),
               onTap: () async {
-
+                DatabaseService().leaveApartment();
                 Navigator.of(context).pop();
               },
             ),
@@ -77,7 +76,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               title: Text('Log Out'),
               trailing: Icon(Icons.exit_to_app),
               onTap: () async {
-                //TODO: Make apartment data null in static context
                 Navigator.of(context).pop();
                 await _auth.signOut();
               },

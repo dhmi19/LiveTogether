@@ -277,6 +277,29 @@ class DatabaseService {
 
   }
 
+  Future leaveApartment() async{
+    final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+
+    final DocumentSnapshot documentSnapshot = await userCollection.document(currentUser.uid).get();
+    final String apartmentName = documentSnapshot.data['apartment'];
+
+    //Update user collection
+    await userCollection.document(currentUser.uid).updateData({"apartment":""});
+
+    //Update groceries collection
+    await groceriesCollection.document(apartmentName).updateData({
+      "roommateList": FieldValue.arrayRemove([currentUser.displayName])
+    });
+
+    //Update apartment collection
+    await apartmentCollection.document(apartmentName).updateData({
+      "roommateList": FieldValue.arrayRemove([{
+        'displayName': currentUser.displayName,
+        'profilePictureURL': currentUser.photoUrl
+      }])
+    });
+  }
+
 
   //Grocery Functions:
   Future addGroceryItem(String itemName, int itemCount, String description) async{

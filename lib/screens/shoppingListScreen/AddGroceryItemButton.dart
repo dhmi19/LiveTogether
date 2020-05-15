@@ -120,7 +120,6 @@ class _AddGroceryBottomSheetState extends State<AddGroceryBottomSheet> {
                       setState(() {
                         _error = "Could not add item, please try again later";
                       });
-
                     }
                   }
                 },
