@@ -167,7 +167,7 @@ class DatabaseService {
         newRoommateProfilePicURL = profilePictureResult;
       }
 
-      //Update roommate list:
+      //Update apartment roommate list:
       DocumentReference documentReference =  apartmentCollection.document(_apartmentName);
 
       await documentReference.updateData({
@@ -179,10 +179,23 @@ class DatabaseService {
       });
 
       //Add roommate to groceries collection
-      groceriesCollection.document(_apartmentName).updateData({
+      await groceriesCollection.document(_apartmentName).updateData({
         "roommateList": FieldValue.arrayUnion([newRoommateUsername])
       });
 
+      //Update the roommate's users document:
+      final QuerySnapshot querySnapshot = await userCollection.where("displayName", isEqualTo: newRoommateUsername).getDocuments();
+      List<DocumentSnapshot> documents = querySnapshot.documents;
+
+      String documentId;
+
+      for(var doc in documents){
+        documentId = doc.documentID;
+        break;
+      }
+
+      await userCollection.document(documentId).updateData({'apartment': _apartmentName});
+      
       return true;
     }else{
       return null;
@@ -277,27 +290,35 @@ class DatabaseService {
 
   }
 
-  Future leaveApartment() async{
-    final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+  Future<bool> leaveApartment() async{
+    try{
+      final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
 
-    final DocumentSnapshot documentSnapshot = await userCollection.document(currentUser.uid).get();
-    final String apartmentName = documentSnapshot.data['apartment'];
+      final DocumentSnapshot documentSnapshot = await userCollection.document(currentUser.uid).get();
+      final String apartmentName = documentSnapshot.data['apartment'];
 
-    //Update user collection
-    await userCollection.document(currentUser.uid).updateData({"apartment":""});
+      //Update user collection
+      await userCollection.document(currentUser.uid).updateData({"apartment":""});
 
-    //Update groceries collection
-    await groceriesCollection.document(apartmentName).updateData({
-      "roommateList": FieldValue.arrayRemove([currentUser.displayName])
-    });
+      //Update groceries collection
+      await groceriesCollection.document(apartmentName).updateData({
+        "roommateList": FieldValue.arrayRemove([currentUser.displayName])
+      });
 
-    //Update apartment collection
-    await apartmentCollection.document(apartmentName).updateData({
-      "roommateList": FieldValue.arrayRemove([{
-        'displayName': currentUser.displayName,
-        'profilePictureURL': currentUser.photoUrl
-      }])
-    });
+      //Update apartment collection
+      await apartmentCollection.document(apartmentName).updateData({
+        "roommateList": FieldValue.arrayRemove([{
+          'displayName': currentUser.displayName,
+          'profilePictureURL': currentUser.photoUrl
+        }])
+      });
+      return true;
+    }
+    catch(error){
+      print(error);
+      return false;
+    }
+
   }
 
 

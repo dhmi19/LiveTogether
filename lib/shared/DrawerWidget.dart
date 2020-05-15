@@ -19,11 +19,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String _image;
 
     //TODO: The current user is not updating so it is referencing old photo url
     var currentUser = Provider.of<FirebaseUser>(context);
-    _image = currentUser.photoUrl;
 
     return Drawer(
 
@@ -67,8 +65,25 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               title: Text('Leave Apartment'),
               trailing: FaIcon(FontAwesomeIcons.doorOpen),
               onTap: () async {
-                DatabaseService().leaveApartment();
+                bool result = await DatabaseService().leaveApartment();
                 Navigator.of(context).pop();
+                if(result == true){
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context){
+                        return LeaveApartmentAlertDialog(title: "Success", description: "You have left the apartment",);
+                      }
+                  );
+                }
+                else{
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context){
+                        return LeaveApartmentAlertDialog(title: "Error", description: "Sorry, please try again later :(",);
+                      }
+                  );
+                }
+
               },
             ),
 
@@ -83,6 +98,30 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class LeaveApartmentAlertDialog extends StatelessWidget {
+
+  final String title;
+  final String description;
+
+  LeaveApartmentAlertDialog({this.title, this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(title),
+      content: Text(description),
+      actions: <Widget>[
+        FlatButton(
+          child: Text("OK"),
+          onPressed: (){
+            Navigator.of(context).pop();
+          },
+        )
+      ],
     );
   }
 }
