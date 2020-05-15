@@ -249,28 +249,58 @@ class DatabaseService {
 
     final currentUser = await FirebaseAuth.instance.currentUser();
 
-    String _loggedInUserProfilePic = currentUser.photoUrl;
+    try{
+      String _loggedInUserProfilePic = currentUser.photoUrl;
 
-    print(currentUser.displayName);
-    print(_loggedInUserProfilePic);
+      print(currentUser.displayName);
+      print(_loggedInUserProfilePic);
 
-    final documentSnapshot = await apartmentCollection.where(
-        "roommateList",
-        arrayContains: {
-          "displayName": currentUser.displayName,
-          "profilePictureURL": _loggedInUserProfilePic
-        }
-    ).getDocuments();
+      final documentSnapshot = await apartmentCollection.where(
+          "roommateList",
+          arrayContains: {
+            "displayName": currentUser.displayName,
+            "profilePictureURL": _loggedInUserProfilePic
+          }
+      ).getDocuments();
 
-    final documents = documentSnapshot.documents;
+      final documents = documentSnapshot.documents;
 
-    for(var document in documents){
-      _apartmentName = document.documentID;
-      return _apartmentName;
+      for(var document in documents){
+        _apartmentName = document.documentID;
+        return _apartmentName;
+      }
+      return null;
+    }catch(error){
+      print(error);
+      return null;
     }
-    return null;
+
   }
 
+
+  //Grocery Functions:
+  Future addGroceryItem(String itemName, int itemCount, String description) async{
+
+    String apartmentName = await getCurrentApartmentName();
+
+    print(apartmentName);
+
+    if(apartmentName == null){
+      return null;
+    }
+
+    DocumentReference documentReference =  groceriesCollection.document(apartmentName);
+
+    await documentReference.updateData({
+      "groceryList": FieldValue.arrayUnion([{
+        'itemName': itemName,
+        'itemCount': itemCount,
+        'description': description
+      }]),
+    });
+
+    return true;
+  }
 }
 
 

@@ -7,6 +7,9 @@ import 'package:lester_apartments/services/database.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 import 'package:provider/provider.dart';
 
+import 'AddGroceryItemButton.dart';
+import 'GroceryItemTile.dart';
+
 class ShoppingListWidget extends StatefulWidget {
 
   final FirebaseUser currentUser;
@@ -64,6 +67,7 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                     if(!snapshot.hasData){
                       return Text("Sorry, data was not found");
                     }
+
                     if(snapshot.hasData){
                       final List<DocumentSnapshot> apartments = snapshot.data.documents;
                       for(DocumentSnapshot apartment in apartments){
@@ -76,11 +80,14 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
 
                     List<GroceryItemTile> groceryListTextWidgets = [];
 
-                    groceryList.forEach((element) {
-                      groceryListTextWidgets.add(
-                        GroceryItemTile(item: element['item'], quantity: element['itemCount'], description: element['description'],)
-                      );
-                    });
+                    if(groceryList.isNotEmpty){
+                      groceryList.forEach((element) {
+
+                        groceryListTextWidgets.add(
+                            GroceryItemTile(item: element['itemName'], quantity: element['itemCount'], description: element['description'],)
+                        );
+                      });
+                    }
 
                     return GridView.count(
                       crossAxisCount: 2,
@@ -95,66 +102,13 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
             ],
           )
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).colorScheme.onSurface,
-          child: Icon(Icons.add, size: 40, color: Colors.white,),
-        ),
+        floatingActionButton: AddGroceryItemButton(),
         drawer: DrawerWidget()
       ),
     );
   }
 }
 
-class GroceryItemTile extends StatelessWidget {
 
-  final String item;
-  final int quantity;
-  final String description;
 
-  GroceryItemTile({this.item, this.quantity, this.description});
 
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        print("Tapped");
-      },
-      child: Container(
-        padding: const EdgeInsets.all(2),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Icon(Icons.bookmark, color: Theme.of(context).colorScheme.secondary, size: 30,),
-                  ],
-                )
-            ),
-
-            Text(item, style: TextStyle(fontSize: 20),),
-
-            SizedBox(height: 10,),
-
-            Text(quantity.toString(), style: TextStyle(fontSize: 20),),
-
-            SizedBox(height: 10,),
-
-            Text("Description: ", style: TextStyle(fontSize: 15),),
-
-            SizedBox(height: 10,),
-
-            Text(description, style: TextStyle(fontSize: 15),),
-
-          ],
-        ),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimary,
-          borderRadius: BorderRadius.all(Radius.circular(20))
-        ),
-
-      ),
-    );
-  }
-}
