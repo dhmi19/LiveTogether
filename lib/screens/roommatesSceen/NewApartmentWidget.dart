@@ -78,7 +78,6 @@ class _NewApartmentWidgetState extends State<NewApartmentWidget> {
                                   if (_formKey.currentState.validate()) {
                                     //TODO: Check if apartment name is taken
                                     final result = await DatabaseService().createNewApartment(_apartmentName);
-
                                     Navigator.of(context).pop();
                                     showDialog(
                                         context: context,

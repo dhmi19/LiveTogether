@@ -243,7 +243,7 @@ class DatabaseService {
       return [true, "Welcome to your new apartment!"];
     }
     else{
-      return [false,  "Sorry, there was an error. Please try again later!"];
+      return [false,  "Sorry, the apartment name is already taken"];
     }
 
   }

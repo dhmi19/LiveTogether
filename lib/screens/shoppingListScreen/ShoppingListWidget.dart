@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lester_apartments/models/apartment.dart';
 import 'package:lester_apartments/services/auth.dart';
 import 'package:lester_apartments/services/database.dart';
@@ -89,13 +90,44 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                         });
                       }
 
-                      return GridView.count(
-                          crossAxisCount: 2,
-                          padding: EdgeInsets.all(20.0),
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          children: groceryListTextWidgets
-                      );
+                      if(groceryListTextWidgets.isEmpty){
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              FaIcon(
+                                FontAwesomeIcons.cartPlus,
+                                size: 150,
+                                color: Theme.of(context).colorScheme.secondaryVariant,
+                              ),
+                              SizedBox(height: 20,),
+                              Text(
+                                "Your grocery list is currently empty.",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Theme.of(context).colorScheme.primaryVariant
+                                ),
+                              ),
+                              SizedBox(height: 10,),
+                              Text(
+                                "Try adding a few items!",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Theme.of(context).colorScheme.primaryVariant
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      }else{
+                        return GridView.count(
+                            crossAxisCount: 2,
+                            padding: EdgeInsets.all(20.0),
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            children: groceryListTextWidgets
+                        );
+                      }
                     }
                     catch(error){
                       return Center(
