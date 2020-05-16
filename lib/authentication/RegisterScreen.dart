@@ -169,7 +169,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 40,),
+                            SizedBox(height: 20,),
+
+                            Text(_error, style: TextStyle(color: Colors.white, fontSize: 14.0),),
+
+                            SizedBox(height: 20,),
 
                             Container(
                               width: 200,
@@ -184,19 +188,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                                   if(_formKey.currentState.validate()) {
 
-                                    dynamic result = await _auth.registerWithEmailAndPassword(_email, _password, _username);
+                                    List result = await _auth.registerWithEmailAndPassword(_email, _password, _username);
 
-                                    if(result == null){
+                                    if(result[0] == false){
                                       setState(() {
-                                        _error = 'Please supply valid email';
+                                        _error = result[1];
                                         _loading = false;
                                       });
                                     }
-                                    //print(_email + "," + _password);
                                   }
-
-
-
                                 },
                               ),
                             ),
@@ -213,9 +213,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
 
-                            SizedBox(height: 20,),
-
-                            Text(_error, style: TextStyle(color: Colors.red, fontSize: 14.0),),
 
                             SizedBox(height: 60,),
 

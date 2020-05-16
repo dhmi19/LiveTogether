@@ -36,6 +36,20 @@ class DatabaseService {
   }
 
 
+  Future<bool> checkUserNameExists(String userName) async {
+    QuerySnapshot querySnapshot = await userCollection.where("displayName", isEqualTo: userName).getDocuments();
+    List<DocumentSnapshot> documentSnapshot = querySnapshot.documents;
+
+    if(documentSnapshot.isNotEmpty){
+      return true;
+    }
+    else{
+      return false;
+    }
+
+  }
+
+
 
   Future updateUserDetails(String email, String password, String username) async{
 
@@ -83,7 +97,6 @@ class DatabaseService {
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
     String _apartmentName;
 
-    //TODO: Update the profile picture in the apartments collection too
     final documentSnapshot = await apartmentCollection.where('roommateList', arrayContains: {
       "displayName": currentUser.displayName,
       "profilePictureURL": currentUser.photoUrl
@@ -134,6 +147,8 @@ class DatabaseService {
         return doc.data['profilePictureURL'];
       }
     }
+
+    return "error, photo url not found";
 
   }
 

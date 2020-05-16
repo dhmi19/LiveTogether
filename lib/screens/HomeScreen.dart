@@ -41,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen>{
   Widget build(BuildContext context) {
 
     currentUser = Provider.of<FirebaseUser>(context);
-    print("At homescreen, the current user is: " + currentUser.toString());
 
     return Scaffold(
       body: tabs[_currentIndex],

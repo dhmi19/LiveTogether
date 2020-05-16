@@ -41,10 +41,15 @@ class AuthService {
 
 
   // register with email and password
-  Future registerWithEmailAndPassword(String email, String password, String username) async {
+  Future<List> registerWithEmailAndPassword(String email, String password, String username) async {
     try{
 
       //TODO: make sure usernames are unique (not in previous database)
+      final bool usernameExists = await DatabaseService().checkUserNameExists(username);
+
+      if(usernameExists){
+        return [false, "Sorry, the username is taken"];
+      }
 
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
@@ -58,11 +63,11 @@ class AuthService {
       //Create a new document for the registered user:
       await DatabaseService().createNewUserDocument(email, username, "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80", user.uid);
 
-      return user;
+      return [true, "Username made successfully"];
     }
     catch(error){
       print(error.toString());
-      return null;
+      return [false, "Could not register account, please try again"];
     }
   }
 

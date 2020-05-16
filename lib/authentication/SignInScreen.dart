@@ -153,7 +153,7 @@ class _SignInScreenState extends State<SignInScreen>{
                                         child: AlertDialog(
                                           title: Text("Invalid email ID", style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
                                           content: const Text(
-                                            'Please enter an email ID to reset password', 
+                                            'Please enter an email ID to reset password',
                                             style: TextStyle(color: Color.fromRGBO(62, 61, 62, 1)),
                                           ),
                                           actions: <Widget>[
@@ -180,7 +180,7 @@ class _SignInScreenState extends State<SignInScreen>{
 
                             Container(
                               width: 200,
-                              child: FlatButton(
+                              child: RaisedButton(
                                 color: Theme.of(context).colorScheme.secondary,
                                 child: Text("Sign In", style: TextStyle(color: Colors.white, fontFamily: 'Oswald'),),
                                 onPressed: () async {
@@ -190,7 +190,7 @@ class _SignInScreenState extends State<SignInScreen>{
                                       _loading = true;
                                     });
                                     dynamic result = await _auth.signInWithEmailAndPassword(_email, _password);
-                                    //TODO: Update Apartment to which ever apartment the user belongs to
+
                                     if (result == null) {
                                       setState(() {
                                         _error = "Couldn't sign in with those credentials";
@@ -198,7 +198,6 @@ class _SignInScreenState extends State<SignInScreen>{
                                       });
                                     }
 
-                                    //print(_email + "," + _password);
                                   }
                                 },
                                 splashColor: Theme.of(context).colorScheme.primary,
@@ -207,7 +206,7 @@ class _SignInScreenState extends State<SignInScreen>{
 
                             Container(
                               width: 200,
-                              child: FlatButton(
+                              child: RaisedButton(
                                 color: Theme.of(context).colorScheme.secondary,
                                 child: Text("Make a new account", style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                                 onPressed: () async {
