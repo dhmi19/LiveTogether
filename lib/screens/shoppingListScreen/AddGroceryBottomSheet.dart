@@ -95,31 +95,55 @@ class _AddGroceryBottomSheetState extends State<AddGroceryBottomSheet> {
                 onPressed: () async {
                   if((itemCount == null) || (itemName == null)){
                     setState(() {
-                      _error = "Please input all fields";
                     });
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context){
+                          return AddGroceryAlertDialogue(isSuccess: false, description: "Please enter the name of the item and the quantity.",);
+                        }
+                    );
                   }else{
                     final result = await DatabaseService().addGroceryItem(itemName, itemCount, description);
-                    if(result != null){
-                      Navigator.of(context).pop();
-                    }else{
-                      setState(() {
-                        _error = "Could not add item, please try again later";
-                      });
-                    }
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context){
+                          return AddGroceryAlertDialogue(isSuccess: result[0], description: result[1]);
+                        }
+                    );
                   }
                 },
               ),
             ),
             SizedBox(height: 10,),
 
-            Text(_error?? "", style: TextStyle(color: Colors.red[500]),),
-
-            SizedBox(height: 10,),
-
             Text("Swipe screen down to cancel", style: TextStyle(color: Theme.of(context).colorScheme.primaryVariant),)
           ],
         ),
       ),
+    );
+  }
+}
+
+class AddGroceryAlertDialogue extends StatelessWidget {
+
+  final bool isSuccess;
+  final String description;
+
+  AddGroceryAlertDialogue({this.isSuccess, this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(isSuccess? "Success": "Error"),
+      content: Text(description),
+      actions: <Widget>[
+        FlatButton(
+          child: Text("OK"),
+          onPressed: (){
+            Navigator.of(context).pop();
+          },
+        )
+      ],
     );
   }
 }

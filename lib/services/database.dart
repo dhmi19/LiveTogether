@@ -331,27 +331,31 @@ class DatabaseService {
 
 
   //Grocery Functions:
-  Future addGroceryItem(String itemName, int itemCount, String description) async{
+  Future<List> addGroceryItem(String itemName, int itemCount, String description) async{
 
-    String apartmentName = await getCurrentApartmentName();
+    try{
+      String apartmentName = await getCurrentApartmentName();
 
-    print(apartmentName);
+      if(apartmentName == null){
+        return [false, "You are not part of an apartment. Join/Create an apartment to add items"];
+      }
 
-    if(apartmentName == null){
-      return null;
+      DocumentReference documentReference =  groceriesCollection.document(apartmentName);
+
+      await documentReference.updateData({
+        "groceryList": FieldValue.arrayUnion([{
+          'itemName': itemName,
+          'itemCount': itemCount,
+          'description': description
+        }]),
+      });
+
+      return [true, "Your item was added! Enjoy shopping"];
+    }
+    catch(error){
+      return [false, "Sorry, there was an error. Please try again later :( "];
     }
 
-    DocumentReference documentReference =  groceriesCollection.document(apartmentName);
-
-    await documentReference.updateData({
-      "groceryList": FieldValue.arrayUnion([{
-        'itemName': itemName,
-        'itemCount': itemCount,
-        'description': description
-      }]),
-    });
-
-    return true;
   }
 }
 

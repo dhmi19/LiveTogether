@@ -102,7 +102,7 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                               ),
                               SizedBox(height: 20,),
                               Text(
-                                "Your grocery list is currently empty.",
+                                "Your shopping list is currently empty.",
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: Theme.of(context).colorScheme.primaryVariant
