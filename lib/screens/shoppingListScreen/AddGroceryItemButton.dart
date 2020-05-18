@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'AddGroceryBottomSheet.dart';
 
@@ -8,7 +9,7 @@ class AddGroceryItemButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       backgroundColor: Theme.of(context).colorScheme.onSecondary,
-      child: Icon(Icons.add, size: 40, color: Theme.of(context).colorScheme.primary,),
+      child: FaIcon(FontAwesomeIcons.plus, color: Theme.of(context).colorScheme.primary,),
       onPressed: (){
         showModalBottomSheet(
             context: context,

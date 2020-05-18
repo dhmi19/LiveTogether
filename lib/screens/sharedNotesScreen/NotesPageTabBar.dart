@@ -11,7 +11,7 @@ class NotesPageTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.0),
       child: TabBar(
         controller: _tabController,
         labelColor: Theme.of(context).colorScheme.primaryVariant,
