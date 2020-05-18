@@ -4,6 +4,7 @@ import 'package:lester_apartments/authentication/SignInScreen.dart';
 import 'package:lester_apartments/authentication/RegisterScreen.dart';
 import 'package:lester_apartments/screens/profileScreen/MyProfileScreen.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/FolderNotesScreen.dart';
+import 'package:lester_apartments/screens/sharedNotesScreen/FullNoteScreen.dart';
 import 'package:lester_apartments/screens/wrapper.dart';
 
 class RouteGenerator{
@@ -34,8 +35,11 @@ class RouteGenerator{
       case '/FolderNotesScreen':
         return MaterialPageRoute(builder: (_) => FolderNotesScreen(screenTitle: args.toString(),));
 
-      default: //If not route is found, go to login
-        return MaterialPageRoute(builder: (_) => SignInScreen());
+      case '/FullNoteScreen':
+        return MaterialPageRoute(builder: (_) => FullNoteScreen(note: args));
+
+      default: //If not route is found, go to Home
+        return MaterialPageRoute(builder: (_) => Wrapper());
     }
   }
 }

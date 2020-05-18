@@ -6,8 +6,8 @@ import 'package:lester_apartments/models/Note.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 import 'package:provider/provider.dart';
 
-import 'NotesPageTabBar.dart';
-import 'NotesTabBarView.dart';
+import 'sharedNotesWidgets/NotesPageTabBar.dart';
+import 'sharedNotesWidgets/NotesTabBarView.dart';
 
 
 class SharedNotesWidget extends StatefulWidget {
@@ -26,7 +26,7 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
 
     return GestureDetector(
       onTap: (){
-        Navigator.pushReplacementNamed(context, '/FolderNotesScreen', arguments: title);
+        Navigator.pushNamed(context, '/FolderNotesScreen', arguments: title);
         setState(() {
           _selectedCategoryIndex = index;
         });
@@ -155,7 +155,7 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
 
                                 folderHeaders['All Notes'] ++;
 
-                                if(currentNote.tags.contains('personal')){
+                                if(currentNote.tags.contains('personal ${currentUser.displayName}')){
                                   folderHeaders['Personal'] ++;
                                 }
                                 if(currentNote.tags.contains('shared')){

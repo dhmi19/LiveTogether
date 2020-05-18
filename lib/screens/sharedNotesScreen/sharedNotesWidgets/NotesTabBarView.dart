@@ -51,17 +51,43 @@ class NotesTabView extends StatelessWidget {
                     }
                   }
 
-                  return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: noteList.length,
-                      itemBuilder: (BuildContext context, int index){
-                        return buildNotePreview(
-                            noteList[index].title,
-                            noteList[index].content,
-                            noteList[index].tags
-                        );
-                      }
-                  );
+                  if(noteList.length == 0){
+
+                    return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            FaIcon(
+                              FontAwesomeIcons.frownOpen,
+                              size: 50,
+                              color: Theme.of(context).colorScheme.primaryVariant,),
+
+                            SizedBox(height: 20,),
+
+                            Text(
+                              "You don't have any $tag notes",
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primaryVariant
+                              ),
+                            ),
+                          ],
+                        )
+                    );
+
+                  }else{
+                    return ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: noteList.length,
+                        itemBuilder: (BuildContext context, int index){
+                          return buildNotePreview(
+                              noteList[index].title,
+                              noteList[index].content,
+                              noteList[index].tags
+                          );
+                        }
+                    );
+                  }
+
                 }
                 catch(error){
                   print(error);
