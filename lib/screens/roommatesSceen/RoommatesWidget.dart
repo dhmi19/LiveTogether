@@ -14,10 +14,6 @@ import 'RoommateList.dart';
 
 class RommatesWidget extends StatefulWidget {
 
-  final FirebaseUser currentUser;
-
-  const RommatesWidget({this.currentUser});
-
   @override
   _RommatesWidgetState createState() => _RommatesWidgetState();
 }
@@ -29,6 +25,7 @@ class _RommatesWidgetState extends State<RommatesWidget> {
   @override
   Widget build(BuildContext context) {
 
+    final currentUser = Provider.of<FirebaseUser>(context);
 
     return Container(
 
@@ -91,9 +88,9 @@ class _RommatesWidgetState extends State<RommatesWidget> {
                           //crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
 
-                            NewApartmentWidget(currentUser: widget.currentUser,),
+                            NewApartmentWidget(currentUser: currentUser,),
 
-                            AddRoommateWidget(currentUser: widget.currentUser,),
+                            AddRoommateWidget(currentUser: currentUser,),
                           ],
                         ),
                       ),

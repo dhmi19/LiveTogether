@@ -12,10 +12,6 @@ import 'NotesTabBarView.dart';
 
 class SharedNotesWidget extends StatefulWidget {
 
-  final FirebaseUser currentUser;
-
-  const SharedNotesWidget({this.currentUser});
-
   @override
   _SharedNotesWidgetState createState() => _SharedNotesWidgetState();
 }
@@ -24,12 +20,13 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
 
   int _selectedCategoryIndex = 0;
   TabController _tabController;
-
+  String selectedFolder;
 
   Widget _buildCategoryCard(int index, String title, int content){
 
     return GestureDetector(
       onTap: (){
+        Navigator.pushReplacementNamed(context, '/FolderNotesScreen', arguments: title);
         setState(() {
           _selectedCategoryIndex = index;
         });

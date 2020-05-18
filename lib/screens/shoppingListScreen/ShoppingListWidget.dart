@@ -13,9 +13,6 @@ import 'GroceryItemTile.dart';
 
 class ShoppingListWidget extends StatefulWidget {
 
-  final FirebaseUser currentUser;
-
-  const ShoppingListWidget({this.currentUser});
 
   @override
   _ShoppingListWidgetState createState() => _ShoppingListWidgetState();

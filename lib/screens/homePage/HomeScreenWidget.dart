@@ -13,9 +13,6 @@ import 'HomePageRoommateList.dart';
 
 class HomeScreenWidget extends StatefulWidget {
 
-  final FirebaseUser currentUser;
-
-  const HomeScreenWidget({this.currentUser});
 
   @override
   _HomeScreenWidgetState createState() => _HomeScreenWidgetState();

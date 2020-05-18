@@ -5,10 +5,6 @@ import 'package:lester_apartments/shared/DrawerWidget.dart';
 
 class AlertWidget extends StatefulWidget {
 
-  final FirebaseUser currentUser;
-
-  const AlertWidget({this.currentUser});
-
   @override
   _AlertWidgetState createState() => _AlertWidgetState();
 }

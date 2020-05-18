@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:lester_apartments/authentication/SignInScreen.dart';
 import 'package:lester_apartments/authentication/RegisterScreen.dart';
 import 'package:lester_apartments/screens/profileScreen/MyProfileScreen.dart';
+import 'package:lester_apartments/screens/sharedNotesScreen/FolderNotesScreen.dart';
 import 'package:lester_apartments/screens/wrapper.dart';
 
 class RouteGenerator{
 
   static Route<dynamic> generateRoute(RouteSettings settings){
     final args = settings.arguments;
-    print(settings.name);
 
     switch(settings.name){
       case '/':
@@ -30,6 +30,9 @@ class RouteGenerator{
 
       case '/MyProfileScreen':
         return MaterialPageRoute(builder: (_) => MyProfileScreen());
+
+      case '/FolderNotesScreen':
+        return MaterialPageRoute(builder: (_) => FolderNotesScreen(screenTitle: args.toString(),));
 
       default: //If not route is found, go to login
         return MaterialPageRoute(builder: (_) => SignInScreen());
