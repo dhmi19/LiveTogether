@@ -56,7 +56,7 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
 
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: Firestore.instance.collection("groceries").snapshots(),
+                  stream: Firestore.instance.collection("groceries").where("roommateList", arrayContains: currentUser.displayName).snapshots(),
                   builder: (context, snapshot){
                     try{
                       List groceryList = [];
