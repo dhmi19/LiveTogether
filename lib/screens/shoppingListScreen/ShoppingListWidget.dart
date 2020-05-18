@@ -47,7 +47,6 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
           iconTheme: IconThemeData(color: Colors.black),
           elevation: 0,
 
-          // FlatButton.icon(onPressed: () => {}, icon: Icon(Icons.menu), label: Text("")),
           title: Text("Shopping List", style: TextStyle(color: Colors.black),),
 
           centerTitle: true,
@@ -79,15 +78,18 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                         }
                       }
 
-                      List<GroceryItemTile> groceryListTextWidgets = [];
+                      List<GroceryItemTile> groceryListTextWidgets = List<GroceryItemTile>();
 
-                      if(groceryList.isNotEmpty){
-                        groceryList.forEach((element) {
+                      if(groceryList == null){
 
-                          groceryListTextWidgets.add(
-                              GroceryItemTile(item: element['itemName'], quantity: element['itemCount'], description: element['description'],)
-                          );
-                        });
+                      }else{
+                        if(groceryList.isNotEmpty){
+                          groceryList.forEach((element) {
+                            groceryListTextWidgets.add(
+                                GroceryItemTile(item: element['itemName'], quantity: element['itemCount'], description: element['description'],)
+                            );
+                          });
+                        }
                       }
 
                       if(groceryListTextWidgets.isEmpty){
@@ -130,6 +132,7 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                       }
                     }
                     catch(error){
+                      print(error);
                       return Center(
                         child: Text("Sorry, an error occurred"),
                       );
