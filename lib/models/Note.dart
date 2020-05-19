@@ -1,4 +1,4 @@
-
+import 'package:flutter/material.dart';
 
 class Note{
 
@@ -8,6 +8,8 @@ class Note{
 
   List<dynamic> tags;
 
-  Note({this.title, this.content, this.tags});
+  Note({this.title, this.content, @required this.tags});
+
+  static final List<String> allTags = ['important', 'personal', 'shared', 'others'];
 
 }

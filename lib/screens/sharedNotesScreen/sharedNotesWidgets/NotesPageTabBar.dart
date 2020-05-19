@@ -41,7 +41,7 @@ class NotesPageTabBar extends StatelessWidget {
           ),
           Tab(
             child: Text(
-              "Leisure",
+              "Personal",
               style: TextStyle(
                   fontSize: 22,
                   fontWeight:

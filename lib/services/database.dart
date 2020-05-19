@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:lester_apartments/models/Note.dart';
 import 'package:lester_apartments/models/apartment.dart';
 
 
@@ -334,7 +336,7 @@ class DatabaseService {
   }
 
   Future<String> getCurrentApartmentName() async {
-
+/*
     String _apartmentName;
 
     final currentUser = await FirebaseAuth.instance.currentUser();
@@ -363,6 +365,19 @@ class DatabaseService {
     }catch(error){
       print(error);
       return null;
+    }
+
+ */
+
+    try{
+
+      final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+      final DocumentSnapshot documentSnapshot = await Firestore.instance.collection('users').document(currentUser.uid).get();
+      final data = documentSnapshot.data;
+      return data['apartment'];
+    }
+    catch(error){
+      print(error);
     }
 
   }
@@ -432,6 +447,99 @@ class DatabaseService {
     }
 
   }
+
+
+  // Notes Functions:
+
+  Future<List> editNote(String title, String content, List newTags, Note note, List oldTagList) async{
+
+    try{
+      String apartmentName = await getCurrentApartmentName();
+
+      if(apartmentName == null){
+        return [false, "You are not part of an apartment. Join/Create an apartment to add items"];
+      }
+
+      DocumentReference documentReference =  notesCollection.document(apartmentName);
+
+      await documentReference.updateData({
+        "notes": FieldValue.arrayRemove([{
+          'title': note.title,
+          'content': note.content,
+          'tags': oldTagList
+        }]),
+      });
+
+      await documentReference.updateData({
+        "notes": FieldValue.arrayUnion([{
+          'title': title,
+          'content': content,
+          'tags': newTags
+        }]),
+      });
+
+      return [true, "Your note was edited!"];
+    }
+    catch(error){
+      print(error);
+      return [false, "Sorry, there was an error. Please try again later :( "];
+    }
+  }
+
+  Future<bool> addNote(String title, String content, List tagList) async {
+    try {
+      String apartmentName = await getCurrentApartmentName();
+
+      if (apartmentName == null) {
+        return false;
+      }
+
+      DocumentReference documentReference = notesCollection.document(
+          apartmentName);
+
+      await documentReference.updateData({
+        "notes": FieldValue.arrayUnion([{
+          'title': title,
+          'content': content,
+          'tags': tagList
+        }
+        ]),
+      });
+      return true;
+    }
+    catch(error){
+      print(error);
+      return false;
+    }
+  }
+
+  Future<bool> deleteNote(Note note) async {
+    try {
+      String apartmentName = await getCurrentApartmentName();
+
+      if (apartmentName == null) {
+        return false;
+      }
+
+      DocumentReference documentReference = notesCollection.document(
+          apartmentName);
+
+      await documentReference.updateData({
+        "notes": FieldValue.arrayRemove([{
+          'title': note.title,
+          'content': note.content,
+          'tags': note.tags
+        }
+        ]),
+      });
+      return true;
+    }
+    catch(error){
+      print(error);
+      return false;
+    }
+  }
+
 }
 
 

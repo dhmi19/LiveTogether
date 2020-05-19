@@ -3,8 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lester_apartments/models/Note.dart';
+import 'package:lester_apartments/screens/sharedNotesScreen/sharedNotesWidgets/FolderNotesHeader.dart';
+import 'package:lester_apartments/screens/sharedNotesScreen/sharedNotesWidgets/NoteCard.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 import 'package:provider/provider.dart';
+
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class FolderNotesScreen extends StatefulWidget {
 
@@ -55,20 +59,46 @@ class _FolderNotesScreenState extends State<FolderNotesScreen> with SingleTicker
                       }
 
                       if(snapshot.hasData){
-                        List<DocumentSnapshot> documents = snapshot.data.documents;
 
-                        for(var doc in documents){
-                          print(doc.data);
+                        final List<DocumentSnapshot> apartments = snapshot.data.documents;
+
+                        for(DocumentSnapshot apartment in apartments){
+                          List notes = apartment.data["notes"];
+                          notes.forEach((note) {
+                            Note currentNote = Note(
+                                title: note['title'],
+                                content: note['content'],
+                                tags: note['tags']);
+
+                            if(widget.screenTitle.toLowerCase() == "all notes"){
+                              noteList.add(currentNote);
+                            }
+                            else if(currentNote.tags.contains(widget.screenTitle.toLowerCase())){
+                              noteList.add(currentNote);
+                            }
+                            else if(widget.screenTitle.toLowerCase() == "personal"){
+                              if(currentNote.tags.contains("${widget.screenTitle.toLowerCase()} ${currentUser.displayName}")){
+                                noteList.add(currentNote);
+                              }
+                            }
+                          });
                         }
-
                       }
 
-                      return ListView.builder(
-                          scrollDirection: Axis.vertical,
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                        child: StaggeredGridView.countBuilder(
+                          crossAxisCount: 4,
                           itemCount: noteList.length,
-                          itemBuilder: (BuildContext context, int index){
-                            return Text(index.toString());
-                          }
+                          itemBuilder: (BuildContext context, int index) => Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2),
+                            child: NoteCard(note: noteList[index], index: index,),
+                          ),
+                          staggeredTileBuilder: (int index) =>
+                          new StaggeredTile.count(2, noteList[index].content.length > 100? 3 : 2),
+                          mainAxisSpacing: 4.0,
+                          crossAxisSpacing: 4.0,
+                        ),
                       );
                     }
                     catch(error){
@@ -84,67 +114,46 @@ class _FolderNotesScreenState extends State<FolderNotesScreen> with SingleTicker
             ],
           ),
         ),
-
+        bottomNavigationBar: BottomNavigationBar(
+          selectedIconTheme: IconThemeData(color: Theme.of(context).colorScheme.secondary),
+          unselectedIconTheme: IconThemeData(color: Theme.of(context).colorScheme.secondary),
+          selectedItemColor: Theme.of(context).colorScheme.primaryVariant,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: 0,
+          iconSize: 30,
+          items: [
+            BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.arrowLeft),
+                title: Text("Back"),
+                backgroundColor: Theme.of(context).colorScheme.primary
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                title: Text("Home"),
+                backgroundColor: Theme.of(context).colorScheme.primary
+            ),
+            BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.plus),
+                title: Text("Add Note"),
+                backgroundColor: Theme.of(context).colorScheme.primary
+            ),
+          ],
+          onTap: (index) {
+            if(index == 0){
+              Navigator.pop(context);
+            }
+            else if(index == 1){
+              Navigator.pushNamed(context, "/");
+            }
+            else if(index == 2){
+              //Add note screen
+              Navigator.pushNamed(context, "/NewNoteScreen");
+            }
+          },
+        ),
         drawer: DrawerWidget()
     );
   }
 }
 
-class FolderNotesHeader extends StatelessWidget {
-  const FolderNotesHeader({
-    Key key,
-    @required this.currentUser,
-    @required this.widget,
-  }) : super(key: key);
 
-  final FirebaseUser currentUser;
-  final FolderNotesScreen widget;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 20,),
-              Padding(
-                padding: EdgeInsets.only(left: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("Hi ",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Text("${currentUser.displayName},",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10,),
-              Padding(
-                padding: EdgeInsets.only(left: 30),
-                child: Text(
-                  "These are your ${widget.screenTitle.toLowerCase()} notes",
-                  style: TextStyle(fontSize: 14),
-                ),
-              )
-            ],
-          ),
-        ),
-
-        Padding(
-          padding: EdgeInsets.only(right: 40.0),
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(currentUser.photoUrl),
-            radius: 35,
-          ),
-        )
-      ],
-    );
-  }
-}
