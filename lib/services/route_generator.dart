@@ -2,7 +2,7 @@ import 'package:lester_apartments/screens/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/authentication/SignInScreen.dart';
 import 'package:lester_apartments/authentication/RegisterScreen.dart';
-import 'package:lester_apartments/screens/NewNoteScreen.dart';
+import 'package:lester_apartments/screens/sharedNotesScreen/NewNoteScreen.dart';
 import 'package:lester_apartments/screens/profileScreen/MyProfileScreen.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/FolderNotesScreen.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/FullNoteScreen.dart';
