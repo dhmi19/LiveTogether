@@ -2,6 +2,7 @@ import 'package:lester_apartments/screens/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/authentication/SignInScreen.dart';
 import 'package:lester_apartments/authentication/RegisterScreen.dart';
+import 'package:lester_apartments/screens/NewNoteScreen.dart';
 import 'package:lester_apartments/screens/profileScreen/MyProfileScreen.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/FolderNotesScreen.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/FullNoteScreen.dart';
@@ -36,7 +37,10 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (_) => FolderNotesScreen(screenTitle: args.toString(),));
 
       case '/FullNoteScreen':
-        return MaterialPageRoute(builder: (_) => FullNoteScreen(note: args));
+        return MaterialPageRoute(builder: (_) => FullNoteScreen(note: args,));
+
+      case '/NewNoteScreen':
+        return MaterialPageRoute(builder: (_) => NewNoteScreen());
 
       default: //If not route is found, go to Home
         return MaterialPageRoute(builder: (_) => Wrapper());

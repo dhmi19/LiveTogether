@@ -43,6 +43,7 @@ class FolderNotesHeader extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 30),
                 child: Text(
+                  widget.screenTitle.toLowerCase() == "all notes" ? "These are all your notes" :
                   "These are your ${widget.screenTitle.toLowerCase()} notes",
                   style: TextStyle(fontSize: 14),
                 ),

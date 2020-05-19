@@ -120,8 +120,17 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
             padding: const EdgeInsets.only(top: 8, left: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-
+                Text(
+                  "All folders:",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primaryVariant
+                  ),
+                  textAlign: TextAlign.start,
+                ),
                 Expanded(
                   child: StreamBuilder<QuerySnapshot>(
                     stream: Firestore.instance.collection("notes").snapshots(),
@@ -130,10 +139,9 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
 
                         Map<String, int> folderHeaders = {
                           'All Notes': 0,
+                          'Important': 0,
                           'Personal': 0,
                           'Shared': 0,
-                          'Important': 0,
-                          'Leisure': 0,
                           'Others': 0
                         };
 
@@ -163,9 +171,6 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
                                 }
                                 if(currentNote.tags.contains('important')){
                                   folderHeaders['Important'] ++;
-                                }
-                                if(currentNote.tags.contains('leisure')){
-                                  folderHeaders['Leisure'] ++;
                                 }
                                 if(currentNote.tags.contains('others')){
                                   folderHeaders['Others'] ++;
@@ -203,7 +208,7 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
                     children: <Widget>[
                       NotesTabView(tag: 'important'),
                       NotesTabView(tag: 'shared'),
-                      NotesTabView(tag: 'leisure'),
+                      NotesTabView(tag: 'personal ${currentUser.displayName}'),
                     ],
                   ),
                 )
@@ -213,7 +218,7 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: (){
-
+            Navigator.pushNamed(context, "/NewNoteScreen");
           },
           child: FaIcon(
             FontAwesomeIcons.plus,

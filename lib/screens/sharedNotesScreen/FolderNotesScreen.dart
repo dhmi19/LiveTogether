@@ -147,7 +147,7 @@ class _FolderNotesScreenState extends State<FolderNotesScreen> with SingleTicker
             }
             else if(index == 2){
               //Add note screen
-              Navigator.pushReplacementNamed(context, "/FullNoteScreen", arguments: Note());
+              Navigator.pushNamed(context, "/NewNoteScreen");
             }
           },
         ),

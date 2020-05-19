@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lester_apartments/models/Note.dart';
+import 'package:lester_apartments/services/database.dart';
 import 'package:provider/provider.dart';
 
 
@@ -43,7 +44,7 @@ class NotesTabView extends StatelessWidget {
                               content: note['content'],
                               tags: note['tags']);
 
-                          if(currentNote.tags.contains(tag)){
+                          if(currentNote.tags.contains(tag.toLowerCase())){
                             noteList.add(currentNote);
                           }
                         });
@@ -79,11 +80,7 @@ class NotesTabView extends StatelessWidget {
                         scrollDirection: Axis.vertical,
                         itemCount: noteList.length,
                         itemBuilder: (BuildContext context, int index){
-                          return buildNotePreview(
-                              noteList[index].title,
-                              noteList[index].content,
-                              noteList[index].tags
-                          );
+                          return buildNotePreview(noteList[index], context);
                         }
                     );
                   }
@@ -103,23 +100,25 @@ class NotesTabView extends StatelessWidget {
   }
 }
 
-Widget buildNotePreview(String title, String content, List tags){
+Widget buildNotePreview(Note note, BuildContext context){
 
-  if(content.length > 50){
-    content = content.substring(0,50) + "...";
+  String contentPreview = note.content;
+
+  if(contentPreview.length > 50){
+    contentPreview = contentPreview.substring(0,50) + "...";
   }
 
   return ListTile(
-    title: Text(title),
+    title: Text(note.title),
     isThreeLine: true,
-    subtitle: Text(content),
+    subtitle: Text(contentPreview),
     onTap: (){
-      print("Note clicked, take to full page note preview");
+      Navigator.of(context).pushNamed('/FullNoteScreen', arguments: note);
     },
     trailing: IconButton(
       icon:FaIcon(FontAwesomeIcons.trash) ,
       onPressed: (){
-        print("deleting note");
+        DatabaseService().deleteNote(note);
       },
       iconSize: 20,
     ),
