@@ -134,8 +134,9 @@ class NewNoteScreenBackButton extends StatelessWidget {
     return IconButton(
       icon: Icon(Icons.arrow_back),
       onPressed: () async {
-
-        if(noteTitleController.text != null && noteContentController.text != null){
+        print(noteTitleController.text);
+        print(noteContentController.text);
+        if(noteTitleController.text != "" && noteContentController.text != ""){
           await DatabaseService().addNote(
             noteTitleController.text,
             noteContentController.text,
