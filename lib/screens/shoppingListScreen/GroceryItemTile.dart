@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lester_apartments/services/database.dart';
+
+
+const checkButton = Icon(Icons.check_circle, size: 20, color: Colors.green);
+const editButton = Icon(Icons.edit, size: 20, color: Colors.orange,);
 
 class GroceryItemTile extends StatefulWidget {
 
@@ -16,12 +21,25 @@ class GroceryItemTile extends StatefulWidget {
 class _GroceryItemTileState extends State<GroceryItemTile> {
 
   int newQuantity = 0;
+  Icon editIcon;
+  FocusNode myFocusNode;
+  TextEditingController quantityController;
 
   @override
   void initState() {
     super.initState();
     newQuantity = widget.quantity;
+    editIcon = editButton;
+    quantityController = TextEditingController(text: newQuantity.toString());
+    myFocusNode = FocusNode();
   }
+
+  @override
+  void dispose() {
+    myFocusNode.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,26 +71,35 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
             SizedBox(height: 10,),
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                IconButton(
-                  onPressed: (){
-                    setState(() {
-                      if(newQuantity > 0){
-                        newQuantity --;
-                      }
-                    });
-                  },
-                  icon: FaIcon(FontAwesomeIcons.minusCircle, size: 20, color: Theme.of(context).colorScheme.onSecondary,),
+                SizedBox(width: 75,),
+                SizedBox(
+                  width: 40,
+                  child: TextField(
+                    controller: quantityController,
+                    style: TextStyle(fontSize: 30),
+                    focusNode: myFocusNode,
+                    decoration: null,
+                  ),
                 ),
-                Text(newQuantity.toString(), style: TextStyle(fontSize: 30),),
                 IconButton(
-                  onPressed: (){
-                    setState(() {
-                      newQuantity ++;
-                    });
+                  onPressed: () async {
+                    if(editIcon == editButton){
+                      setState(() {
+                        myFocusNode.requestFocus();
+                        editIcon = checkButton;
+                      });
+                    }else{
+                      int updatedQuantity = int.parse(quantityController.text);
+                      DatabaseService().updateGroceryItem(widget.item, widget.quantity, updatedQuantity, widget.description);
+                      setState(() {
+                        newQuantity = int.parse(quantityController.text);
+                        myFocusNode.unfocus();
+                        editIcon = editButton;
+                      });
+                    }
                   },
-                  icon: Icon(Icons.add_circle, size: 25, color: Theme.of(context).colorScheme.onSecondary,),
+                  icon: editIcon,
                 ),
               ],
             ),
