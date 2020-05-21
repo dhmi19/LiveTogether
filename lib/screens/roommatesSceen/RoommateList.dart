@@ -42,7 +42,7 @@ class _RoommateListState extends State<RoommateList> {
       shrinkWrap: true,
       itemCount: _roommateList.length,
       itemBuilder: (context, index) {
-        return RoommateTile(apartment: _apartment, roommateList: _roommateList, index: index, currentUser: user,);
+        return RoommateTile(apartment: _apartment, roommateList: _roommateList, index: index);
       }
     );
   }

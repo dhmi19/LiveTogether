@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lester_apartments/constants.dart';
 import 'package:lester_apartments/models/Note.dart';
 import 'package:lester_apartments/models/apartment.dart';
 
@@ -285,20 +286,21 @@ class DatabaseService {
       return [false, "You already have an apartment"];
     }
 
-
     final documentSnapshot = await apartmentCollection.document(apartmentName).get();
 
     if((documentSnapshot == null || !documentSnapshot.exists) && isUserHomeless == true){
-      await apartmentCollection.document(apartmentName).setData({"roommateList": [{
-        'displayName': currentUser.displayName,
-        'profilePictureURL': profilePictureURL
-      }]
+
+      await apartmentCollection.document(apartmentName).setData({
+        "roommateList": [{
+          'displayName': currentUser.displayName,
+        'profilePictureURL': profilePictureURL,
+        'color': kOrange.value, }],
+        "availableColors": kAvailableColors
       });
 
       await userCollection.document(currentUser.uid).updateData({
         "apartment": apartmentName
-      }
-      );
+      });
 
       //Create new document for groceries
       await groceriesCollection.document(apartmentName).setData({
@@ -308,7 +310,8 @@ class DatabaseService {
 
       //Create new document for notes
       await notesCollection.document(apartmentName).setData({
-        "roommateList": [currentUser.displayName]
+        "roommateList": [currentUser.displayName],
+        "notes": []
       });
 
       return [true, "Welcome to your new apartment!"];
@@ -316,7 +319,6 @@ class DatabaseService {
     else{
       return [false,  "Sorry, the apartment name is already taken"];
     }
-
   }
 
   Future doesUserHaveAnApartment(String userName) async {
@@ -336,41 +338,7 @@ class DatabaseService {
   }
 
   Future<String> getCurrentApartmentName() async {
-/*
-    String _apartmentName;
-
-    final currentUser = await FirebaseAuth.instance.currentUser();
-
     try{
-      String _loggedInUserProfilePic = currentUser.photoUrl;
-
-      print(currentUser.displayName);
-      print(_loggedInUserProfilePic);
-
-      final documentSnapshot = await apartmentCollection.where(
-          "roommateList",
-          arrayContains: {
-            "displayName": currentUser.displayName,
-            "profilePictureURL": _loggedInUserProfilePic
-          }
-      ).getDocuments();
-
-      final documents = documentSnapshot.documents;
-
-      for(var document in documents){
-        _apartmentName = document.documentID;
-        return _apartmentName;
-      }
-      return null;
-    }catch(error){
-      print(error);
-      return null;
-    }
-
- */
-
-    try{
-
       final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
       final DocumentSnapshot documentSnapshot = await Firestore.instance.collection('users').document(currentUser.uid).get();
       final data = documentSnapshot.data;
@@ -378,7 +346,13 @@ class DatabaseService {
     }
     catch(error){
       print(error);
+      return null;
     }
+
+  }
+
+
+  Future getUserColor() async{
 
   }
 
@@ -418,6 +392,9 @@ class DatabaseService {
     }
 
   }
+
+
+  //Grocery Functions:
 
   Future updateGroceryItem(String itemName, int oldItemCount, int itemCount, String description) async {
 
@@ -460,7 +437,6 @@ class DatabaseService {
 
   }
 
-  //Grocery Functions:
   Future<List> addGroceryItem(String itemName, int itemCount, String description) async{
 
     try{
