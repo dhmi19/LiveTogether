@@ -270,12 +270,34 @@ class ApartmentServices{
 
   }
 
+  static Future getColor(String apartmentName, FirebaseUser currentUser) async {
+
+    try{
+
+      final DocumentSnapshot documentSnapshot = await apartmentCollection.document(apartmentName).get();
+      final data = documentSnapshot.data;
+      final List roommateList = data["roommateList"];
+
+      for(var roommate in roommateList){
+        if(roommate['displayName'] == currentUser.displayName){
+          return roommate['color'];
+        }
+      }
+      return null;
+    }catch(error){
+      print(error);
+      return null;
+    }
+  }
+
   static Future<bool> leaveApartment() async{
     try{
       final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
 
       final DocumentSnapshot documentSnapshot = await userCollection.document(currentUser.uid).get();
       final String apartmentName = documentSnapshot.data['apartment'];
+
+      final int userColor = await getColor(apartmentName, currentUser);
 
       //Update user collection
       await userCollection.document(currentUser.uid).updateData({"apartment":""});
@@ -293,16 +315,38 @@ class ApartmentServices{
       //Update apartment collection
       await apartmentCollection.document(apartmentName).updateData({
         "roommateList": FieldValue.arrayRemove([{
+          'color': userColor,
           'displayName': currentUser.displayName,
-          'profilePictureURL': currentUser.photoUrl
+          'profilePictureURL': currentUser.photoUrl,
         }])
       });
+
+      returnColor(userColor, apartmentName);
+
+      checkGarbageCollection(apartmentName);
 
       return true;
     }
     catch(error){
       print(error);
       return false;
+    }
+  }
+
+  static Future checkGarbageCollection(String apartmentName) async {
+    final DocumentSnapshot documentSnapshot = await apartmentCollection.document(apartmentName).get();
+    final data = documentSnapshot.data;
+    final List roommateList = data['roommateList'];
+
+    if(roommateList == null){
+      apartmentCollection.document(apartmentName).delete();
+      groceriesCollection.document(apartmentName).delete();
+      notesCollection.document(apartmentName).delete();
+    }
+    else if(roommateList.isEmpty){
+      apartmentCollection.document(apartmentName).delete();
+      groceriesCollection.document(apartmentName).delete();
+      notesCollection.document(apartmentName).delete();
     }
 
   }

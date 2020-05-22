@@ -44,16 +44,18 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       final data = documentSnapshot.data;
                       final String displayName = data['displayName'];
 
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(displayName != null ? displayName : "Options", style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primaryVariant),),
+                      return SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(displayName != null ? displayName : "Options", style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primaryVariant),),
 
-                          SizedBox(height: 20,),
+                            SizedBox(height: 20,),
 
-                          ProfilePictureWidget(radius: 60.0)
-                        ],
+                            ProfilePictureWidget(radius: 60.0)
+                          ],
+                        ),
                       );
                     }catch(error){
                       print(error);
@@ -83,24 +85,37 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               title: Text('Leave Apartment'),
               trailing: FaIcon(FontAwesomeIcons.doorOpen),
               onTap: () async {
-                bool result = await ApartmentServices.leaveApartment();
-                Navigator.of(context).pop();
-                if(result == true){
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context){
-                        return LeaveApartmentAlertDialog(title: "Success", description: "You have left the apartment",);
-                      }
-                  );
+                bool result;
+
+                void onTapCallBack() async {
+                  Navigator.pop(context);
+
+                  result = await ApartmentServices.leaveApartment();
+
+                  if(result == true){
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context){
+                          return LeaveApartmentAlertDialog(title: "Success", description: "You have left the apartment",);
+                        }
+                    );
+                  }
+                  else{
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context){
+                          return LeaveApartmentAlertDialog(title: "Error", description: "Sorry, please try again later :(",);
+                        }
+                    );
+                  }
                 }
-                else{
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context){
-                        return LeaveApartmentAlertDialog(title: "Error", description: "Sorry, please try again later :(",);
-                      }
-                  );
-                }
+
+                await showDialog(
+                  context: context,
+                  builder: (BuildContext context){
+                    return ConfirmationDialog(onTapCallBack: onTapCallBack,);
+                  }
+                );
 
               },
             ),
@@ -118,6 +133,50 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       ),
     );
   }
+}
+
+
+class ConfirmationDialog extends StatelessWidget{
+
+  final Function onTapCallBack;
+
+  ConfirmationDialog({this.onTapCallBack});
+
+  @override
+  Widget build(BuildContext context) {
+
+    return AlertDialog(
+      title: Text("Confirmation"),
+      content: Text("Are you sure you want to leave apartment?"),
+      actions: <Widget>[
+        FlatButton(
+          color: Theme.of(context).colorScheme.onSecondary,
+          child: Text("Leave apartment",
+            style: TextStyle(
+              fontSize: 15,
+              color: Theme.of(context).colorScheme.primaryVariant,
+            ),
+          ),
+          onPressed: onTapCallBack,
+        ),
+        FlatButton(
+          color: Theme.of(context).colorScheme.onSecondary,
+          child: Text(
+            "Cancel",
+            style: TextStyle(
+              fontSize: 15,
+              color: Theme.of(context).colorScheme.primaryVariant,
+            ),
+          ),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+
+  }
+
 }
 
 class LeaveApartmentAlertDialog extends StatelessWidget {
