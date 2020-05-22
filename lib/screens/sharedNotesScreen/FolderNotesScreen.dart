@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lester_apartments/models/Note.dart';
+import 'package:lester_apartments/models/note.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/sharedNotesWidgets/FolderNotesHeader.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/sharedNotesWidgets/NoteCard.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';

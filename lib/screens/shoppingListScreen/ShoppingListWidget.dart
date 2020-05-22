@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lester_apartments/models/groceryItem.dart';
 import 'package:lester_apartments/services/auth.dart';
 import 'package:lester_apartments/services/database/apartmentServices.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
@@ -80,13 +81,18 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                       }else{
                         if(groceryList.isNotEmpty){
                           groceryList.forEach((item) {
+
+                            GroceryItem groceryItem = GroceryItem(
+                              itemName: item['itemName'],
+                              itemCount: item['itemCount'],
+                              description: item['description'],
+                              buyers: item['buyer']
+                            );
+
                             groceryListTextWidgets.add(
                                 GroceryItemTile(
-                                  item: item['itemName'],
-                                  quantity: item['itemCount'],
-                                  description: item['description'],
                                   apartmentName: apartmentName,
-                                  buyer: item['buyer'],
+                                  groceryItem: groceryItem,
                                 )
                             );
                           });

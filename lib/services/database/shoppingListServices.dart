@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lester_apartments/models/groceryItem.dart';
 import 'package:lester_apartments/services/database/apartmentServices.dart';
 
 class ShoppingListServices {
@@ -45,31 +46,13 @@ class ShoppingListServices {
     }
   }
 
-  static Future<String> getListOfBuyers(String apartmentName, String itemName) async {
-
-    final DocumentSnapshot documentSnapshot = await groceriesCollection.document(apartmentName).get();
-    final data = documentSnapshot.data;
-    final shoppingList = data['groceryList'];
-
-    for(var item in shoppingList){
-      if(item['itemName'] == itemName){
-        return item['buyer'];
-      }
-    }
-
-    return null;
-  }
 
   static Future updateShoppingListItem(
-      String itemName,
-      int oldItemCount,
+      GroceryItem groceryItem,
       int itemCount,
-      String description,
       String newBuyerUsername ) async {
 
     try{
-
-      final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
 
       String apartmentName = await ApartmentServices.getCurrentApartmentName();
 
@@ -79,25 +62,24 @@ class ShoppingListServices {
 
       DocumentReference documentReference =  groceriesCollection.document(apartmentName);
 
-      String listOfBuyers = await getListOfBuyers(apartmentName, itemName);
 
       String newListOfBuyers = newBuyerUsername != null ?
-                              listOfBuyers+",$newBuyerUsername" : listOfBuyers;
+                              groceryItem.buyers+",$newBuyerUsername" : groceryItem.buyers;
 
       await documentReference.updateData({
         "groceryList": FieldValue.arrayRemove([{
-          'itemName': itemName,
-          'itemCount': oldItemCount,
-          'description': description,
-          'buyer': listOfBuyers
+          'itemName': groceryItem.itemName,
+          'itemCount': groceryItem.itemCount,
+          'description': groceryItem.description,
+          'buyer': groceryItem.buyers
         }]),
       });
 
       await documentReference.updateData({
         "groceryList": FieldValue.arrayUnion([{
-          'itemName': itemName,
+          'itemName': groceryItem.itemName,
           'itemCount': itemCount,
-          'description': description,
+          'description': groceryItem.description,
           'buyer': newListOfBuyers
         }]),
       });
@@ -109,6 +91,28 @@ class ShoppingListServices {
       return false;
     }
 
+  }
+
+  static Future removeShoppingListItem(GroceryItem groceryItem, String apartmentName) async {
+    try{
+
+      DocumentReference documentReference =  groceriesCollection.document(apartmentName);
+
+      await documentReference.updateData({
+        "groceryList": FieldValue.arrayRemove([{
+          'itemName': groceryItem.itemName,
+          'itemCount': groceryItem.itemCount,
+          'description': groceryItem.description,
+          'buyer': groceryItem.buyers
+        }]),
+      });
+
+      return true;
+    }
+    catch(error){
+      print(error);
+      return false;
+    }
   }
 
 }

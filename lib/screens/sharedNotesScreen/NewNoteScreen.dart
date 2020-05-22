@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lester_apartments/models/Note.dart';
+import 'package:lester_apartments/models/note.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/sharedNotesWidgets/TagButton.dart';
 import 'package:lester_apartments/services/database/noteServices.dart';
 

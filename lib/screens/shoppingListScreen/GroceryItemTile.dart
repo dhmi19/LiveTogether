@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lester_apartments/models/groceryItem.dart';
 import 'package:lester_apartments/services/database/shoppingListServices.dart';
 import 'package:provider/provider.dart';
 
@@ -12,13 +12,10 @@ const editButton = Icon(Icons.edit, size: 20, color: Colors.orange,);
 
 class GroceryItemTile extends StatefulWidget {
 
-  final String item;
-  final int quantity;
-  final String description;
+  final GroceryItem groceryItem;
   final String apartmentName;
-  final String buyer;
 
-  GroceryItemTile({this.item, this.quantity, this.description, @required this.apartmentName, this.buyer});
+  GroceryItemTile({@required this.apartmentName, @required this.groceryItem});
 
   @override
   _GroceryItemTileState createState() => _GroceryItemTileState();
@@ -34,7 +31,7 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
   @override
   void initState() {
     super.initState();
-    newQuantity = widget.quantity;
+    newQuantity = widget.groceryItem.itemCount;
     editIcon = editButton;
     quantityController = TextEditingController(text: newQuantity.toString());
     myFocusNode = FocusNode();
@@ -54,7 +51,7 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
 
     bool isMe;
 
-    if(widget.buyer.contains(currentUser.displayName)){
+    if(widget.groceryItem.buyers.contains(currentUser.displayName)){
       isMe = true;
     }else{
       isMe = false;
@@ -65,7 +62,7 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
         showDialog(
             context: context,
             builder: (BuildContext context){
-              return DeleteItemAlertBox(itemName: widget.item,);
+              return DeleteItemAlertBox(groceryItem: widget.groceryItem, apartmentName: widget.apartmentName,);
             }
         );
       },
@@ -75,9 +72,9 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              GroceryTileHeader(listOfBuyers: widget.buyer, apartmentName: widget.apartmentName,),
+              GroceryTileHeader(listOfBuyers: widget.groceryItem.buyers, apartmentName: widget.apartmentName,),
 
-              Text(widget.item, style: TextStyle(fontSize: 25),),
+              Text(widget.groceryItem.itemName, style: TextStyle(fontSize: 25),),
 
               SizedBox(height: 10,),
 
@@ -104,16 +101,13 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
                         int updatedQuantity = int.parse(quantityController.text);
                         isMe ?
                         ShoppingListServices.updateShoppingListItem(
-                          widget.item, widget.quantity,
+                          widget.groceryItem,
                           updatedQuantity,
-                          widget.description,
                           null
                         ) :
                         ShoppingListServices.updateShoppingListItem(
-                          widget.item,
-                          widget.quantity,
+                          widget.groceryItem,
                           updatedQuantity,
-                          widget.description,
                           currentUser.displayName
                         );
                         setState(() {
@@ -130,7 +124,7 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
 
               SizedBox(height: 10,),
 
-              Text(widget.description, style: TextStyle(fontSize: 15),),
+              Text(widget.groceryItem.description, style: TextStyle(fontSize: 15),),
 
             ],
           ),
@@ -147,18 +141,19 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
 
 class DeleteItemAlertBox extends StatelessWidget {
 
-  final String itemName;
-  DeleteItemAlertBox({this.itemName});
+  final GroceryItem groceryItem;
+  final String apartmentName;
+  DeleteItemAlertBox({this.groceryItem, this.apartmentName});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        title: Text("Remove $itemName?"),
+        title: Text("Remove ${groceryItem.itemName}?"),
         actions: <Widget>[
           FlatButton(
             onPressed: () {
+              ShoppingListServices.removeShoppingListItem(groceryItem, apartmentName);
               Navigator.of(context).pop();
-
             },
             textColor: Theme.of(context).primaryColor,
             child: const Text('YES', style: TextStyle(fontSize: 18)),

@@ -1,6 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lester_apartments/models/Note.dart';
+import 'package:lester_apartments/models/note.dart';
 import 'package:lester_apartments/services/database/apartmentServices.dart';
 
 class NoteServices {
