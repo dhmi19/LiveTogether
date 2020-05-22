@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/services/auth.dart';
@@ -23,6 +24,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     //TODO: The current user is not updating so it is referencing old photo url
     var currentUser = Provider.of<FirebaseUser>(context);
 
+    print(currentUser == null);
+
     return Drawer(
 
       child: Container(
@@ -33,16 +36,31 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             Container(
               height: 250,
               child: DrawerHeader(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(currentUser.displayName, style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primaryVariant),),
+                child: StreamBuilder<DocumentSnapshot>(
+                  stream: Firestore.instance.collection("users").document(currentUser.uid).snapshots(),
+                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    try{
+                      final DocumentSnapshot documentSnapshot = snapshot.data;
+                      final data = documentSnapshot.data;
+                      final String displayName = data['displayName'];
 
-                    SizedBox(height: 20,),
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(displayName != null ? displayName : "Options", style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primaryVariant),),
 
-                    ProfilePictureWidget(radius: 60.0)
-                  ],
+                          SizedBox(height: 20,),
+
+                          ProfilePictureWidget(radius: 60.0)
+                        ],
+                      );
+                    }catch(error){
+                      print(error);
+                      return Center(child: Text(""));
+                    }
+
+                  }
                 ),
 
                 decoration: BoxDecoration(

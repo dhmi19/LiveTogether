@@ -29,7 +29,7 @@ class NotesTabView extends StatelessWidget {
                   List<Note> noteList = List<Note>();
 
                   if(!snapshot.hasData){
-                    return Text("Sorry, data was not found");
+                    return Text("");
                   }
 
                   if(snapshot.hasData){
@@ -66,6 +66,7 @@ class NotesTabView extends StatelessWidget {
                             SizedBox(height: 20,),
 
                             Text(
+                              tag.contains("personal") ? "You don't have any personal notes" :
                               "You don't have any $tag notes",
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.primaryVariant
@@ -89,7 +90,7 @@ class NotesTabView extends StatelessWidget {
                 catch(error){
                   print(error);
                   return Center(
-                      child: Text("Sorry, there was an error. Please try again later")
+                      child: Text("")
                   );
                 }
               }

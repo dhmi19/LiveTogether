@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 
 class ApartmentNameRoommateScreen extends StatelessWidget {
 
-  String _apartmentName;
-
   @override
   Widget build(BuildContext context) {
+
+    String _apartmentName;
 
     final user = Provider.of<FirebaseUser>(context);
     final apartments = Provider.of<List<Apartment>>(context);

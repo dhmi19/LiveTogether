@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,31 +22,19 @@ class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
 
     var currentUser = Provider.of<FirebaseUser>(context);
 
-    /*
-    if(users != null){
-      for(var user in users.documents){
-        if(user.documentID == AuthService.currentUser.uid){
-          AuthService.currentUser.profilePictureURL = user.data['profilePictureURL'];
-          _image = AuthService.currentUser.profilePictureURL;
-          print(_image);
-        }
+    return StreamBuilder<DocumentSnapshot>(
+      stream: Firestore.instance.collection("users").document(currentUser.uid).snapshots(),
+      builder: (context, snapshot) {
+
+        final DocumentSnapshot documentSnapshot = snapshot.data;
+        final data = documentSnapshot.data;
+        _image = data['profilePictureURL'];
+        
+        return CircleAvatar(
+            radius: widget.radius - 5,
+            backgroundImage: (_image != null)? NetworkImage(_image) : NetworkImage("https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80"),
+          );
       }
-    }
-
-     */
-
-    _image = currentUser.photoUrl;
-    print(_image);
-    /*
-    child: (_image != null)? Image.network(_image, fit: BoxFit.fill,)
-        :Image.network("https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80",
-      fit: BoxFit.fill,),
-
-     */
-
-    return CircleAvatar(
-        radius: widget.radius - 5,
-        backgroundImage: (_image != null)? NetworkImage(_image) : NetworkImage("https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80"),
-      );
+    );
   }
 }

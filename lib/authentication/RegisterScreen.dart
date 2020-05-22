@@ -100,10 +100,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         }
                                       },
                                       decoration: InputDecoration(
-                                          hintText: "Email ID",
-                                          hintStyle: TextStyle(color: Colors.white),
-                                          border: InputBorder.none
+                                        hintText: "Email ID",
+                                        hintStyle: TextStyle(color: Colors.white),
+                                        border: InputBorder.none,
                                       ),
+                                      style: TextStyle(color: Theme.of(context).colorScheme.primary),
                                       onChanged: (val){
                                         setState(() {
                                           _email = val;
@@ -125,6 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           return null;
                                         }
                                       },
+                                      style: TextStyle(color: Theme.of(context).colorScheme.primary),
                                       obscureText: true,
                                       decoration: InputDecoration(
                                           hintText: "Password",
@@ -157,6 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           hintStyle: TextStyle(color: Colors.white),
                                           border: InputBorder.none
                                       ),
+                                      style: TextStyle(color: Theme.of(context).colorScheme.primary),
                                       onChanged: (val){
                                         setState(() {
                                           _username = val;

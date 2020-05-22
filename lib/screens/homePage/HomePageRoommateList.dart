@@ -36,6 +36,14 @@ class _HomePageRoommateListState extends State<HomePageRoommateList> {
       });
     }
 
+    if(apartments != null){
+      if(apartments.isEmpty){
+        return Center(
+          child: Text("Join an apartment to see your roommates here"),
+        );
+      }
+    }
+
     return StreamBuilder<List<Apartment>>(
       stream: ApartmentServices().apartments,
 

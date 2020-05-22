@@ -32,8 +32,6 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
             backgroundColor: Colors.transparent,
             iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primaryVariant),
             elevation: 0,
-
-            // FlatButton.icon(onPressed: () => {}, icon: Icon(Icons.menu), label: Text("")),
             title: Text("", style: TextStyle(color: Colors.white),),
 
             centerTitle: true,
@@ -45,10 +43,6 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: 10,),
-
-                //Text("Welcome Home", style: TextStyle(fontSize: 40, color: Theme.of(context).colorScheme.primaryVariant),),
-
-                //SizedBox(height: 30,),
 
                 Expanded(
                   child: Container(

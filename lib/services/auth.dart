@@ -55,8 +55,7 @@ class AuthService {
       userUpdateInfo.photoUrl = "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80";
       userUpdateInfo.displayName = username;
       await user.updateProfile(userUpdateInfo);
-
-      await user.sendEmailVerification();
+      await user.reload();
 
       //Create a new document for the registered user:
       await UserServices.createNewUserDocument(email, username, "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80", user.uid);

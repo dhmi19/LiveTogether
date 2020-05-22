@@ -146,7 +146,7 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
                         };
 
                         if(!snapshot.hasData){
-                          return Text("Sorry, data was not found");
+                          return Text("");
                         }
 
                         if(snapshot.hasData){

@@ -72,7 +72,7 @@ class RoommateTile extends StatelessWidget {
           );
         }catch(error){
           print(error);
-          return Text("error");
+          return Text("");
         }
       }
     );
