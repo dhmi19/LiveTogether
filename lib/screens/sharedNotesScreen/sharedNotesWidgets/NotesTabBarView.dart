@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lester_apartments/models/Note.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/noteServices.dart';
 import 'package:provider/provider.dart';
 
 
@@ -118,7 +118,7 @@ Widget buildNotePreview(Note note, BuildContext context){
     trailing: IconButton(
       icon:FaIcon(FontAwesomeIcons.trash) ,
       onPressed: (){
-        DatabaseService().deleteNote(note);
+        NoteServices.deleteNote(note);
       },
       iconSize: 20,
     ),

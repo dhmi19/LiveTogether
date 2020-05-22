@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/apartmentServices.dart';
 
 class NewApartmentWidget extends StatefulWidget {
 
@@ -77,7 +77,7 @@ class _NewApartmentWidgetState extends State<NewApartmentWidget> {
                                 onPressed: () async {
                                   if (_formKey.currentState.validate()) {
                                     //TODO: Check if apartment name is taken
-                                    final result = await DatabaseService().createNewApartment(_apartmentName);
+                                    final result = await ApartmentServices.createNewApartment(_apartmentName);
                                     Navigator.of(context).pop();
                                     showDialog(
                                         context: context,

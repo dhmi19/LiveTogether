@@ -1,10 +1,9 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/userServices.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart';
 
@@ -44,7 +43,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
 
     String imageURL = await FirebaseStorage.instance.ref().child(fileName).getDownloadURL();
     print("location of image in storage is: "+ imageURL);
-    DatabaseService().updateProfilePicture(imageURL);
+    UserServices.updateProfilePicture(imageURL);
 
     setState(() {
       print("profile picture uploaded, changes should be visible now.");
@@ -246,7 +245,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                           onPressed: () async {
 
                             if(_formKey.currentState.validate()) {
-                              await DatabaseService().updateUserDetails(_email, _password, _username);
+                              await UserServices.updateUserDetails(_email, _password, _username);
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context){

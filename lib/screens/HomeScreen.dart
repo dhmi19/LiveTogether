@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen>{
     SharedNotesWidget(),
     HomeScreenWidget(),
     AlertWidget(),
-    RommatesWidget(),
+    RoommatesWidget(),
   ];
 
   @override

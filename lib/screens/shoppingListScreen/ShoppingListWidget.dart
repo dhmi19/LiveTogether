@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lester_apartments/models/apartment.dart';
 import 'package:lester_apartments/services/auth.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/apartmentServices.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +26,7 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
   @override
   void initState(){
     super.initState();
-    apartmentName = DatabaseService().getCurrentApartmentName();
+    apartmentName = ApartmentServices.getCurrentApartmentName();
   }
 
   @override

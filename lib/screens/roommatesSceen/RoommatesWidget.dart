@@ -1,26 +1,22 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/models/apartment.dart';
 import 'package:lester_apartments/screens/roommatesSceen/AddRoommateWidget.dart';
 import 'package:lester_apartments/screens/roommatesSceen/NewApartmentWidget.dart';
-import 'package:lester_apartments/services/auth.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/apartmentServices.dart';
 import 'package:provider/provider.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 
 import 'ApartmentNameTitle.dart';
 import 'RoommateList.dart';
 
-class RommatesWidget extends StatefulWidget {
+class RoommatesWidget extends StatefulWidget {
 
   @override
-  _RommatesWidgetState createState() => _RommatesWidgetState();
+  _RoommatesWidgetState createState() => _RoommatesWidgetState();
 }
 
-class _RommatesWidgetState extends State<RommatesWidget> {
-
-  final AuthService _auth = AuthService();
+class _RoommatesWidgetState extends State<RoommatesWidget> {
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +28,13 @@ class _RommatesWidgetState extends State<RommatesWidget> {
       color: Theme.of(context).colorScheme.onBackground,
 
       child: StreamProvider<List<Apartment>>.value(
-        value: DatabaseService().apartments,
+        value: ApartmentServices().apartments,
         child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primaryVariant),
               elevation: 0,
-
-              // FlatButton.icon(onPressed: () => {}, icon: Icon(Icons.menu), label: Text("")),
               title: Text("", style: TextStyle(color: Colors.white),),
 
               centerTitle: true,

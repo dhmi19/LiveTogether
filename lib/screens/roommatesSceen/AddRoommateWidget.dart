@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/apartmentServices.dart';
 import 'package:provider/provider.dart';
 
 class AddRoommateWidget extends StatefulWidget {
@@ -80,7 +80,7 @@ class _AddRoommateWidgetState extends State<AddRoommateWidget> {
                                 print("Add button pressed");
                                 print(user.displayName);
                                 if (_formKey.currentState.validate()) {
-                                  final result = await DatabaseService().addNewRoommate(_newRommateUsername);
+                                  final result = await ApartmentServices.addNewRoommate(_newRommateUsername);
                                   //print(result);
                                   if(result != null){
                                     Navigator.of(context).pop();

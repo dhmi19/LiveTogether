@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/models/apartment.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/apartmentServices.dart';
 import 'package:provider/provider.dart';
 
 import 'HomeProfileTile.dart';
@@ -37,7 +37,7 @@ class _HomePageRoommateListState extends State<HomePageRoommateList> {
     }
 
     return StreamBuilder<List<Apartment>>(
-      stream: DatabaseService().apartments,
+      stream: ApartmentServices().apartments,
 
       builder: (context, snapshot) {
 

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/services/auth.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/apartmentServices.dart';
 import 'package:lester_apartments/shared/ProfilePictureWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -65,7 +65,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               title: Text('Leave Apartment'),
               trailing: FaIcon(FontAwesomeIcons.doorOpen),
               onTap: () async {
-                bool result = await DatabaseService().leaveApartment();
+                bool result = await ApartmentServices.leaveApartment();
                 Navigator.of(context).pop();
                 if(result == true){
                   showDialog(

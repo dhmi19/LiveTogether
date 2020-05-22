@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/shoppingListServices.dart';
 
 class AddGroceryBottomSheet extends StatefulWidget {
 
@@ -103,7 +103,7 @@ class _AddGroceryBottomSheetState extends State<AddGroceryBottomSheet> {
                         }
                     );
                   }else{
-                    final result = await DatabaseService().addGroceryItem(itemName, itemCount, description);
+                    final result = await ShoppingListServices.addShoppingListItem(itemName, itemCount, description);
                     showDialog(
                         context: context,
                         builder: (BuildContext context){

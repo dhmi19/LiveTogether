@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/models/Note.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/sharedNotesWidgets/TagButton.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/noteServices.dart';
 
 class NewNoteScreen extends StatefulWidget {
   @override
@@ -137,7 +137,7 @@ class NewNoteScreenBackButton extends StatelessWidget {
         print(noteTitleController.text);
         print(noteContentController.text);
         if(noteTitleController.text != "" && noteContentController.text != ""){
-          await DatabaseService().addNote(
+          await NoteServices.addNote(
             noteTitleController.text,
             noteContentController.text,
             newTagList.isEmpty? ['shared'] : newTagList,

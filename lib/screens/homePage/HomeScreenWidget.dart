@@ -1,10 +1,6 @@
-import 'dart:ui';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/models/apartment.dart';
-import 'package:lester_apartments/services/auth.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/apartmentServices.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +25,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
         color: Theme.of(context).colorScheme.onBackground,
       ),
       child: StreamProvider<List<Apartment>>.value(
-        value: DatabaseService().apartments,
+        value: ApartmentServices().apartments,
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(

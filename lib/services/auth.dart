@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lester_apartments/models/user.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/userServices.dart';
 
 class AuthService {
 
@@ -44,8 +43,7 @@ class AuthService {
   Future<List> registerWithEmailAndPassword(String email, String password, String username) async {
     try{
 
-      //TODO: make sure usernames are unique (not in previous database)
-      final bool usernameExists = await DatabaseService().checkUserNameExists(username);
+      final bool usernameExists = await UserServices.checkUserNameExists(username);
 
       if(usernameExists){
         return [false, "Sorry, the username is taken"];
@@ -61,7 +59,7 @@ class AuthService {
       await user.sendEmailVerification();
 
       //Create a new document for the registered user:
-      await DatabaseService().createNewUserDocument(email, username, "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80", user.uid);
+      await UserServices.createNewUserDocument(email, username, "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80", user.uid);
 
       return [true, "Username made successfully"];
     }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lester_apartments/models/Note.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/sharedNotesWidgets/TagButton.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/noteServices.dart';
 
 class FullNoteScreen extends StatefulWidget {
 
@@ -167,7 +167,7 @@ class FullNoteScreenBackButton extends StatelessWidget {
     return IconButton(
       icon: Icon(Icons.arrow_back),
       onPressed: () async {
-        await DatabaseService().editNote(
+        await NoteServices.editNote(
             noteTitleController.text,
             noteContentController.text,
             newTagList,

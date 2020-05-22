@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/shoppingListServices.dart';
 
 
 const checkButton = Icon(Icons.check_circle, size: 20, color: Colors.green);
@@ -91,7 +90,7 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
                       });
                     }else{
                       int updatedQuantity = int.parse(quantityController.text);
-                      DatabaseService().updateGroceryItem(widget.item, widget.quantity, updatedQuantity, widget.description);
+                      ShoppingListServices.updateShoppingListItem(widget.item, widget.quantity, updatedQuantity, widget.description);
                       setState(() {
                         newQuantity = int.parse(quantityController.text);
                         myFocusNode.unfocus();

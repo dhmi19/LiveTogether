@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/models/Note.dart';
-import 'package:lester_apartments/services/database.dart';
+import 'package:lester_apartments/services/database/noteServices.dart';
 
 
 class NoteCard extends StatelessWidget{
@@ -23,7 +23,7 @@ class NoteCard extends StatelessWidget{
     return GestureDetector(
       onDoubleTap: (){
         print("deleting note");
-        DatabaseService().deleteNote(note);
+        NoteServices.deleteNote(note);
       },
       onTap: (){
         Navigator.of(context).pushNamed('/FullNoteScreen', arguments: note);
