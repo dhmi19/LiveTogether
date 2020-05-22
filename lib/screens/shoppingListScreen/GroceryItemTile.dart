@@ -1,5 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/services/database/shoppingListServices.dart';
+import 'package:provider/provider.dart';
+
+import 'GroceryTileHeader.dart';
 
 
 const checkButton = Icon(Icons.check_circle, size: 20, color: Colors.green);
@@ -10,8 +15,10 @@ class GroceryItemTile extends StatefulWidget {
   final String item;
   final int quantity;
   final String description;
+  final String apartmentName;
+  final String buyer;
 
-  GroceryItemTile({this.item, this.quantity, this.description});
+  GroceryItemTile({this.item, this.quantity, this.description, @required this.apartmentName, this.buyer});
 
   @override
   _GroceryItemTileState createState() => _GroceryItemTileState();
@@ -42,6 +49,17 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
 
   @override
   Widget build(BuildContext context) {
+
+    final FirebaseUser currentUser = Provider.of<FirebaseUser>(context);
+
+    bool isMe;
+
+    if(widget.buyer.contains(currentUser.displayName)){
+      isMe = true;
+    }else{
+      isMe = false;
+    }
+
     return GestureDetector(
       onLongPress: (){
         showDialog(
@@ -53,61 +71,69 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
       },
       child: Container(
         padding: const EdgeInsets.all(2),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Icon(Icons.bookmark, color: Theme.of(context).colorScheme.secondary, size: 30,),
-                  ],
-                )
-            ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              GroceryTileHeader(listOfBuyers: widget.buyer, apartmentName: widget.apartmentName,),
 
-            Text(widget.item, style: TextStyle(fontSize: 25),),
+              Text(widget.item, style: TextStyle(fontSize: 25),),
 
-            SizedBox(height: 10,),
+              SizedBox(height: 10,),
 
-            Row(
-              children: <Widget>[
-                SizedBox(width: 75,),
-                SizedBox(
-                  width: 40,
-                  child: TextField(
-                    controller: quantityController,
-                    style: TextStyle(fontSize: 30),
-                    focusNode: myFocusNode,
-                    decoration: null,
+              Row(
+                children: <Widget>[
+                  SizedBox(width: 75,),
+                  SizedBox(
+                    width: 40,
+                    child: TextField(
+                      controller: quantityController,
+                      style: TextStyle(fontSize: 30),
+                      focusNode: myFocusNode,
+                      decoration: null,
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () async {
-                    if(editIcon == editButton){
-                      setState(() {
-                        myFocusNode.requestFocus();
-                        editIcon = checkButton;
-                      });
-                    }else{
-                      int updatedQuantity = int.parse(quantityController.text);
-                      ShoppingListServices.updateShoppingListItem(widget.item, widget.quantity, updatedQuantity, widget.description);
-                      setState(() {
-                        newQuantity = int.parse(quantityController.text);
-                        myFocusNode.unfocus();
-                        editIcon = editButton;
-                      });
-                    }
-                  },
-                  icon: editIcon,
-                ),
-              ],
-            ),
+                  IconButton(
+                    onPressed: () async {
+                      if(editIcon == editButton){
+                        setState(() {
+                          myFocusNode.requestFocus();
+                          editIcon = checkButton;
+                        });
+                      }else{
+                        int updatedQuantity = int.parse(quantityController.text);
+                        isMe ?
+                        ShoppingListServices.updateShoppingListItem(
+                          widget.item, widget.quantity,
+                          updatedQuantity,
+                          widget.description,
+                          null
+                        ) :
+                        ShoppingListServices.updateShoppingListItem(
+                          widget.item,
+                          widget.quantity,
+                          updatedQuantity,
+                          widget.description,
+                          currentUser.displayName
+                        );
+                        setState(() {
+                          newQuantity = int.parse(quantityController.text);
+                          myFocusNode.unfocus();
+                          editIcon = editButton;
+                        });
+                      }
+                    },
+                    icon: editIcon,
+                  ),
+                ],
+              ),
 
-            SizedBox(height: 10,),
+              SizedBox(height: 10,),
 
-            Text(widget.description, style: TextStyle(fontSize: 15),),
+              Text(widget.description, style: TextStyle(fontSize: 15),),
 
-          ],
+            ],
+          ),
         ),
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.onPrimary,
@@ -131,8 +157,8 @@ class DeleteItemAlertBox extends StatelessWidget {
         actions: <Widget>[
           FlatButton(
             onPressed: () {
-
               Navigator.of(context).pop();
+
             },
             textColor: Theme.of(context).primaryColor,
             child: const Text('YES', style: TextStyle(fontSize: 18)),

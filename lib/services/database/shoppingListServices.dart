@@ -45,8 +45,27 @@ class ShoppingListServices {
     }
   }
 
+  static Future<String> getListOfBuyers(String apartmentName, String itemName) async {
 
-  static Future updateShoppingListItem(String itemName, int oldItemCount, int itemCount, String description) async {
+    final DocumentSnapshot documentSnapshot = await groceriesCollection.document(apartmentName).get();
+    final data = documentSnapshot.data;
+    final shoppingList = data['groceryList'];
+
+    for(var item in shoppingList){
+      if(item['itemName'] == itemName){
+        return item['buyer'];
+      }
+    }
+
+    return null;
+  }
+
+  static Future updateShoppingListItem(
+      String itemName,
+      int oldItemCount,
+      int itemCount,
+      String description,
+      String newBuyerUsername ) async {
 
     try{
 
@@ -60,12 +79,17 @@ class ShoppingListServices {
 
       DocumentReference documentReference =  groceriesCollection.document(apartmentName);
 
+      String listOfBuyers = await getListOfBuyers(apartmentName, itemName);
+
+      String newListOfBuyers = newBuyerUsername != null ?
+                              listOfBuyers+",$newBuyerUsername" : listOfBuyers;
+
       await documentReference.updateData({
         "groceryList": FieldValue.arrayRemove([{
           'itemName': itemName,
           'itemCount': oldItemCount,
           'description': description,
-          'buyer': currentUser.displayName
+          'buyer': listOfBuyers
         }]),
       });
 
@@ -74,7 +98,7 @@ class ShoppingListServices {
           'itemName': itemName,
           'itemCount': itemCount,
           'description': description,
-          'buyer': currentUser.displayName
+          'buyer': newListOfBuyers
         }]),
       });
 

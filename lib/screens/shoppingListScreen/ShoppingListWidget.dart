@@ -19,14 +19,9 @@ class ShoppingListWidget extends StatefulWidget {
 
 class _ShoppingListWidgetState extends State<ShoppingListWidget> {
 
-  final AuthService _auth = AuthService();
-
-  Future<String> apartmentName;
-
   @override
   void initState(){
     super.initState();
-    apartmentName = ApartmentServices.getCurrentApartmentName();
   }
 
   @override
@@ -57,6 +52,9 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                 child: StreamBuilder<QuerySnapshot>(
                   stream: Firestore.instance.collection("groceries").where("roommateList", arrayContains: currentUser.displayName).snapshots(),
                   builder: (context, snapshot){
+
+                    String apartmentName;
+
                     try{
                       List groceryList = [];
 
@@ -70,6 +68,7 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                           List<dynamic> tempRoommateList = apartment.data["roommateList"];
                           if(tempRoommateList.contains(currentUser.displayName)){
                             groceryList = apartment.data["groceryList"];
+                            apartmentName = apartment.documentID;
                           }
                         }
                       }
@@ -80,9 +79,15 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
 
                       }else{
                         if(groceryList.isNotEmpty){
-                          groceryList.forEach((element) {
+                          groceryList.forEach((item) {
                             groceryListTextWidgets.add(
-                                GroceryItemTile(item: element['itemName'], quantity: element['itemCount'], description: element['description'],)
+                                GroceryItemTile(
+                                  item: item['itemName'],
+                                  quantity: item['itemCount'],
+                                  description: item['description'],
+                                  apartmentName: apartmentName,
+                                  buyer: item['buyer'],
+                                )
                             );
                           });
                         }
