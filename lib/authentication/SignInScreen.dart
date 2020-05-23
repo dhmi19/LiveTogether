@@ -33,7 +33,7 @@ class _SignInScreenState extends State<SignInScreen>{
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 0), //Check this
           width: double.infinity,
-          color: Theme.of(context).colorScheme.secondary,
+          color: Colors.lightBlue[400],
 
           child: Column(
 
@@ -72,8 +72,8 @@ class _SignInScreenState extends State<SignInScreen>{
                             Container(
                               padding: EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                  color: Color.fromRGBO(240, 239, 239, 1.0),
-                                  borderRadius: BorderRadius.circular(10),
+                                color: Color.fromRGBO(240, 239, 239, 1.0),
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
                                 children: <Widget>[
@@ -160,7 +160,7 @@ class _SignInScreenState extends State<SignInScreen>{
                                             FlatButton(
                                               child: Text(
                                                 'Ok',
-                                              style: TextStyle(color: Color.fromRGBO(62, 61, 62, 1)),
+                                                style: TextStyle(color: Color.fromRGBO(62, 61, 62, 1)),
                                               ),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
@@ -180,8 +180,8 @@ class _SignInScreenState extends State<SignInScreen>{
 
                             Container(
                               width: 200,
-                              child: RaisedButton(
-                                color: Theme.of(context).colorScheme.secondary,
+                              child: FlatButton(
+                                color: Theme.of(context).colorScheme.secondaryVariant,
                                 child: Text("Sign In", style: TextStyle(color: Colors.white, fontFamily: 'Oswald'),),
                                 onPressed: () async {
                                   if(_formKey.currentState.validate()) {
@@ -206,8 +206,8 @@ class _SignInScreenState extends State<SignInScreen>{
 
                             Container(
                               width: 200,
-                              child: RaisedButton(
-                                color: Theme.of(context).colorScheme.secondary,
+                              child: FlatButton(
+                                color: Theme.of(context).colorScheme.secondaryVariant,
                                 child: Text("Make a new account", style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                                 onPressed: () async {
                                   widget.toggleView();

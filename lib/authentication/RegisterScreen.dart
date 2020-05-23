@@ -32,19 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           padding: EdgeInsets.symmetric(vertical: 0), //Check this
           width: double.infinity,
           color: Theme.of(context).colorScheme.primary,
-          /*
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  colors: [
-                    Colors.blue[900],
-                    Colors.blue[600],
-                    Colors.blue[400]
-                  ]
-              )
-          ),
 
-           */
           child: Column(
 
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,6 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         hintText: "Email ID",
                                         hintStyle: TextStyle(color: Colors.white),
                                         border: InputBorder.none,
+                                        errorStyle: TextStyle(color: Colors.white),
                                       ),
                                       style: TextStyle(color: Theme.of(context).colorScheme.primary),
                                       onChanged: (val){
@@ -131,7 +120,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       decoration: InputDecoration(
                                           hintText: "Password",
                                           hintStyle: TextStyle(color: Colors.white),
-                                          border: InputBorder.none
+                                          border: InputBorder.none,
+                                        errorStyle: TextStyle(color: Colors.white),
                                       ),
                                       onChanged: (val){
                                         setState(() {
@@ -157,7 +147,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       decoration: InputDecoration(
                                           hintText: "Username",
                                           hintStyle: TextStyle(color: Colors.white),
-                                          border: InputBorder.none
+                                          border: InputBorder.none,
+                                        errorStyle: TextStyle(color: Colors.white),
                                       ),
                                       style: TextStyle(color: Theme.of(context).colorScheme.primary),
                                       onChanged: (val){
@@ -185,11 +176,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 child: Text("Register", style: TextStyle(color: Theme.of(context).colorScheme.primaryVariant,),),
                                 onPressed: () async {
 
-                                  setState(() {
-                                    _loading = true;
-                                  });
-
                                   if(_formKey.currentState.validate()) {
+
+                                    setState(() {
+                                      _loading = true;
+                                    });
 
                                     List result = await _auth.registerWithEmailAndPassword(_email, _password, _username);
 
