@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lester_apartments/models/groceryItem.dart';
+import 'package:lester_apartments/screens/shoppingListScreen/sharedWidgets/AddContributorButton.dart';
+import 'package:lester_apartments/screens/shoppingListScreen/sharedWidgets/DeleteItemAlertBox.dart';
 import 'package:lester_apartments/services/database/shoppingListServices.dart';
 import 'package:provider/provider.dart';
 
@@ -75,21 +76,7 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context){
-                            return DeleteItemAlertBox(groceryItem: widget.groceryItem, apartmentName: widget.apartmentName,);
-                          }
-                      );
-                    },
-                    icon: FaIcon(
-                      FontAwesomeIcons.plusCircle,
-                      color: Colors.black,
-                      size: 20,
-                    ),
-                  ),
+                  AddContributorButton(widget: widget),
                   GroceryTileHeader(listOfBuyers: widget.groceryItem.buyers, apartmentName: widget.apartmentName,),
                 ],
               ),
@@ -159,36 +146,5 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
   }
 }
 
-class DeleteItemAlertBox extends StatelessWidget {
 
-  final GroceryItem groceryItem;
-  final String apartmentName;
-  DeleteItemAlertBox({this.groceryItem, this.apartmentName});
 
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-        title: Text("Remove ${groceryItem.itemName}?"),
-        actions: <Widget>[
-          FlatButton(
-            onPressed: () {
-              ShoppingListServices.removeShoppingListItem(groceryItem, apartmentName);
-              Navigator.of(context).pop();
-            },
-            textColor: Theme.of(context).primaryColor,
-            child: const Text('YES', style: TextStyle(fontSize: 18)),
-          ),
-
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            textColor: Theme.of(context).primaryColor,
-            child: Text('NO', style: TextStyle(fontSize: 18),
-            ),
-          ),
-
-        ],
-    );
-  }
-}

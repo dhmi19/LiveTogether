@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lester_apartments/models/apartment.dart';
-import 'package:lester_apartments/shared/RoommateTile.dart';
+import 'package:lester_apartments/screens/roommatesSceen/RoommateTile.dart';
 import 'package:provider/provider.dart';
 
 

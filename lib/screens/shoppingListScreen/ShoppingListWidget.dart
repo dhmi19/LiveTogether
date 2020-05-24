@@ -8,7 +8,7 @@ import 'package:lester_apartments/services/database/apartmentServices.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 import 'package:provider/provider.dart';
 
-import 'AddGroceryItemButton.dart';
+import 'sharedWidgets/AddGroceryItemButton.dart';
 import 'GroceryItemTile.dart';
 
 class ShoppingListWidget extends StatefulWidget {
