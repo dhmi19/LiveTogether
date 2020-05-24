@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class GroceryTileHeader extends StatelessWidget {
 
@@ -33,7 +34,7 @@ class GroceryTileHeader extends StatelessWidget {
             roommateUsernames[userName] = userColor;
           });
 
-          final List<Widget> bookmarkList = List<Widget>();
+          List<Widget> bookmarkList = List<Widget>();
 
           buyerList.forEach((String buyer) {
             int buyerColor = roommateUsernames[buyer];

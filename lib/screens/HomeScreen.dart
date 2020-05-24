@@ -5,8 +5,6 @@ import 'package:lester_apartments/screens/shoppingListScreen/ShoppingListWidget.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'AlertWidget.dart';
-
 void main() => runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -29,7 +27,6 @@ class _HomeScreenState extends State<HomeScreen>{
     ShoppingListWidget(),
     SharedNotesWidget(),
     HomeScreenWidget(),
-    AlertWidget(),
     RoommatesWidget(),
   ];
 
@@ -61,11 +58,6 @@ class _HomeScreenState extends State<HomeScreen>{
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
               title: Text("Home"),
-              backgroundColor: Theme.of(context).colorScheme.primary
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.alarm),
-              title: Text("Alerts"),
               backgroundColor: Theme.of(context).colorScheme.primary
           ),
           BottomNavigationBarItem(

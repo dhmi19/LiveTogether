@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lester_apartments/models/groceryItem.dart';
 import 'package:lester_apartments/services/database/shoppingListServices.dart';
 import 'package:provider/provider.dart';
@@ -67,16 +68,35 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.all(2),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              GroceryTileHeader(listOfBuyers: widget.groceryItem.buyers, apartmentName: widget.apartmentName,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context){
+                            return DeleteItemAlertBox(groceryItem: widget.groceryItem, apartmentName: widget.apartmentName,);
+                          }
+                      );
+                    },
+                    icon: FaIcon(
+                      FontAwesomeIcons.plusCircle,
+                      color: Colors.black,
+                      size: 20,
+                    ),
+                  ),
+                  GroceryTileHeader(listOfBuyers: widget.groceryItem.buyers, apartmentName: widget.apartmentName,),
+                ],
+              ),
 
-              Text(widget.groceryItem.itemName, style: TextStyle(fontSize: 25),),
+              Text(widget.groceryItem.itemName, style: TextStyle(fontSize: 20),),
 
-              SizedBox(height: 10,),
+              SizedBox(height: 5,),
 
               Row(
                 children: <Widget>[
