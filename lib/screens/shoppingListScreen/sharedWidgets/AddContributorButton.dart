@@ -26,12 +26,10 @@ class AddContributorButton extends StatelessWidget {
             final data = documentSnapshot.data;
             final List roommateList = data['roommateList'];
 
-            List potentialContributors = List();
+            List roommateUserNames = List();
 
             for(var roommate in roommateList){
-              if(!(widget.groceryItem.buyers.contains(roommate['displayName']))){
-                potentialContributors.add(roommate);
-              }
+              roommateUserNames.add(roommate);
             }
 
             return IconButton(
@@ -41,13 +39,13 @@ class AddContributorButton extends StatelessWidget {
                     builder: (BuildContext context){
                       return ChooseContributorAlertBox(
                         groceryItem: widget.groceryItem,
-                        potentialContributors: potentialContributors
+                        roommateUserNames: roommateUserNames
                       );
                     }
                 );
               },
               icon: FaIcon(
-                FontAwesomeIcons.plusCircle,
+                Icons.person,
                 color: Colors.black,
                 size: 20,
               ),
@@ -67,9 +65,12 @@ class AddContributorButton extends StatelessWidget {
 class ChooseContributorAlertBox extends StatefulWidget {
 
   final GroceryItem groceryItem;
-  final List potentialContributors;
+  final List roommateUserNames;
 
-  ChooseContributorAlertBox({this.groceryItem, this.potentialContributors});
+  ChooseContributorAlertBox({
+    @required this.groceryItem,
+    @required this.roommateUserNames
+  });
 
   @override
   _ChooseContributorAlertBoxState createState() => _ChooseContributorAlertBoxState();
@@ -78,23 +79,38 @@ class ChooseContributorAlertBox extends StatefulWidget {
 class _ChooseContributorAlertBoxState extends State<ChooseContributorAlertBox> {
 
   final List<Widget> contributorTile = List<Widget>();
-  final List additionalContributors = List();
+  List finalBuyers = List();
+  String error = '';
 
   void toggleContributor(String displayName){
-    if(additionalContributors.contains(displayName)){
-      additionalContributors.remove(displayName);
-    }else{
-      additionalContributors.add(displayName);
+    if(finalBuyers.contains(displayName)){
+      finalBuyers.remove(displayName);
+      print("hi");
+      print(finalBuyers.toString());
+    }
+    else{
+      finalBuyers.add(displayName);
+      print(finalBuyers.toString());
     }
   }
 
   @override
+  void initState() {
+    super.initState();
+    finalBuyers = widget.groceryItem.buyers.split(",");
+  }
+
+  @override
   Widget build(BuildContext context) {
-    widget.potentialContributors.forEach((potentialContributor) {
+
+    var screenSize = MediaQuery.of(context).size;
+
+    widget.roommateUserNames.forEach((roommate) {
       contributorTile.add(
           ContributorTile(
-            potentialContributor: potentialContributor,
+            roommate: roommate,
             toggleSelect: toggleContributor,
+            groceryItem: widget.groceryItem
           )
       );
     });
@@ -104,46 +120,41 @@ class _ChooseContributorAlertBoxState extends State<ChooseContributorAlertBox> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text("Who else is contributing to ${widget.groceryItem.itemName}?"),
+          Text("Who is contributing to ${widget.groceryItem.itemName}?"),
           SizedBox(height: 10,),
           Container(
             height: 200,
-            width: 200,
+            width: screenSize.width * 0.8,
             child: ListView(
               children: contributorTile,
               shrinkWrap: true,
             )
-          )
+          ),
+          Text(error, style: TextStyle(color: Colors.red),)
         ],
       ),
-
       actions: <Widget>[
         FlatButton(
           onPressed: () {
-            String additionalBuyers = '';
-
-            additionalContributors.forEach((contributor) {
-              if(additionalBuyers.length == 0){
-                additionalBuyers += '$contributor';
+            String finalBuyersString = '';
+            finalBuyers.forEach((contributor) {
+              if(finalBuyersString.length == 0){
+                finalBuyersString += '$contributor';
               }else{
-                additionalBuyers += ',$contributor';
+                finalBuyersString += ',$contributor';
               }
             });
-            print(additionalBuyers);
-            ShoppingListServices.updateShoppingListItem(widget.groceryItem, widget.groceryItem.itemCount, additionalBuyers);
-            Navigator.pop(context);
+            if(finalBuyersString == ''){
+              setState(() {
+                error = "You can not have no buyers, please delete the item instead";
+              });
+            }else{
+              ShoppingListServices.updateBuyers(widget.groceryItem, widget.groceryItem.itemCount, finalBuyersString);
+              Navigator.pop(context);
+            }
           },
           textColor: Theme.of(context).primaryColor,
           child: const Text('Submit', style: TextStyle(fontSize: 18)),
-        ),
-
-        FlatButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          textColor: Theme.of(context).primaryColor,
-          child: Text('NO', style: TextStyle(fontSize: 18),
-          ),
         ),
       ],
     );
@@ -153,9 +164,15 @@ class _ChooseContributorAlertBoxState extends State<ChooseContributorAlertBox> {
 
 class ContributorTile extends StatefulWidget{
 
-  final dynamic potentialContributor;
+  final dynamic roommate;
   final Function toggleSelect;
-  const ContributorTile({@required this.potentialContributor, @required this.toggleSelect});
+  final GroceryItem groceryItem;
+
+  const ContributorTile({
+    @required this.roommate,
+    @required this.toggleSelect,
+    @required this.groceryItem
+  });
 
   @override
   _ContributorTileState createState() => _ContributorTileState();
@@ -164,11 +181,23 @@ class ContributorTile extends StatefulWidget{
 class _ContributorTileState extends State<ContributorTile> {
 
   bool _value;
+  String roommateUsername;
+  int roommateColor;
+  String roommatePhotoURL;
 
   @override
   void initState() {
     super.initState();
-    _value = false;
+    roommateUsername = widget.roommate['displayName'];
+    roommateColor = widget.roommate['color'];
+    roommatePhotoURL = widget.roommate['profilePictureURL'];
+
+    if(widget.groceryItem.buyers.contains(roommateUsername)){
+      _value = true;
+    }
+    else{
+      _value = false;
+    }
   }
 
   @override
@@ -176,24 +205,28 @@ class _ContributorTileState extends State<ContributorTile> {
     return Padding(
       padding: EdgeInsets.only(bottom: 5),
       child: Material(
-        color: Color(widget.potentialContributor['color']),
+        color: Color(widget.roommate['color']),
         borderRadius: BorderRadius.all(Radius.circular(20)),
         child: ListTile(
+          leading: CircleAvatar(
+            backgroundImage: roommatePhotoURL != null? NetworkImage(roommatePhotoURL) : null,
+            backgroundColor: roommatePhotoURL != null? null: Color(roommateColor),
+          ),
           contentPadding: EdgeInsets.only(left: 10),
           trailing: Checkbox(
             onChanged: (bool value) {
               setState(() {
                 _value = value;
-                widget.toggleSelect(widget.potentialContributor['displayName']);
+                widget.toggleSelect(widget.roommate['displayName']);
               });
             },
             value: _value,
           ),
-          title: Text(widget.potentialContributor['displayName']),
+          title: Text(widget.roommate['displayName']),
           onTap: (){
             setState(() {
               _value = !_value;
-              widget.toggleSelect(widget.potentialContributor['displayName']);
+              widget.toggleSelect(widget.roommate['displayName']);
             });
           },
         ),

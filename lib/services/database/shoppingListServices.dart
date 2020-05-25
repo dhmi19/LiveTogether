@@ -93,6 +93,46 @@ class ShoppingListServices {
 
   }
 
+  static Future updateBuyers(GroceryItem groceryItem, int itemCount, String newBuyers ) async {
+
+    try{
+
+      String apartmentName = await ApartmentServices.getCurrentApartmentName();
+
+      if(apartmentName == null){
+        return [false, "You are not part of an apartment. Join/Create an apartment to add items"];
+      }
+
+      DocumentReference documentReference =  groceriesCollection.document(apartmentName);
+
+
+      await documentReference.updateData({
+        "groceryList": FieldValue.arrayRemove([{
+          'itemName': groceryItem.itemName,
+          'itemCount': groceryItem.itemCount,
+          'description': groceryItem.description,
+          'buyer': groceryItem.buyers
+        }]),
+      });
+
+      await documentReference.updateData({
+        "groceryList": FieldValue.arrayUnion([{
+          'itemName': groceryItem.itemName,
+          'itemCount': itemCount,
+          'description': groceryItem.description,
+          'buyer': newBuyers
+        }]),
+      });
+
+      return true;
+    }
+    catch(error){
+      print(error);
+      return false;
+    }
+
+  }
+
   static Future removeShoppingListItem(GroceryItem groceryItem, String apartmentName) async {
     try{
 

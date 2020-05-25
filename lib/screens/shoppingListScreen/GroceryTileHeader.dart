@@ -38,7 +38,7 @@ class GroceryTileHeader extends StatelessWidget {
 
           buyerList.forEach((String buyer) {
             int buyerColor = roommateUsernames[buyer];
-            Widget bookmark = Icon(
+              Widget bookmark = Icon(
               Icons.bookmark,
               color: buyerColor != null ? Color(buyerColor): Colors.black,
               size: 30,
@@ -48,9 +48,12 @@ class GroceryTileHeader extends StatelessWidget {
 
           return Container(
             height: 30,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: bookmarkList,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: bookmarkList,
+              ),
             ),
           );
         }
