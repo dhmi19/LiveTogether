@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/models/groceryItem.dart';
 import 'package:lester_apartments/screens/shoppingListScreen/tileWidgets/AddContributorButton.dart';
+import 'package:lester_apartments/screens/shoppingListScreen/tileWidgets/BuyItemAlertBox.dart';
 import 'package:lester_apartments/screens/shoppingListScreen/tileWidgets/DeleteItemAlertBox.dart';
 import 'package:lester_apartments/screens/shoppingListScreen/tileWidgets/GroceryTileHeader.dart';
 import 'package:lester_apartments/services/database/shoppingListServices.dart';
@@ -60,6 +61,14 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
 
     return GestureDetector(
       onLongPress: (){
+        showDialog(
+            context: context,
+            builder: (BuildContext context){
+              return BuyItemAlertBox(groceryItem: widget.groceryItem, apartmentName: widget.apartmentName,);
+            }
+        );
+      },
+      onDoubleTap: (){
         showDialog(
             context: context,
             builder: (BuildContext context){
