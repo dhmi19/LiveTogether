@@ -1,12 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/models/groceryItem.dart';
-import 'package:lester_apartments/screens/shoppingListScreen/sharedWidgets/AddContributorButton.dart';
-import 'package:lester_apartments/screens/shoppingListScreen/sharedWidgets/DeleteItemAlertBox.dart';
+import 'package:lester_apartments/screens/shoppingListScreen/tileWidgets/AddContributorButton.dart';
+import 'package:lester_apartments/screens/shoppingListScreen/tileWidgets/DeleteItemAlertBox.dart';
+import 'package:lester_apartments/screens/shoppingListScreen/tileWidgets/GroceryTileHeader.dart';
 import 'package:lester_apartments/services/database/shoppingListServices.dart';
 import 'package:provider/provider.dart';
-
-import 'GroceryTileHeader.dart';
 
 
 const checkButton = Icon(Icons.check_circle, size: 20, color: Colors.green);
