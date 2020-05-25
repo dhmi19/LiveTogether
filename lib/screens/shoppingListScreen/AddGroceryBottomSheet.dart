@@ -84,6 +84,7 @@ class _AddGroceryBottomSheetState extends State<AddGroceryBottomSheet> {
                 color: Theme.of(context).colorScheme.primaryVariant,
               ),
               cursorColor: Theme.of(context).colorScheme.primaryVariant,
+              maxLength: 18,
             ),
             SizedBox(height: 20,),
 

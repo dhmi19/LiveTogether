@@ -1,9 +1,12 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lester_apartments/screens/homePage/HomeScreenWidget.dart';
 import 'package:lester_apartments/screens/roommatesSceen/RoommatesWidget.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/SharedNotesWidget.dart';
 import 'package:lester_apartments/screens/shoppingListScreen/ShoppingListWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'billsScreen/BillsScreenWidget.dart';
 
 void main() => runApp(
     MaterialApp(
@@ -25,8 +28,9 @@ class _HomeScreenState extends State<HomeScreen>{
 
   final tabs = [
     ShoppingListWidget(),
-    SharedNotesWidget(),
+    BillsScreenWidget(),
     HomeScreenWidget(),
+    SharedNotesWidget(),
     RoommatesWidget(),
   ];
 
@@ -46,22 +50,26 @@ class _HomeScreenState extends State<HomeScreen>{
         iconSize: 30,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.add_shopping_cart),
+              icon: FaIcon(FontAwesomeIcons.shoppingCart, size: 24,),
               title: Text("Shopping List"),
               backgroundColor: Theme.of(context).colorScheme.primary
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.view_list),
-              title: Text("Shared Notes"),
+          ), BottomNavigationBarItem(
+              icon: FaIcon(FontAwesomeIcons.solidMoneyBillAlt, size: 24),
+              title: Text("Bills"),
               backgroundColor: Theme.of(context).colorScheme.primary
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: FaIcon(FontAwesomeIcons.home, size: 24),
               title: Text("Home"),
               backgroundColor: Theme.of(context).colorScheme.primary
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.people),
+              icon: FaIcon(FontAwesomeIcons.list, size: 24),
+              title: Text("Shared Notes"),
+              backgroundColor: Theme.of(context).colorScheme.primary
+          ),
+          BottomNavigationBarItem(
+              icon: FaIcon(FontAwesomeIcons.users, size: 24),
               title: Text("Roommates"),
               backgroundColor: Theme.of(context).colorScheme.primary
           ),

@@ -139,7 +139,7 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
 
               SizedBox(height: 10,),
 
-              Text(widget.groceryItem.description, style: TextStyle(fontSize: 15),),
+              Text(widget.groceryItem.description == null ? "" : widget.groceryItem.description , style: TextStyle(fontSize: 15),),
 
             ],
           ),
@@ -148,7 +148,6 @@ class _GroceryItemTileState extends State<GroceryItemTile> {
             color: Theme.of(context).colorScheme.onPrimary,
             borderRadius: BorderRadius.all(Radius.circular(20))
         ),
-
       ),
     );
   }
