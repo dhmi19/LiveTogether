@@ -155,4 +155,22 @@ class ShoppingListServices {
     }
   }
 
+  static Future addCost({double costPerPerson, GroceryItem groceryItem, String apartmentName}) async{
+
+    try{
+
+      List<String> buyerList = groceryItem.buyers.split(',');
+
+      buyerList.forEach((buyerUserName) {
+        groceriesCollection.document(apartmentName).updateData({
+          "costList.$buyerUserName": FieldValue.increment(costPerPerson)
+        });
+      });
+
+    }
+    catch(error){
+      print(error);
+    }
+  }
+
 }
