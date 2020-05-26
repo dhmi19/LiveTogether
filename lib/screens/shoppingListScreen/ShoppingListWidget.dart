@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lester_apartments/services/database/billsServices.dart';
 import 'package:lester_apartments/services/database/shoppingListServices.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 import 'package:provider/provider.dart';
@@ -44,142 +45,105 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
+    //var screenSize = MediaQuery.of(context).size;
     final currentUser = Provider.of<FirebaseUser>(context);
 
-    return Container(
-      color: Theme.of(context).colorScheme.onBackground,
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.onBackground,
+      appBar: AppBar(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          iconTheme: IconThemeData(color: Colors.black),
-          elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
 
-          title: Text("Shopping List", style: TextStyle(color: Colors.black),),
+        centerTitle: true,
 
-          centerTitle: true,
-
-        ),
-
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-
-              Padding(
-                padding: EdgeInsets.only(left: 20, right: 20),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 5,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          fillColor: Theme.of(context).colorScheme.primary
-                        ),
-                        controller: searchController,
-                      ),
-                    ),
-
-                    Expanded(
-                      flex: 1,
-                      child: StreamBuilder<QuerySnapshot>(
-                        stream: ShoppingListServices.groceriesCollection
-                            .where("roommateList", arrayContains: currentUser.displayName)
-                            .snapshots(),
-
-                        builder: (context, snapshot) {
-
-                          bool _isGroceryListEmpty = false;
-
-                         try{
-                           final List<DocumentSnapshot> documents = snapshot.data.documents;
-
-                           for(var doc in documents){
-                             List groceryList = doc.data['groceryList'];
-                             if(groceryList == null){
-
-                             }else if (groceryList.isEmpty){
-                               _isGroceryListEmpty = true;
-                             }
-
-                           }
-
-                           return IconButton(
-                             onPressed: () {
-
-                               if(!_isGroceryListEmpty){
-                                 showDialog(
-                                     context: context,
-                                     builder: (BuildContext context){
-                                       return AlertDialog(
-                                         title: Text("Error", style: TextStyle(color: Colors.black)),
-                                         content: Text(
-                                             "You can only generate bills once you have bought "
-                                                 "or removed all items from the shopping list",
-                                           style: TextStyle(fontSize: 18),
-                                         ),
-                                         actions: <Widget>[
-                                           FlatButton(
-                                             onPressed: (){
-                                               Navigator.pop(context);
-                                             },
-                                             child: Text("OK", style: TextStyle(color: Colors.blue, fontSize: 20),),
-                                           )
-                                         ],
-                                       );
-                                     }
-                                 );
-                               }
-
-                             },
-                             icon: FaIcon(
-                               FontAwesomeIcons.clipboardList,
-                               size: 30,
-                             ),
-                             disabledColor: Colors.grey,
-                             color: Theme.of(context).colorScheme.primaryVariant,
-                           );
-                         }
-                         catch(error){
-                           print(error);
-                           return Text("");
-                         }
-                        }
-                      ),
-                    )
-                  ],
-                ),
-              ),
-
-              Expanded(
-                child: searchText == "" ?
-                UnfilteredGroceryList(currentUser: currentUser) :
-                FilteredGroceryList(
-                  currentUser: currentUser,
-                  searchText: searchText.toLowerCase(),
-                ),
-              )
-            ],
-          )
-        ),
-        floatingActionButton: AddGroceryItemButton(),
-        drawer: DrawerWidget()
       ),
+
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 5,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: Theme.of(context).colorScheme.primary
+                      ),
+                      controller: searchController,
+                    ),
+                  ),
+
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context){
+                            return AlertDialog(
+                              title: Text("Confirm"),
+                              content: Text(
+                                  "This will make a bill for everyone in the apartment. "
+                                  "You should typically make a bill when you are done shopping for the day."
+                                  " Do you want to proceed?"
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                  onPressed: () async {
+                                    BillsServices.makeBill();
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Make Bill"),
+                                  color: Theme.of(context).colorScheme.secondaryVariant,
+                                ),
+                                FlatButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Cancel"),
+                                  color: Theme.of(context).colorScheme.secondaryVariant,
+                                )
+                              ],
+                            );
+                          }
+                        );
+                      },
+                      icon: FaIcon(FontAwesomeIcons.solidClipboard),
+                    ),
+                  )
+                ],
+              ),
+            ),
+
+            Expanded(
+              child: searchText == "" ?
+              UnfilteredGroceryList(currentUser: currentUser) :
+              FilteredGroceryList(
+                currentUser: currentUser,
+                searchText: searchText.toLowerCase(),
+              ),
+            )
+          ],
+        )
+      ),
+      floatingActionButton: AddGroceryItemButton(),
+      drawer: DrawerWidget()
     );
   }
 }
-
-
-
 
 
 

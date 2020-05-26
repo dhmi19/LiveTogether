@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lester_apartments/models/groceryItem.dart';
 import 'package:lester_apartments/services/database/apartmentServices.dart';
+import 'package:lester_apartments/services/database/billsServices.dart';
 
 class ShoppingListServices {
 
@@ -22,8 +23,7 @@ class ShoppingListServices {
         ];
       }
 
-      DocumentReference documentReference = groceriesCollection.document(
-          apartmentName);
+      DocumentReference documentReference = groceriesCollection.document(apartmentName);
 
       await documentReference.updateData({
         "groceryList": FieldValue.arrayUnion([{
@@ -160,9 +160,7 @@ class ShoppingListServices {
       List<String> buyerList = groceryItem.buyers.split(',');
 
       buyerList.forEach((buyerUserName) {
-        groceriesCollection.document(apartmentName).updateData({
-          "costList.$buyerUserName": FieldValue.increment(costPerPerson)
-        });
+        BillsServices.addItemToBill(groceryItem, costPerPerson);
       });
 
     }

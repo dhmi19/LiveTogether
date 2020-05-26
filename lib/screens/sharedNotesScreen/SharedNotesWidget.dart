@@ -108,10 +108,6 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
           iconTheme: IconThemeData(color: Colors.black),
           elevation: 0,
 
-          title: Text("Shared Notes", style: TextStyle(color: Colors.black),),
-
-          centerTitle: true,
-
         ),
 
 
