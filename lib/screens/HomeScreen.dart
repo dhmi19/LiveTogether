@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen>{
               title: Text("Shopping List"),
               backgroundColor: Theme.of(context).colorScheme.primary
           ), BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.solidMoneyBillAlt, size: 24),
+              icon: FaIcon(FontAwesomeIcons.wallet, size: 24),
               title: Text("Bills"),
               backgroundColor: Theme.of(context).colorScheme.primary
           ),

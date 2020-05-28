@@ -62,24 +62,46 @@ class BillsServices {
           userID = doc.documentID;
           break;
         }
-        
-        final DocumentReference billDocumentReference = usersCollection
-            .document(userID).collection("bills").document("Bill $billNumber");
 
-        final DocumentSnapshot billDocumentSnapshot = await billDocumentReference.get();
-
-        final Map items = billDocumentSnapshot.data;
-
-        for(var item in items.keys){
-          print(item.toString());
-        }
 
         final DocumentReference newBillDocumentReference = usersCollection.document(userID).collection("bills").document("Bill ${billNumber + 1}");
+
         newBillDocumentReference.setData({
-          "numItems": 0
+          "timeStamp": FieldValue.serverTimestamp(),
+          "isPaid": false
         });
       });
     }
+  }
+
+  static Future makeNewBill(GroceryItem groceryItem, String buyerUserName, double cost, int billNumber) async{
+
+    try{
+
+      final QuerySnapshot querySnapshot = await usersCollection.where("displayName", isEqualTo: buyerUserName).getDocuments();
+
+      final List<DocumentSnapshot> documentList = querySnapshot.documents;
+
+      for(var userDocument in documentList){
+        final userDocumentID = userDocument.documentID;
+        DocumentReference billDocumentReference = usersCollection.document(userDocumentID).collection('bills').document("Bill $billNumber");
+
+        await billDocumentReference.setData({
+          "${groceryItem.itemName}": {
+            "itemCount": groceryItem.itemCount,
+            "itemCost": cost
+          },
+          //"timeStamp": FieldValue.serverTimestamp(),
+          "isPaid": false
+        });
+
+      }
+
+    }
+    catch(error){
+      print(error);
+    }
+
   }
 
   static Future addItemToBill(GroceryItem groceryItem, double cost) async {
@@ -94,26 +116,12 @@ class BillsServices {
 
           int currentBillNumber = await getBillCount(buyerUserName);
 
+          print(currentBillNumber);
 
           if(currentBillNumber == 0){
             currentBillNumber = 1;
+            await makeNewBill(groceryItem, buyerUserName, cost, currentBillNumber);
 
-            final QuerySnapshot querySnapshot = await usersCollection.where("displayName", isEqualTo: buyerUserName).getDocuments();
-
-            final List<DocumentSnapshot> documentList = querySnapshot.documents;
-
-            for(var userDocument in documentList){
-              final userDocumentID = userDocument.documentID;
-              DocumentReference billDocumentReference = usersCollection.document(userDocumentID).collection('bills').document("Bill $currentBillNumber");
-
-              await billDocumentReference.setData({
-                "${groceryItem.itemName}": {
-                  "itemCount": groceryItem.itemCount,
-                  "itemCost": cost
-                },
-                "numItems": 1
-              });
-            }
           }
           else{
             final QuerySnapshot querySnapshot = await usersCollection.where("displayName", isEqualTo: buyerUserName).getDocuments();
@@ -129,7 +137,6 @@ class BillsServices {
                   "itemCount": groceryItem.itemCount,
                   "itemCost": cost
                 },
-                "numItems": FieldValue.increment(1)
               });
             }
           }

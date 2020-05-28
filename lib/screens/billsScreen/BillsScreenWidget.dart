@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 
+import 'billsScreenWidgets/AllBillsWidget.dart';
+import 'billsScreenWidgets/BillActionWidget.dart';
+import 'billsScreenWidgets/CurrentBillHeader.dart';
+
+const headerStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+
 class BillsScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    var screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onBackground,
@@ -18,21 +26,33 @@ class BillsScreenWidget extends StatelessWidget {
 
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.only(left: 10, right: 10, top: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
 
-              Text("Your current bill: ", style: TextStyle(fontSize: 18),),
+              Text("Current Bill", style: headerStyle,),
               SizedBox(height: 10,),
-              Card(
-                color: Colors.white,
-                child: Container(
-                  width: double.infinity,
-                  height: 20,
-                ),
-              )
 
+              CurrentBillHeader(),
+
+              SizedBox(height: 30,),
+
+              Text("Weekly Expenditure", style: headerStyle),
+              SizedBox(height: 10,),
+
+              Container(
+                width: double.infinity,
+                height: 150,
+                color: Colors.white,
+              ),
+
+              SizedBox(height: 30,),
+
+              Text("All Bills", style: headerStyle),
+              SizedBox(height: 10,),
+
+              AllBillsWidget()
             ],
           ),
         )
@@ -42,3 +62,12 @@ class BillsScreenWidget extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+
+
+
