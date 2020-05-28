@@ -180,6 +180,11 @@ class ApartmentServices{
         break;
       }
 
+      await userCollection.document(documentId).collection('bills').document().setData({
+        "isPaid": false,
+        "currentBill": true
+      });
+
       await userCollection.document(documentId).updateData({'apartment': _apartmentName});
 
       return true;
@@ -233,6 +238,12 @@ class ApartmentServices{
       await notesCollection.document(apartmentName).setData({
         "roommateList": [currentUser.displayName],
         "notes": []
+      });
+
+      //Create new bill document
+      await userCollection.document(currentUser.uid).collection('bills').document().setData({
+        "isPaid": false,
+        "currentBill": true
       });
 
       return [true, "Welcome to your new apartment!"];
@@ -320,6 +331,13 @@ class ApartmentServices{
           'profilePictureURL': currentUser.photoUrl,
         }])
       });
+
+      // Remove bills collection from user document
+      QuerySnapshot querySnapshot = await userCollection.document(currentUser.uid).collection('bills').getDocuments();
+      List<DocumentSnapshot> bills = querySnapshot.documents;
+      for(var bill in bills){
+        bill.reference.delete();
+      }
 
       returnColor(userColor, apartmentName);
 

@@ -12,62 +12,38 @@ class ItemsBoughtCard extends StatelessWidget {
     final FirebaseUser currentUser = Provider.of<FirebaseUser>(context);
 
     return StreamBuilder<QuerySnapshot>(
-      stream: UserServices.userCollection.document(currentUser.uid).collection("bills").snapshots(),
+      stream: UserServices.userCollection.document(currentUser.uid).collection("bills").where("currentBill", isEqualTo: true).snapshots(),
       builder: (context, snapshot) {
 
         try{
-
-          final QuerySnapshot querySnapshot = snapshot.data;
-          final List<DocumentSnapshot> billsCollection = querySnapshot.documents;
-
-          int collectionLength = billsCollection.length;
           int totalItems = 0;
 
-          if(billsCollection.length == 0){
-            totalItems = 0;
+          final QuerySnapshot querySnapshot = snapshot.data;
+
+          if(querySnapshot == null){
+            return Text("");
           }
-          else if(billsCollection.length == 1){
-            for(var bill in billsCollection){
 
-              final keys = bill.data.keys;
-              totalItems = keys.length;
+          final List<DocumentSnapshot> bills = querySnapshot.documents;
 
-              if(keys.contains('numItems')){
-                totalItems -= 1;
-              }
-              
-              if(keys.contains('isPaid')){
-                totalItems -= 1;
-              }
-
-
-              if(keys.contains('timeStamp')){
-                totalItems -= 1;
-              }
-
-              break;
-            }
-          }
-          else{
-            final DocumentSnapshot currentBill = billsCollection.elementAt(collectionLength - 1);
-
-            final keys = currentBill.data.keys;
-
-            totalItems = keys.length;
-
-            if(keys.contains('numItems')){
-              totalItems -= 1;
+          for(DocumentSnapshot bill in bills){
+            
+            final data = bill.data;
+            
+            int items = data.length;
+            
+            if(data.containsKey("currentBill")){
+              items --;
             }
 
-            if(keys.contains('isPaid')){
-              totalItems -= 1;
+            if(data.containsKey("isPaid")){
+              items --;
             }
 
-
-            if(keys.contains('timeStamp')){
-              totalItems -= 1;
+            if(data.containsKey("timeStamp")){
+              items --;
             }
-
+            totalItems = items;
           }
 
           return Container(

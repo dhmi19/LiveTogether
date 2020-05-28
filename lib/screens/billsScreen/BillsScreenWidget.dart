@@ -49,7 +49,7 @@ class BillsScreenWidget extends StatelessWidget {
 
               SizedBox(height: 30,),
 
-              Text("All Bills", style: headerStyle),
+              Text("Previous Bills", style: headerStyle),
               SizedBox(height: 10,),
 
               AllBillsWidget()

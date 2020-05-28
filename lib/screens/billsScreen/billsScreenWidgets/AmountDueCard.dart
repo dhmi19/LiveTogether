@@ -14,41 +14,33 @@ class AmountDueCard extends StatelessWidget {
 
 
     return StreamBuilder<QuerySnapshot>(
-      stream: UserServices.userCollection.document(currentUser.uid).collection("bills").snapshots(),
+      stream: UserServices.userCollection.document(currentUser.uid).collection("bills").where("currentBill", isEqualTo: true).snapshots(),
       builder: (context, snapshot) {
 
         try{
-          final QuerySnapshot querySnapshot = snapshot.data;
-          final List<DocumentSnapshot> billsCollection = querySnapshot.documents;
-
-          int collectionLength = billsCollection.length;
           double totalCost = 0;
 
-          if(billsCollection.length == 0){
-            totalCost = 0;
-          }
-          else if(billsCollection.length == 1){
-            for(var bill in billsCollection){
-              for(var key in bill.data.keys){
-                if(key != 'numItems'){
-                  totalCost += bill[key]['itemCost'];
-                }
-              }
-              break;
-            }
-          }
-          else{
-            final DocumentSnapshot currentBill = billsCollection.elementAt(collectionLength - 1);
+          final QuerySnapshot querySnapshot = snapshot.data;
 
-            for(var key in currentBill.data.keys){
-              if(key != 'numItems'){
-                totalCost += currentBill[key]['itemCost'];
+          if(querySnapshot == null){
+            return Text("");
+          }
+
+          final List<DocumentSnapshot> bills = querySnapshot.documents;
+
+          for(DocumentSnapshot bill in bills){
+
+            final data = bill.data;
+
+            for(var key in data.keys){
+              if(key != "currentBill" && key != "isPaid" && key != "timeStamp"){
+                totalCost += data[key]['itemCost'];
               }
             }
+            break;
           }
 
-          print(totalCost);
-
+          totalCost = double.parse(totalCost.toStringAsFixed(2));
 
           return Container(
               height: 130,

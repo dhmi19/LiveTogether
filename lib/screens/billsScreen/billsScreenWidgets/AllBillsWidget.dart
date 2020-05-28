@@ -41,31 +41,38 @@ class AllBillsWidget extends StatelessWidget {
 
               List<BillItem> _items = List<BillItem>();
 
-              for(var key in data.keys){
-                if(key != 'isPaid' && key != 'timeStamp'){
-                  BillItem billItem = BillItem(
-                    itemName: key.toString(),
-                    itemCount: data[key]['itemCount'],
-                    itemCost: data[key]['itemCost']
+              if(data['currentBill'] == false){
+
+                for(var key in data.keys){
+
+                  if(key != 'isPaid' && key != 'timeStamp' && key != "currentBill"){
+                    BillItem billItem = BillItem(
+                        itemName: key.toString(),
+                        itemCount: data[key]['itemCount'],
+                        itemCost: data[key]['itemCost']
+                    );
+                    _items.add(billItem);
+                  }
+                }
+
+                Timestamp timeStamp = data['timeStamp'];
+
+                if(timeStamp != null){
+                  DateTime myDateTime = timeStamp.toDate();
+
+                  String timeStampString = DateFormat.yMMMd().format(myDateTime);
+                  print(timeStampString);
+
+                  Bill bill = Bill(
+                      title: document.documentID,
+                      items: _items,
+                      isSettled: true,
+                      timeStamp: timeStampString
                   );
-                  _items.add(billItem);
+                  bills.add(bill);
                 }
               }
 
-              print("hiiiiiii");
-
-              Timestamp timeStamp = data['timeStamp'];
-              DateTime myDateTime = timeStamp.toDate();
-
-              String timeStampString = DateFormat.yMMMd().format(myDateTime);
-
-              Bill bill = Bill(
-                title: document.documentID,
-                items: _items,
-                isSettled: true,
-                timeStamp: timeStampString
-              );
-              bills.add(bill);
             }
 
             if(bills != null){
