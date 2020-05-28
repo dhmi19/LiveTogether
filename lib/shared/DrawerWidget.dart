@@ -21,7 +21,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   @override
   Widget build(BuildContext context) {
 
-    //TODO: The current user is not updating so it is referencing old photo url
     var currentUser = Provider.of<FirebaseUser>(context);
 
     print(currentUser == null);

@@ -76,7 +76,6 @@ class _NewApartmentWidgetState extends State<NewApartmentWidget> {
                                 child: Text("Submit"),
                                 onPressed: () async {
                                   if (_formKey.currentState.validate()) {
-                                    //TODO: Check if apartment name is taken
                                     final result = await ApartmentServices.createNewApartment(_apartmentName);
                                     Navigator.of(context).pop();
                                     showDialog(

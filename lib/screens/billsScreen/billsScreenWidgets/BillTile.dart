@@ -22,7 +22,7 @@ class BillTile extends StatelessWidget{
           children: <Widget>[
             IconButton(
               onPressed: (){
-
+                Navigator.pushNamed(context, '/FullBillScreen', arguments: bill);
               },
               icon: Icon(Icons.open_in_new),
             )

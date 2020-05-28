@@ -32,7 +32,7 @@ class BillsServices {
   }
 
 
-  static Future makeBill() async { //TODO: Not timestamping the correct bill for users who are not invovled in the bill
+  static Future makeBill() async {
 
     final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
 
