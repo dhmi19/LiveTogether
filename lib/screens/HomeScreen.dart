@@ -24,12 +24,12 @@ class HomeScreen extends StatefulWidget{
 
 class _HomeScreenState extends State<HomeScreen>{
 
-  int _currentIndex = 2;
+  int _currentIndex = 0;
 
   final tabs = [
+    HomeScreenWidget(),
     ShoppingListWidget(),
     BillsScreenWidget(),
-    HomeScreenWidget(),
     SharedNotesWidget(),
     RoommatesWidget(),
   ];
@@ -50,17 +50,16 @@ class _HomeScreenState extends State<HomeScreen>{
         iconSize: 30,
         items: [
           BottomNavigationBarItem(
+              icon: FaIcon(FontAwesomeIcons.home, size: 24),
+              title: Text("Home"),
+              backgroundColor: Theme.of(context).colorScheme.primary
+          ),BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.shoppingCart, size: 24,),
               title: Text("Shopping List"),
               backgroundColor: Theme.of(context).colorScheme.primary
           ), BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.wallet, size: 24),
               title: Text("Bills"),
-              backgroundColor: Theme.of(context).colorScheme.primary
-          ),
-          BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.home, size: 24),
-              title: Text("Home"),
               backgroundColor: Theme.of(context).colorScheme.primary
           ),
           BottomNavigationBarItem(

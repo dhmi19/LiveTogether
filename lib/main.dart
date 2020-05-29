@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget{
     return StreamProvider<FirebaseUser>.value(
       value: AuthService().user, //Listens to the Auth User stream to provide data to the rest of the widget tree
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           hintColor: Color.fromRGBO(62, 61, 62, 1.0),
           colorScheme: ColorScheme(
