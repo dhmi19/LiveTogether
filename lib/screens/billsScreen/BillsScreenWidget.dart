@@ -38,17 +38,6 @@ class BillsScreenWidget extends StatelessWidget {
 
               SizedBox(height: 30,),
 
-              Text("Weekly Expenditure", style: headerStyle),
-              SizedBox(height: 10,),
-
-              Container(
-                width: double.infinity,
-                height: 150,
-                color: Colors.white,
-              ),
-
-              SizedBox(height: 30,),
-
               Text("Previous Bills", style: headerStyle),
               SizedBox(height: 10,),
 
