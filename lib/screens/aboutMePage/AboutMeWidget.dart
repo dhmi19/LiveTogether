@@ -144,14 +144,15 @@ class _AboutMeWidgetState extends State<AboutMeWidget> {
 
                                                 IconButton(
                                                   icon: editIcon,
-                                                  onPressed: (){
+                                                  onPressed: () async {
                                                     if(editIcon == editButton){
                                                       setState(() {
                                                         myFocusNode.requestFocus();
                                                         editIcon = checkButton;
                                                       });
                                                     }else{
-                                                      UserServices.updateUserBio(currentBio);
+                                                      print(currentBio);
+                                                      await UserServices.updateUserBio(bioController.text);
                                                       setState(() {
                                                         myFocusNode.unfocus();
                                                         editIcon = editButton;
@@ -213,6 +214,7 @@ class _AboutMeWidgetState extends State<AboutMeWidget> {
                               }
                             }
                           ),
+                          SizedBox(height: 10,),
 
                           Padding(
                             padding: const EdgeInsets.all(8.0),

@@ -15,21 +15,12 @@ class UserServices {
 
   static Future updateUserBio(String bio) async{
     try{
-
+      print("UserServices: " + bio);
       final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
 
-      QuerySnapshot querySnapshot = await userCollection.where("displayName", isEqualTo: currentUser.displayName).getDocuments();
-      List<DocumentSnapshot> documentSnapshot = querySnapshot.documents;
-
-      for(var doc in documentSnapshot){
-        if(doc.data['displayName'] == currentUser.displayName){
-          String documentID = doc.documentID;
-          UserServices.userCollection.document(documentID).updateData({
-            'bio': bio
-          });
-          break;
-        }
-      }
+      await UserServices.userCollection.document(currentUser.uid).updateData({
+        'bio': bio
+      });
 
     }catch(error){
       print(error);
