@@ -173,7 +173,7 @@ class _AboutMeWidgetState extends State<AboutMeWidget> {
 
                                                     for(var doc in documents){
                                                       if(doc.data['bio'] == null){
-                                                        currentBio = " ";
+                                                        currentBio = "";
                                                         break;
                                                       }else{
                                                         currentBio = doc.data['bio'];
