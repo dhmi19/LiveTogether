@@ -6,14 +6,14 @@ import 'package:provider/provider.dart';
 import 'RoommateTileList.dart';
 
 
-class HomeScreenWidget extends StatefulWidget {
+class HomePageWidget extends StatefulWidget {
 
 
   @override
-  _HomeScreenWidgetState createState() => _HomeScreenWidgetState();
+  _HomePageWidgetState createState() => _HomePageWidgetState();
 }
 
-class _HomeScreenWidgetState extends State<HomeScreenWidget> {
+class _HomePageWidgetState extends State<HomePageWidget> {
 
   @override
   Widget build(BuildContext context) {
@@ -32,49 +32,53 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
 
         ),
 
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ClipPath(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ClipPath(
 
-              clipper: MyClipper(),
+                clipper: MyClipper(),
 
-              child: Container(
-                height: 300,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("images/Highway To The City Free Vector.jpg"),
-                    fit: BoxFit.fill
-                  )
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Text(
-                        "Welcome\nHome",
-                        style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold,),
-                      )
+                child: Container(
+                  height: 300,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("images/Highway To The City Free Vector.jpg"),
+                      fit: BoxFit.fill
                     )
-                  ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Text(
+                          "Welcome\nHome",
+                          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold,),
+                        )
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            Container(
-              padding: EdgeInsets.only(left: 20),
-              child: Text("Roommates", style: TextStyle(fontSize: 20),)
-            ),
+              Container(
+                padding: EdgeInsets.only(left: 20),
+                child: Text("Roommates", style: TextStyle(fontSize: 20),)
+              ),
 
-            SizedBox(height: 20,),
+              SizedBox(height: 20,),
 
-            Expanded(
-              child: RoommateTileList(),
-            ),
-            SizedBox(height: 20,)
-          ],
+              SizedBox(
+                height: 240,
+                width: double.infinity,
+                child: RoommateTileList()
+              ),
+              SizedBox(height: 20,)
+            ],
+          ),
         ),
 
         drawer: DrawerWidget(),

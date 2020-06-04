@@ -110,11 +110,11 @@ class RoommateCard extends StatelessWidget {
                 ),
                 width: size.width * 0.5,
                 child: Stack(
+                  alignment: Alignment.center,
                   children: <Widget>[
                     ClipPath(
                       clipper: ProfilePictureClipper(),
                       child: Container(
-                        height: 220,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: NetworkImage(roommateList[index]["profilePictureURL"]),
@@ -126,8 +126,7 @@ class RoommateCard extends StatelessWidget {
                     ),
 
                     Positioned(
-                      bottom: 20,
-                      left: 20,
+                      bottom: 10,
                       child: Text(roommateList[index]["displayName"], style: TextStyle(fontSize: 20),),
                     )
                   ],

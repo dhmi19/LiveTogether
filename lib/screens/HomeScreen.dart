@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen>{
   final tabs = [
     ShoppingListWidget(),
     BillsScreenWidget(),
-    HomeScreenWidget(),
+    HomePageWidget(),
     SharedNotesWidget(),
     AboutMeWidget(),
   ];
