@@ -1,14 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/models/apartment.dart';
 import 'package:lester_apartments/screens/roommatesSceen/AddRoommateWidget.dart';
 import 'package:lester_apartments/screens/roommatesSceen/NewApartmentWidget.dart';
 import 'package:lester_apartments/services/database/apartmentServices.dart';
+import 'package:lester_apartments/services/database/userServices.dart';
+import 'package:lester_apartments/shared/ChangeColorButton.dart';
+import 'package:lester_apartments/shared/ProfilePictureWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 
-import 'ApartmentNameTitle.dart';
-import 'RoommateList.dart';
+
+const checkButton = Icon(Icons.check_circle, size: 20, color: Colors.green);
+const editButton = Icon(Icons.edit, size: 20, color: Colors.orange,);
 
 class RoommatesWidget extends StatefulWidget {
 
@@ -17,6 +22,17 @@ class RoommatesWidget extends StatefulWidget {
 }
 
 class _RoommatesWidgetState extends State<RoommatesWidget> {
+
+  static String currentBio;
+  FocusNode myFocusNode = FocusNode();
+  Icon editIcon = editButton;
+  TextEditingController bioController;
+
+  @override
+  void dispose() {
+    myFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,54 +59,130 @@ class _RoommatesWidgetState extends State<RoommatesWidget> {
 
             body: SafeArea(
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
 
-                      SizedBox(height: 20,),
+                        Text(
+                          "Hi ${currentUser.displayName}",
+                          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 20,),
 
-                      ApartmentNameRoommateScreen(),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
 
-                      SizedBox(height: 20,),
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(height: 20,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  ProfilePictureWidget(radius: 60,),
+                                  ChangeColorButton()
+                                ],
+                              ),
+                              SizedBox(height: 20,),
+                              Container(
+                                padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                          "About me:",
+                                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                        ),
 
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Container(
-                            height: 400,
-                            width: 400,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                SizedBox(height: 20,),
-                                Text("People in your apartment: ", style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primaryVariant),),
-                                Expanded(
-                                    child: RoommateList()
-                                )
-                              ],
-                            ),
+                                        IconButton(
+                                          icon: editIcon,
+                                          onPressed: (){
+                                            if(editIcon == editButton){
+                                              setState(() {
+                                                myFocusNode.requestFocus();
+                                                editIcon = checkButton;
+                                              });
+                                            }else{
+                                              UserServices.updateUserBio(currentBio);
+                                              setState(() {
+                                                myFocusNode.unfocus();
+                                                editIcon = editButton;
+                                              });
+                                            }
+                                          },
+                                        )
+                                      ],
+                                    ),
+
+                                    StreamBuilder<QuerySnapshot>(
+                                      stream: UserServices.userCollection.where('displayName', isEqualTo: currentUser.displayName).snapshots(),
+                                      builder: (context, snapshot) {
+                                        try{
+
+                                          QuerySnapshot querySnapshot = snapshot.data;
+                                          List<DocumentSnapshot> documents = querySnapshot.documents;
+
+                                          for(var doc in documents){
+                                            if(doc.data['bio'] == null){
+                                              currentBio = " ";
+                                              break;
+                                            }else{
+                                              currentBio = doc.data['bio'];
+                                              break;
+                                            }
+                                          }
+
+                                          bioController = TextEditingController(text: currentBio);
+
+                                          return TextField(
+                                            maxLines: 2,
+                                            maxLength: 180,
+                                            keyboardType: TextInputType.multiline,
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                            ),
+                                            controller: bioController,
+                                            focusNode: myFocusNode,
+                                          );
+                                        }
+                                        catch(error){
+                                          print(error);
+                                          return Text("");
+                                        }
+
+                                      }
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
 
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          //crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            //crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
 
-                            NewApartmentWidget(currentUser: currentUser,),
+                              NewApartmentWidget(currentUser: currentUser,),
 
-                            AddRoommateWidget(currentUser: currentUser,),
-                          ],
+                              AddRoommateWidget(currentUser: currentUser,),
+                            ],
+                          ),
                         ),
-                      ),
 
 
-                    ],
+                      ],
+                    ),
                   ),
                 )
             ),

@@ -12,6 +12,30 @@ class UserServices {
 
   final String defaultProfilePictureURL = "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=942&q=80";
 
+
+  static Future updateUserBio(String bio) async{
+    try{
+
+      final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+
+      QuerySnapshot querySnapshot = await userCollection.where("displayName", isEqualTo: currentUser.displayName).getDocuments();
+      List<DocumentSnapshot> documentSnapshot = querySnapshot.documents;
+
+      for(var doc in documentSnapshot){
+        if(doc.data['displayName'] == currentUser.displayName){
+          String documentID = doc.documentID;
+          UserServices.userCollection.document(documentID).updateData({
+            'bio': bio
+          });
+          break;
+        }
+      }
+
+    }catch(error){
+      print(error);
+    }
+  }
+
   static Future<bool> checkUserNameExists(String userName) async {
     QuerySnapshot querySnapshot = await userCollection.where("displayName", isEqualTo: userName).getDocuments();
     List<DocumentSnapshot> documentSnapshot = querySnapshot.documents;

@@ -17,6 +17,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
+
     return StreamProvider<List<Apartment>>.value(
       value: ApartmentServices().apartments,
       child: Scaffold(
@@ -62,16 +63,9 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
               ),
             ),
 
-
-            Row(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Text("Roommates", style: TextStyle(fontSize: 20),)
-                ),
-
-                ChangeColorButton()
-              ],
+            Container(
+              padding: EdgeInsets.only(left: 20),
+              child: Text("Roommates", style: TextStyle(fontSize: 20),)
             ),
 
             SizedBox(height: 20,),
