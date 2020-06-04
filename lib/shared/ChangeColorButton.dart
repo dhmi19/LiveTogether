@@ -19,9 +19,11 @@ class ChangeColorButton extends StatelessWidget {
           DocumentSnapshot document = snapshot.data;
 
           String apartmentName;
+          String profilePitureURL;
 
           if(document != null){
             apartmentName = document.data['apartment'];
+            profilePitureURL = document.data['profilePictureURL'];
           }
 
           return IconButton(
@@ -31,7 +33,7 @@ class ChangeColorButton extends StatelessWidget {
 
               void selectColorCallBack(int _selectedColor) async {
                 selectedColor = _selectedColor;
-                await ApartmentServices.updateColor(selectedColor, apartmentName);
+                await ApartmentServices.updateColor(selectedColor, apartmentName,profilePitureURL);
               }
 
               showDialog(

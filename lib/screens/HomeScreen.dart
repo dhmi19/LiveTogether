@@ -1,6 +1,6 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lester_apartments/screens/aboutMePage/AboutMeWidget.dart';
 import 'package:lester_apartments/screens/homePage/HomeScreenWidget.dart';
-import 'package:lester_apartments/screens/roommatesSceen/RoommatesWidget.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/SharedNotesWidget.dart';
 import 'package:lester_apartments/screens/shoppingListScreen/ShoppingListWidget.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,12 +8,6 @@ import 'package:flutter/material.dart';
 
 import 'billsScreen/BillsScreenWidget.dart';
 
-void main() => runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
-    )
-);
 
 class HomeScreen extends StatefulWidget{
 
@@ -31,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen>{
     ShoppingListWidget(),
     BillsScreenWidget(),
     SharedNotesWidget(),
-    RoommatesWidget(),
+    AboutMeWidget(),
   ];
 
   @override
@@ -69,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen>{
           ),
           BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.users, size: 24),
-              title: Text("Roommates"),
+              title: Text("About Me"),
               backgroundColor: Theme.of(context).colorScheme.primary
           ),
 

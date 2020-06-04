@@ -58,9 +58,10 @@ class ApartmentServices{
     });
   }
 
-  static Future updateColor(int selectedColor, String apartmentName) async {
+  static Future updateColor(int selectedColor, String apartmentName, String profilePicURL) async {
 
     final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+
     final DocumentReference documentReference = Firestore.instance
         .collection("apartments").document(apartmentName);
 
@@ -80,7 +81,7 @@ class ApartmentServices{
           "roommateList": FieldValue.arrayRemove([{
             'color': roommate["color"],
             'displayName': currentUser.displayName,
-            'profilePictureURL': currentUser.photoUrl,
+            'profilePictureURL': profilePicURL,
           }])
         });
 
@@ -89,11 +90,9 @@ class ApartmentServices{
           "roommateList": FieldValue.arrayUnion([{
             'color': selectedColor,
             'displayName': currentUser.displayName,
-            'profilePictureURL': currentUser.photoUrl,
+            'profilePictureURL': profilePicURL,
           }])
         });
-
-        print(selectedColor);
 
         //Remove color from available colors:
         await documentReference.updateData({
