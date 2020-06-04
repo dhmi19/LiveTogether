@@ -63,9 +63,15 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
             ),
 
 
-            Container(
-              padding: EdgeInsets.only(left: 20),
-              child: Text("Roommates", style: TextStyle(fontSize: 20),)
+            Row(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Text("Roommates", style: TextStyle(fontSize: 20),)
+                ),
+
+                ChangeColorButton()
+              ],
             ),
 
             SizedBox(height: 20,),
