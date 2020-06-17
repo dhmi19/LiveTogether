@@ -6,7 +6,6 @@ import 'package:lester_apartments/services/database/apartmentServices.dart';
 import 'package:lester_apartments/services/database/userServices.dart';
 import 'package:lester_apartments/shared/ChangeColorButton.dart';
 import 'package:lester_apartments/shared/ProfilePictureWidget.dart';
-import 'package:lester_apartments/shared/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 
