@@ -224,19 +224,9 @@ class _AboutMeWidgetState extends State<AboutMeWidget> {
                           ),
                           SizedBox(height: 10,),
 
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              //crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-
-                                NewApartmentWidget(currentUser: currentUser,),
-
-                                AddRoommateWidget(currentUser: currentUser,),
-                              ],
-                            ),
-                          ),
+                          apartmentName == "" ?
+                            NewApartmentWidget(currentUser: currentUser,) :
+                            AddRoommateWidget(currentUser: currentUser,)
                         ],
                       );
                     }
