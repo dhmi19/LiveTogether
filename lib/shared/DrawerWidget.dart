@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lester_apartments/screens/aboutMePage/NewApartmentWidget.dart';
 import 'package:lester_apartments/services/auth.dart';
 import 'package:lester_apartments/services/database/apartmentServices.dart';
 import 'package:lester_apartments/shared/ProfilePictureWidget.dart';
@@ -15,7 +16,6 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
 
-
   final AuthService _auth = AuthService();
 
   @override
@@ -29,21 +29,31 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
       child: Container(
         color: Theme.of(context).colorScheme.onPrimary,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            Container(
-              height: 250,
-              child: DrawerHeader(
-                child: StreamBuilder<DocumentSnapshot>(
-                  stream: Firestore.instance.collection("users").document(currentUser.uid).snapshots(),
-                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                    try{
-                      final DocumentSnapshot documentSnapshot = snapshot.data;
-                      final data = documentSnapshot.data;
-                      final String displayName = data['displayName'];
+        child: StreamBuilder<DocumentSnapshot>(
+          stream: Firestore.instance.collection("users").document(currentUser.uid).snapshots(),
+          builder: (context, snapshot) {
 
-                      return SingleChildScrollView(
+            try{
+
+              final DocumentSnapshot documentSnapshot = snapshot.data;
+
+              var data;
+              String displayName = "";
+              String apartmentName = "";
+
+              if(documentSnapshot != null && documentSnapshot.data != null){
+                data = documentSnapshot.data;
+                displayName = data['displayName'];
+                apartmentName = data['apartment'];
+              }
+
+              return ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  Container(
+                    height: 250,
+                    child: DrawerHeader(
+                      child: SingleChildScrollView(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,79 +65,78 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             ProfilePictureWidget(radius: 60.0)
                           ],
                         ),
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondaryVariant,
+                      ),
+                    ),
+                  ),
+
+                  ListTile(
+                    title: Text('Edit Profile'),
+                    trailing: Icon(Icons.person),
+
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed('/MyProfileScreen');
+                    },
+                  ),
+
+                  apartmentName != "" ? ListTile(
+                    title: Text('Leave Apartment'),
+                    trailing: FaIcon(FontAwesomeIcons.doorOpen),
+                    onTap: () async {
+                      bool result;
+
+                      void onTapCallBack() async {
+                        Navigator.pop(context);
+
+                        result = await ApartmentServices.leaveApartment();
+
+                        if(result == true){
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context){
+                                return LeaveApartmentAlertDialog(title: "Success", description: "You have left the apartment",);
+                              }
+                          );
+                        }
+                        else{
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context){
+                                return LeaveApartmentAlertDialog(title: "Error", description: "Sorry, please try again later :(",);
+                              }
+                          );
+                        }
+                      }
+
+                      await showDialog(
+                          context: context,
+                          builder: (BuildContext context){
+                            return ConfirmationDialog(onTapCallBack: onTapCallBack,);
+                          }
                       );
-                    }catch(error){
-                      print(error);
-                      return Center(child: Text(""));
-                    }
 
-                  }
-                ),
+                    },
+                  ) : Text(""),
 
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondaryVariant,
-                ),
-              ),
-            ),
+                  ListTile(
+                    title: Text('Log Out'),
+                    trailing: Icon(Icons.exit_to_app),
+                    onTap: () async {
+                      Navigator.of(context).pop();
+                      await _auth.signOut();
+                    },
+                  ),
+                ],
+              );
 
-            ListTile(
-              title: Text('Edit Profile'),
-              trailing: Icon(Icons.person),
-
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.of(context).pushNamed('/MyProfileScreen');
-              },
-            ),
-
-            ListTile(
-              title: Text('Leave Apartment'),
-              trailing: FaIcon(FontAwesomeIcons.doorOpen),
-              onTap: () async {
-                bool result;
-
-                void onTapCallBack() async {
-                  Navigator.pop(context);
-
-                  result = await ApartmentServices.leaveApartment();
-
-                  if(result == true){
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context){
-                          return LeaveApartmentAlertDialog(title: "Success", description: "You have left the apartment",);
-                        }
-                    );
-                  }
-                  else{
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context){
-                          return LeaveApartmentAlertDialog(title: "Error", description: "Sorry, please try again later :(",);
-                        }
-                    );
-                  }
-                }
-
-                await showDialog(
-                  context: context,
-                  builder: (BuildContext context){
-                    return ConfirmationDialog(onTapCallBack: onTapCallBack,);
-                  }
-                );
-
-              },
-            ),
-
-            ListTile(
-              title: Text('Log Out'),
-              trailing: Icon(Icons.exit_to_app),
-              onTap: () async {
-                Navigator.of(context).pop();
-                await _auth.signOut();
-              },
-            ),
-          ],
+            }catch(error){
+              print(error);
+              return Text("");
+            }
+          }
         ),
       ),
     );

@@ -19,7 +19,6 @@ class _NewApartmentWidgetState extends State<NewApartmentWidget> {
   final _formKey = GlobalKey<FormState>();
   String _apartmentName = '';
 
-
   @override
   Widget build(BuildContext context) {
     return ButtonTheme(
