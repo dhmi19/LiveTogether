@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lester_apartments/models/note.dart';
+import 'package:lester_apartments/services/database/userServices.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 import 'package:provider/provider.dart';
 
@@ -112,104 +113,144 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
 
 
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 8, left: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "All folders:",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primaryVariant
+          child: StreamBuilder<DocumentSnapshot>(
+            stream: UserServices.userCollection.document(currentUser.uid).snapshots(),
+            builder: (context, snapshot) {
+
+              String apartmentName = '';
+
+              DocumentSnapshot documentSnapshot = snapshot.data;
+
+              if(documentSnapshot != null && documentSnapshot.data != null){
+                apartmentName = documentSnapshot.data['apartment'];
+              }
+
+              if(apartmentName == ''){
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                  child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(
+                            "Please join or create an apartment to start adding shared notes",
+                            style: TextStyle(fontSize: 20),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 40,),
+                          Icon(
+                            Icons.note_add,
+                            size: 100,
+                            color: Theme.of(context).colorScheme.secondaryVariant,
+                          )
+                        ],
+                      )
                   ),
-                  textAlign: TextAlign.start,
-                ),
-                Expanded(
-                  child: StreamBuilder<QuerySnapshot>(
-                    stream: Firestore.instance.collection("notes").snapshots(),
-                    builder: (context, snapshot) {
-                      try{
+                );
+              }
 
-                        Map<String, int> folderHeaders = {
-                          'All Notes': 0,
-                          'Important': 0,
-                          'Personal': 0,
-                          'Shared': 0,
-                          'Others': 0
-                        };
+              return Padding(
+                padding: const EdgeInsets.only(top: 8, left: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "All folders:",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primaryVariant
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                    Expanded(
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: Firestore.instance.collection("notes").snapshots(),
+                        builder: (context, snapshot) {
+                          try{
 
-                        if(!snapshot.hasData){
-                          return Text("");
-                        }
+                            Map<String, int> folderHeaders = {
+                              'All Notes': 0,
+                              'Important': 0,
+                              'Personal': 0,
+                              'Shared': 0,
+                              'Others': 0
+                            };
 
-                        if(snapshot.hasData){
-                          final List<DocumentSnapshot> apartments = snapshot.data.documents;
-                          for(DocumentSnapshot apartment in apartments){
-                            List tempRoommateList = apartment.data["roommateList"];
-                            if(tempRoommateList.contains(currentUser.displayName)){
-                              List notes = apartment.data["notes"];
-                              notes.forEach((note) {
-                                Note currentNote = Note(
-                                    title: note['title'],
-                                    content: note['content'],
-                                    tags: note['tags']);
-
-                                folderHeaders['All Notes'] ++;
-
-                                if(currentNote.tags.contains('personal ${currentUser.displayName}')){
-                                  folderHeaders['Personal'] ++;
-                                }
-                                if(currentNote.tags.contains('shared')){
-                                  folderHeaders['Shared'] ++;
-                                }
-                                if(currentNote.tags.contains('important')){
-                                  folderHeaders['Important'] ++;
-                                }
-                                if(currentNote.tags.contains('others')){
-                                  folderHeaders['Others'] ++;
-                                }
-                              });
+                            if(!snapshot.hasData){
+                              return Text("");
                             }
+
+                            if(snapshot.hasData){
+                              final List<DocumentSnapshot> apartments = snapshot.data.documents;
+                              for(DocumentSnapshot apartment in apartments){
+                                List tempRoommateList = apartment.data["roommateList"];
+                                if(tempRoommateList.contains(currentUser.displayName)){
+                                  List notes = apartment.data["notes"];
+                                  notes.forEach((note) {
+                                    Note currentNote = Note(
+                                        title: note['title'],
+                                        content: note['content'],
+                                        tags: note['tags']);
+
+                                    folderHeaders['All Notes'] ++;
+
+                                    if(currentNote.tags.contains('personal ${currentUser.displayName}')){
+                                      folderHeaders['Personal'] ++;
+                                    }
+                                    if(currentNote.tags.contains('shared')){
+                                      folderHeaders['Shared'] ++;
+                                    }
+                                    if(currentNote.tags.contains('important')){
+                                      folderHeaders['Important'] ++;
+                                    }
+                                    if(currentNote.tags.contains('others')){
+                                      folderHeaders['Others'] ++;
+                                    }
+                                  });
+                                }
+                              }
+                            }
+
+                            return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: folderHeaders.length,
+                                itemBuilder: (BuildContext context, int index){
+                                  return _buildCategoryCard(
+                                      index,
+                                      folderHeaders.keys.toList()[index],
+                                      folderHeaders.values.toList()[index]
+                                  );
+                                }
+                            );
+                          }
+                          catch(error){
+                            print(error);
+                            return Center(child: Text("Sorry, there was an error. Please try again later"));
                           }
                         }
+                      ),
+                    ),
 
-                        return ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: folderHeaders.length,
-                            itemBuilder: (BuildContext context, int index){
-                              return _buildCategoryCard(
-                                  index,
-                                  folderHeaders.keys.toList()[index],
-                                  folderHeaders.values.toList()[index]
-                              );
-                            }
-                        );
-                      }
-                      catch(error){
-                        print(error);
-                        return Center(child: Text("Sorry, there was an error. Please try again later"));
-                      }
-                    }
-                  ),
+                    NotesPageTabBar(tabController: _tabController),
+
+                    Expanded(
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: <Widget>[
+                          NotesTabView(tag: 'important'),
+                          NotesTabView(tag: 'shared'),
+                          NotesTabView(tag: 'personal ${currentUser.displayName}'),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-
-                NotesPageTabBar(tabController: _tabController),
-
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: <Widget>[
-                      NotesTabView(tag: 'important'),
-                      NotesTabView(tag: 'shared'),
-                      NotesTabView(tag: 'personal ${currentUser.displayName}'),
-                    ],
-                  ),
-                )
-              ],
-            ),
+              );
+            }
           )
         ),
         floatingActionButton: FloatingActionButton(

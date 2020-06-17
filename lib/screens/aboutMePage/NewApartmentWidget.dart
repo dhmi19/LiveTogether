@@ -25,7 +25,7 @@ class _NewApartmentWidgetState extends State<NewApartmentWidget> {
     return ButtonTheme(
       child: FlatButton(
         color: Theme.of(context).colorScheme.onSecondary,
-        child: Text("New Apartment", style: TextStyle(fontSize: 15),),
+        child: Text("Create Apartment", style: TextStyle(fontSize: 15),),
         onPressed: (){
           showDialog(
               context: context,
