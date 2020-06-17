@@ -65,11 +65,11 @@ class _AboutMeWidgetState extends State<AboutMeWidget> {
                     builder: (context, snapshot) {
 
                       String apartmentName;
+                      String displayName;
 
                       try{
-
                         apartmentName = snapshot.data.data['apartment'];
-
+                        displayName = snapshot.data.data['displayName'];
                       }catch(error){
                         print(error);
                       }
@@ -79,7 +79,7 @@ class _AboutMeWidgetState extends State<AboutMeWidget> {
                         children: <Widget>[
 
                           Text(
-                            "Hi ${currentUser.displayName}",
+                            "Hi ${currentUser.displayName == null ? displayName : currentUser.displayName}",
                             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                           ),
 
@@ -94,7 +94,7 @@ class _AboutMeWidgetState extends State<AboutMeWidget> {
 
                                 DocumentSnapshot documentSnapshot = snapshot.data;
 
-                                if(documentSnapshot != null){
+                                if(documentSnapshot != null && documentSnapshot.data != null){
 
                                   List roommateList = List();
 
@@ -106,6 +106,10 @@ class _AboutMeWidgetState extends State<AboutMeWidget> {
                                       break;
                                     }
                                   }
+                                }
+
+                                if (color == null){
+                                  color = 000000;
                                 }
 
                                 return Container(
@@ -127,7 +131,7 @@ class _AboutMeWidgetState extends State<AboutMeWidget> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[
                                           ProfilePictureWidget(radius: 60,),
-                                          ChangeColorButton()
+                                          apartmentName == "" ? Text("") : ChangeColorButton()
                                         ],
                                       ),
                                       SizedBox(height: 20,),
@@ -153,7 +157,6 @@ class _AboutMeWidgetState extends State<AboutMeWidget> {
                                                         editIcon = checkButton;
                                                       });
                                                     }else{
-                                                      print(currentBio);
                                                       await UserServices.updateUserBio(bioController.text);
                                                       setState(() {
                                                         myFocusNode.unfocus();
@@ -191,9 +194,12 @@ class _AboutMeWidgetState extends State<AboutMeWidget> {
                                                       keyboardType: TextInputType.multiline,
                                                       decoration: InputDecoration(
                                                         border: InputBorder.none,
+                                                        hintText: "Enter your Bio here"
                                                       ),
                                                       controller: bioController,
                                                       focusNode: myFocusNode,
+                                                      readOnly: myFocusNode.hasFocus ? false : true,
+                                                      autofocus: false,
                                                     );
                                                   }
                                                   catch(error){

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lester_apartments/services/database/billsServices.dart';
 import 'package:lester_apartments/services/database/shoppingListServices.dart';
+import 'package:lester_apartments/services/database/userServices.dart';
 import 'package:lester_apartments/shared/DrawerWidget.dart';
 import 'package:provider/provider.dart';
 import 'AddGroceryItemButton.dart';
@@ -60,83 +61,123 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
       ),
 
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
+        child: StreamBuilder<DocumentSnapshot>(
+          stream: UserServices.userCollection.document(currentUser.uid).snapshots(),
+          builder: (context, snapshot) {
 
-            Padding(
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 5,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(
-                            width: 0,
-                            style: BorderStyle.none,
-                          ),
+            String apartmentName = '';
+
+            DocumentSnapshot documentSnapshot = snapshot.data;
+
+            if(documentSnapshot != null && documentSnapshot.data != null){
+              apartmentName = documentSnapshot.data['apartment'];
+            }
+
+
+            if(apartmentName == ''){
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          "Please join or create an apartment to start making shared grocery lists",
+                          style: TextStyle(fontSize: 20),
+                          textAlign: TextAlign.center,
                         ),
-                        filled: true,
-                        fillColor: Theme.of(context).colorScheme.primary
-                      ),
-                      controller: searchController,
-                    ),
-                  ),
+                        SizedBox(height: 40,),
+                        Icon(
+                          Icons.add_shopping_cart,
+                          size: 100,
+                          color: Theme.of(context).colorScheme.secondaryVariant,
+                        )
+                      ],
+                    )
+                ),
+              );
+            }
 
-                  Expanded(
-                    flex: 1,
-                    child: IconButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context){
-                            return AlertDialog(
-                              title: Text("Confirm"),
-                              content: Text(
-                                  "This will make a bill for everyone in the apartment. "
-                                  "You should typically make a bill when you are done shopping for the day."
-                                  " Do you want to proceed?"
+            return Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 5,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                width: 0,
+                                style: BorderStyle.none,
                               ),
-                              actions: <Widget>[
-                                FlatButton(
-                                  onPressed: () async {
-                                    BillsServices.makeBill();
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text("Make Bill"),
-                                  color: Theme.of(context).colorScheme.secondaryVariant,
-                                ),
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text("Cancel"),
-                                  color: Theme.of(context).colorScheme.secondaryVariant,
-                                )
-                              ],
-                            );
-                          }
-                        );
-                      },
-                      icon: FaIcon(FontAwesomeIcons.solidClipboard),
-                    ),
-                  )
-                ],
-              ),
-            ),
+                            ),
+                            filled: true,
+                            fillColor: Theme.of(context).colorScheme.primary
+                          ),
+                          controller: searchController,
+                        ),
+                      ),
 
-            Expanded(
-              child: searchText == "" ?
-              UnfilteredGroceryList(currentUser: currentUser) :
-              FilteredGroceryList(
-                currentUser: currentUser,
-                searchText: searchText.toLowerCase(),
-              ),
-            )
-          ],
+                      Expanded(
+                        flex: 1,
+                        child: IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context){
+                                return AlertDialog(
+                                  title: Text("Confirm"),
+                                  content: Text(
+                                      "This will make a bill for everyone in the apartment. "
+                                      "You should typically make a bill when you are done shopping for the day."
+                                      " Do you want to proceed?"
+                                  ),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      onPressed: () async {
+                                        BillsServices.makeBill();
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("Make Bill"),
+                                      color: Theme.of(context).colorScheme.secondaryVariant,
+                                    ),
+                                    FlatButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("Cancel"),
+                                      color: Theme.of(context).colorScheme.secondaryVariant,
+                                    )
+                                  ],
+                                );
+                              }
+                            );
+                          },
+                          icon: FaIcon(FontAwesomeIcons.solidClipboard),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+
+                Expanded(
+                  child: searchText == "" ?
+                  UnfilteredGroceryList(currentUser: currentUser) :
+                  FilteredGroceryList(
+                    currentUser: currentUser,
+                    searchText: searchText.toLowerCase(),
+                  ),
+                )
+              ],
+            );
+          }
         )
       ),
       floatingActionButton: AddGroceryItemButton(),
