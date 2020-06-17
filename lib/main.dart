@@ -9,15 +9,7 @@ import 'package:provider/provider.dart';
 
 
 void main() => runApp(
-
   MyApp()
-  /*
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      onGenerateRoute: RouteGenerator.generateRoute,
-    )
-   */
 );
 
 class MyApp extends StatelessWidget{
