@@ -19,7 +19,6 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
   final _formKey = GlobalKey<FormState>();
 
   File _image;
-  String _uid;
   String _email = '';
   String _password = '';
   String _username = '';
@@ -56,7 +55,6 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
   Widget build(BuildContext context) {
 
     var currentUser = Provider.of<FirebaseUser>(context);
-    _uid = currentUser.uid;
 
     return Scaffold(
       appBar: AppBar(
@@ -64,7 +62,6 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
 
-        // FlatButton.icon(onPressed: () => {}, icon: Icon(Icons.menu), label: Text("")),
         title: Text("My Profile", style: TextStyle(color: Colors.black),),
 
         centerTitle: true,
@@ -206,33 +203,6 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                 },
                               ),
                             ),
-
-                            Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  border: Border(bottom: BorderSide(color: Colors.green))
-                              ),
-                              child: TextFormField(
-                                validator: (val) {
-                                  if(val.length != 0 && val.length < 6){
-                                    return "Username must be more than 6 letters";
-                                  }else{
-                                    return null;
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                    hintText: "Re-enter Username",
-                                    hintStyle: TextStyle(color: Colors.grey),
-                                    border: InputBorder.none
-                                ),
-                                onChanged: (val){
-                                  setState(() {
-                                    _username = val;
-                                  });
-                                },
-                              ),
-                            ),
-
 
                           ],
                         ),

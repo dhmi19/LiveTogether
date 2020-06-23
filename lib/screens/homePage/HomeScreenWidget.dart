@@ -66,7 +66,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
               Container(
                 padding: EdgeInsets.only(left: 20),
-                child: Text("Roommates", style: TextStyle(fontSize: 20),)
+                child: Text("Roommates", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
               ),
 
               SizedBox(height: 20,),

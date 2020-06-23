@@ -65,8 +65,8 @@ class RoommateCard extends StatelessWidget {
 
     final FirebaseUser currentUser = Provider.of<FirebaseUser>(context);
 
-    Color tileColor = kDarkBlue;
-
+    Color tileColor = kPurple;
+    print(tileColor.value);
     String userName = roommateList[index]["displayName"];
 
     bool isMe;
@@ -127,7 +127,7 @@ class RoommateCard extends StatelessWidget {
 
                     Positioned(
                       bottom: 10,
-                      child: Text(roommateList[index]["displayName"], style: TextStyle(fontSize: 20),),
+                      child: Text(roommateList[index]["displayName"], style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     )
                   ],
                 ),

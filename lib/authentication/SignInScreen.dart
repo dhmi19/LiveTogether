@@ -33,7 +33,7 @@ class _SignInScreenState extends State<SignInScreen>{
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 0), //Check this
           width: double.infinity,
-          color: Colors.lightBlue[400],
+          color: Theme.of(context).colorScheme.secondaryVariant,
 
           child: Column(
 
