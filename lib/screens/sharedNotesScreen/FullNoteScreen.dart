@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lester_apartments/models/note.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/sharedNotesWidgets/TagButton.dart';
 import 'package:lester_apartments/services/database/noteServices.dart';
+import 'package:provider/provider.dart';
 
 class FullNoteScreen extends StatefulWidget {
 
@@ -25,6 +27,19 @@ class _FullNoteScreenState extends State<FullNoteScreen> {
   }
 
   void removeTagCallBack(String tag){
+    if(tag == "personal"){
+      bool remove = false;
+      String personalTag = "";
+      widget.note.tags.forEach((tag) {
+        if(tag.toString().contains("personal")){
+          remove = true;
+          personalTag = tag;
+        }
+      });
+      if(remove){
+        widget.note.tags.remove(personalTag);
+      }
+    }
     if(widget.note.tags.contains(tag)){
       widget.note.tags.remove(tag);
     }
@@ -147,13 +162,12 @@ class _FullNoteScreenState extends State<FullNoteScreen> {
 
 class FullNoteScreenBackButton extends StatelessWidget {
   const FullNoteScreenBackButton({
-    Key key,
     @required this.noteTitleController,
     @required this.noteContentController,
     @required this.newTagList,
     @required this.note,
     @required this.oldTags,
-  }) : super(key: key);
+  });
 
   final TextEditingController noteTitleController;
   final TextEditingController noteContentController;
@@ -163,17 +177,22 @@ class FullNoteScreenBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = Provider.of<FirebaseUser>(context);
 
     return IconButton(
       icon: Icon(Icons.arrow_back),
       onPressed: () async {
-        await NoteServices.editNote(
-            noteTitleController.text,
-            noteContentController.text,
-            newTagList,
-            note,
-            oldTags
-        );
+
+        if(oldTags.toString() != newTagList.toString()){
+          await NoteServices.editNote(
+              noteTitleController.text,
+              noteContentController.text,
+              newTagList,
+              note,
+              oldTags,
+              currentUser
+          );
+        }
 
         Navigator.pop(context);
       },

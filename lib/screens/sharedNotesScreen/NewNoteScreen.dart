@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lester_apartments/models/note.dart';
 import 'package:lester_apartments/screens/sharedNotesScreen/sharedNotesWidgets/TagButton.dart';
 import 'package:lester_apartments/services/database/noteServices.dart';
+import 'package:provider/provider.dart';
 
 class NewNoteScreen extends StatefulWidget {
   @override
@@ -131,16 +133,20 @@ class NewNoteScreenBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = Provider.of<FirebaseUser>(context);
+
     return IconButton(
       icon: Icon(Icons.arrow_back),
       onPressed: () async {
         print(noteTitleController.text);
         print(noteContentController.text);
         if(noteTitleController.text != "" && noteContentController.text != ""){
+          print("NewNotesScreen -> newTags: "+ newTagList.toString());
           await NoteServices.addNote(
             noteTitleController.text,
             noteContentController.text,
             newTagList.isEmpty? ['shared'] : newTagList,
+            currentUser
           );
         }
 

@@ -33,10 +33,7 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
         });
       },
       child: Container(
-        margin: index == 0?
-          EdgeInsets.only(left: 30, right: 10, top: 20, bottom: 20):
-          EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-        height: 100,
+        margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         width: 175,
         decoration: BoxDecoration(
           color: _selectedCategoryIndex == index ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onPrimary,
@@ -72,7 +69,7 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(20.0),
               child: Text(
                 content.toString(),
                 style: TextStyle(
@@ -99,7 +96,7 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
-
+    var size = MediaQuery.of(context).size;
     final currentUser = Provider.of<FirebaseUser>(context);
 
     return Scaffold(
@@ -166,7 +163,8 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
                       ),
                       textAlign: TextAlign.start,
                     ),
-                    Expanded(
+                    SizedBox(
+                      height: 220,
                       child: StreamBuilder<QuerySnapshot>(
                         stream: Firestore.instance.collection("notes").snapshots(),
                         builder: (context, snapshot) {
