@@ -40,14 +40,11 @@ class _TagButtonState extends State<TagButton> {
       onTap: (){
         setState(() {
           if(!isSelected){
-            widget.selectedTags.add(widget.tag);
             widget.addTag(widget.tag);
           }else{
             if(widget.tag == "personal"){
-              widget.selectedTags.remove("personal ${currentUser.displayName}");
-              widget.removeTag("personal ${currentUser.displayName}");
+              widget.removeTag("personal");
             }else{
-              widget.selectedTags.remove(widget.tag);
               widget.removeTag(widget.tag);
             }
           }

@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lester_apartments/models/note.dart';
 import 'package:lester_apartments/services/database/apartmentServices.dart';
 
@@ -9,7 +10,13 @@ class NoteServices {
   static final CollectionReference notesCollection = Firestore.instance.collection('notes');
 
 
-  static Future<List> editNote(String title, String content, List newTags, Note note, List oldTagList) async{
+  static Future<List> editNote(
+      String title,
+      String content,
+      List newTags,
+      Note note,
+      List oldTagList,
+      FirebaseUser currentUser) async{
 
     try{
       String apartmentName = await ApartmentServices.getCurrentApartmentName();
@@ -19,6 +26,11 @@ class NoteServices {
       }
 
       DocumentReference documentReference =  notesCollection.document(apartmentName);
+
+      if(newTags.contains("personal")){
+        newTags.remove("personal");
+        newTags.add("personal ${currentUser.displayName}");
+      }
 
       await documentReference.updateData({
         "notes": FieldValue.arrayRemove([{
@@ -44,7 +56,11 @@ class NoteServices {
     }
   }
 
-  static Future<bool> addNote(String title, String content, List tagList) async {
+  static Future<bool> addNote(
+      String title,
+      String content,
+      List tagList,
+      FirebaseUser currentUser) async {
     try {
       String apartmentName = await ApartmentServices.getCurrentApartmentName();
 
@@ -52,8 +68,12 @@ class NoteServices {
         return false;
       }
 
-      DocumentReference documentReference = notesCollection.document(
-          apartmentName);
+      DocumentReference documentReference = notesCollection.document(apartmentName);
+
+      if(tagList.contains("personal")){
+        tagList.remove("personal");
+        tagList.add("personal ${currentUser.displayName}");
+      }
 
       await documentReference.updateData({
         "notes": FieldValue.arrayUnion([{
