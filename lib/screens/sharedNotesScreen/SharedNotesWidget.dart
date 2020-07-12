@@ -22,7 +22,6 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
   int _selectedCategoryIndex;
   TabController _tabController;
   String selectedFolder;
-  bool hasApartment;
 
 
   Widget _buildCategoryCard(int index, String title, int content){
@@ -95,7 +94,6 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
   void initState() {
     super.initState();
     _tabController = TabController(initialIndex: 0, length: 3, vsync: this);
-    hasApartment = false;
     _selectedCategoryIndex = 0;
   }
 
@@ -105,59 +103,55 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
     final currentUser = Provider.of<FirebaseUser>(context);
 
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.onBackground,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          iconTheme: IconThemeData(color: Colors.black),
-          elevation: 0,
+      backgroundColor: Theme.of(context).colorScheme.onBackground,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
 
-        ),
+      ),
+      body: SafeArea(
+        child: StreamBuilder<DocumentSnapshot>(
+          stream: UserServices.userCollection.document(currentUser.uid).snapshots(),
+          builder: (context, snapshot) {
 
+            String apartmentName = '';
 
-        body: SafeArea(
-          child: StreamBuilder<DocumentSnapshot>(
-            stream: UserServices.userCollection.document(currentUser.uid).snapshots(),
-            builder: (context, snapshot) {
+            DocumentSnapshot documentSnapshot = snapshot.data;
 
-              String apartmentName = '';
+            if(documentSnapshot != null && documentSnapshot.data != null){
+              apartmentName = documentSnapshot.data['apartment'];
+            }
 
-              DocumentSnapshot documentSnapshot = snapshot.data;
-
-              if(documentSnapshot != null && documentSnapshot.data != null){
-                apartmentName = documentSnapshot.data['apartment'];
-              }
-
-              if(apartmentName == ''){
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                  child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            "Please join or create an apartment to start adding shared notes",
-                            style: TextStyle(fontSize: 20),
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: 40,),
-                          Icon(
-                            Icons.note_add,
-                            size: 100,
-                            color: Theme.of(context).colorScheme.secondaryVariant,
-                          )
-                        ],
-                      )
-                  ),
-                );
-              }else{
-                setState(() {
-                  hasApartment = true;
-                });
-              }
-
+            if(apartmentName == ''){
               return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          "Please join or create an apartment to start adding shared notes",
+                          style: TextStyle(fontSize: 20),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 40,),
+                        Icon(
+                          Icons.note_add,
+                          size: 100,
+                          color: Theme.of(context).colorScheme.secondaryVariant,
+                        )
+                      ],
+                    )
+                ),
+              );
+            }
+
+            return Scaffold(
+              backgroundColor: Colors.transparent,
+              body: Padding(
                 padding: const EdgeInsets.only(top: 8, left: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -256,21 +250,23 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
                     )
                   ],
                 ),
-              );
-            }
-          )
-        ),
-        floatingActionButton: hasApartment ? FloatingActionButton(
-          onPressed: (){
-            Navigator.pushNamed(context, "/NewNoteScreen");
-          },
-          child: FaIcon(
-            FontAwesomeIcons.plus,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          backgroundColor: Theme.of(context).colorScheme.onSecondary,
-        ) : null,
-        drawer: DrawerWidget()
+              ),
+
+              floatingActionButton: FloatingActionButton(
+                onPressed: (){
+                  Navigator.pushNamed(context, "/NewNoteScreen");
+                },
+                child: FaIcon(
+                  FontAwesomeIcons.plus,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                backgroundColor: Theme.of(context).colorScheme.onSecondary,
+              ),
+            );
+          }
+        )
+      ),
+      drawer: DrawerWidget()
     );
   }
 }

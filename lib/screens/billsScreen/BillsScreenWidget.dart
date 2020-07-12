@@ -7,7 +7,6 @@ import 'package:lester_apartments/shared/DrawerWidget.dart';
 import 'package:provider/provider.dart';
 
 import 'billsScreenWidgets/AllBillsWidget.dart';
-import 'billsScreenWidgets/BillActionWidget.dart';
 import 'billsScreenWidgets/CurrentBillHeader.dart';
 
 const headerStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
@@ -20,13 +19,11 @@ class BillsScreenWidget extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onBackground,
-
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
       ),
-
       body: StreamBuilder<Object>(
         stream: UserServices.userCollection.document(currentUser.uid).snapshots(),
         builder: (context, snapshot) {
@@ -66,7 +63,10 @@ class BillsScreenWidget extends StatelessWidget {
             );
           }
 
-          return SafeArea(
+          return Scaffold(
+            backgroundColor: Colors.transparent,
+
+            body: SafeArea(
               child: Padding(
                 padding: EdgeInsets.only(left: 10, right: 10, top: 10),
                 child: Column(
@@ -87,7 +87,8 @@ class BillsScreenWidget extends StatelessWidget {
                   ],
                 ),
               )
-            );
+            ),
+          );
         }
       ),
       drawer: DrawerWidget()

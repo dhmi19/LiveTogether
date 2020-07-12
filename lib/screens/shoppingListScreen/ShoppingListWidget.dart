@@ -23,13 +23,11 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
   TextEditingController searchController;
 
   String searchText;
-  bool hasApartment;
 
 
   @override
   void initState(){
     super.initState();
-    hasApartment = false;
     searchController = TextEditingController();
     searchText = "";
     searchController.addListener(() {
@@ -101,94 +99,92 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                     )
                 ),
               );
-            }else{
-              setState(() {
-                hasApartment = true;
-              });
             }
 
-
-            return Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 5,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.search),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                width: 0,
-                                style: BorderStyle.none,
+            return Scaffold(
+              backgroundColor: Colors.transparent,
+              body: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 5,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                borderSide: BorderSide(
+                                  width: 0,
+                                  style: BorderStyle.none,
+                                ),
                               ),
+                              filled: true,
+                              fillColor: Theme.of(context).colorScheme.primary
                             ),
-                            filled: true,
-                            fillColor: Theme.of(context).colorScheme.primary
+                            controller: searchController,
                           ),
-                          controller: searchController,
                         ),
-                      ),
 
-                      Expanded(
-                        flex: 1,
-                        child: IconButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context){
-                                return AlertDialog(
-                                  title: Text("Confirm"),
-                                  content: Text(
-                                      "This will make a bill for everyone in the apartment. "
-                                      "You should typically make a bill when you are done shopping for the day."
-                                      " Do you want to proceed?"
-                                  ),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      onPressed: () async {
-                                        BillsServices.makeBill();
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("Make Bill"),
-                                      color: Theme.of(context).colorScheme.secondaryVariant,
+                        Expanded(
+                          flex: 1,
+                          child: IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context){
+                                  return AlertDialog(
+                                    title: Text("Confirm"),
+                                    content: Text(
+                                        "This will make a bill for everyone in the apartment. "
+                                        "You should typically make a bill when you are done shopping for the day."
+                                        " Do you want to proceed?"
                                     ),
-                                    FlatButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("Cancel"),
-                                      color: Theme.of(context).colorScheme.secondaryVariant,
-                                    )
-                                  ],
-                                );
-                              }
-                            );
-                          },
-                          icon: FaIcon(FontAwesomeIcons.solidClipboard),
-                        ),
-                      )
-                    ],
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        onPressed: () async {
+                                          BillsServices.makeBill();
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Make Bill"),
+                                        color: Theme.of(context).colorScheme.secondaryVariant,
+                                      ),
+                                      FlatButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Cancel"),
+                                        color: Theme.of(context).colorScheme.secondaryVariant,
+                                      )
+                                    ],
+                                  );
+                                }
+                              );
+                            },
+                            icon: FaIcon(FontAwesomeIcons.solidClipboard),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
 
-                Expanded(
-                  child: searchText == "" ?
-                  UnfilteredGroceryList(currentUser: currentUser) :
-                  FilteredGroceryList(
-                    currentUser: currentUser,
-                    searchText: searchText.toLowerCase(),
-                  ),
-                )
-              ],
+                  Expanded(
+                    child: searchText == "" ?
+                    UnfilteredGroceryList(currentUser: currentUser) :
+                    FilteredGroceryList(
+                      currentUser: currentUser,
+                      searchText: searchText.toLowerCase(),
+                    ),
+                  )
+                ],
+              ),
+              floatingActionButton: AddGroceryItemButton(),
             );
           }
         )
       ),
-      floatingActionButton: hasApartment ? AddGroceryItemButton() : null,
       drawer: DrawerWidget()
     );
   }
