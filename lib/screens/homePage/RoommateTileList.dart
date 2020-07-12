@@ -36,6 +36,60 @@ class _RoommateTileListState extends State<RoommateTileList> {
       });
     }
 
+    if(_roommateList.isEmpty){
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+        child: Center(
+            child: Container(
+              padding: EdgeInsets.only(left:20.0, right: 20, top: 20, bottom: 20),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onSecondary,
+                borderRadius: BorderRadius.all(Radius.circular(20))
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                  "Welcome to LiveTogether!",
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: Theme.of(context).colorScheme.primaryVariant,
+                      fontWeight: FontWeight.bold
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  Text(
+                    "Don't have an apartment?\nCreate one in the About Me page.",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.primaryVariant
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  Text(
+                    "Have an apartment?\nAsk your roommate to add you.",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.primaryVariant
+                    ),
+                    textAlign: TextAlign.left,
+                  )
+                ],
+              ),
+            )
+        ),
+      );
+    }
+
 
     return ListView.builder(
       scrollDirection: Axis.horizontal,
@@ -63,13 +117,8 @@ class RoommateCard extends StatelessWidget {
 
     final size = MediaQuery.of(context).size;
 
-    final FirebaseUser currentUser = Provider.of<FirebaseUser>(context);
-
     Color tileColor = kPurple;
     print(tileColor.value);
-    String userName = roommateList[index]["displayName"];
-
-    bool isMe;
 
     return StreamBuilder<DocumentSnapshot>(
         stream: Firestore.instance.collection("apartments").document(apartment.apartmentName).snapshots(),
@@ -85,12 +134,6 @@ class RoommateCard extends StatelessWidget {
               if(roommate['displayName'] == roommateList[index]['displayName']){
                 tileColor = Color(roommate['color']);
               }
-            }
-
-            if(roommateList[index]['displayName'] == currentUser.displayName){
-              isMe = true;
-            }else{
-              isMe = false;
             }
 
             return Padding(

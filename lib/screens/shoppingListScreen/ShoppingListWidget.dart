@@ -23,10 +23,13 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
   TextEditingController searchController;
 
   String searchText;
+  bool hasApartment;
+
 
   @override
   void initState(){
     super.initState();
+    hasApartment = false;
     searchController = TextEditingController();
     searchText = "";
     searchController.addListener(() {
@@ -98,7 +101,12 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                     )
                 ),
               );
+            }else{
+              setState(() {
+                hasApartment = true;
+              });
             }
+
 
             return Column(
               children: <Widget>[
@@ -180,7 +188,7 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
           }
         )
       ),
-      floatingActionButton: AddGroceryItemButton(),
+      floatingActionButton: hasApartment ? AddGroceryItemButton() : null,
       drawer: DrawerWidget()
     );
   }

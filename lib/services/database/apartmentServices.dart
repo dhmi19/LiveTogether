@@ -300,12 +300,14 @@ class ApartmentServices{
     }
   }
 
+
   static Future<bool> leaveApartment() async{
     try{
       final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
 
       final DocumentSnapshot documentSnapshot = await userCollection.document(currentUser.uid).get();
       final String apartmentName = documentSnapshot.data['apartment'];
+      final String profilePictureURL = documentSnapshot.data['profilePictureURL'];
 
       final int userColor = await getColor(apartmentName, currentUser);
 
@@ -327,7 +329,7 @@ class ApartmentServices{
         "roommateList": FieldValue.arrayRemove([{
           'color': userColor,
           'displayName': currentUser.displayName,
-          'profilePictureURL': currentUser.photoUrl,
+          'profilePictureURL': profilePictureURL,
         }])
       });
 

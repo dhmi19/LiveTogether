@@ -19,11 +19,14 @@ class SharedNotesWidget extends StatefulWidget {
 
 class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTickerProviderStateMixin{
 
-  int _selectedCategoryIndex = 0;
+  int _selectedCategoryIndex;
   TabController _tabController;
   String selectedFolder;
+  bool hasApartment;
+
 
   Widget _buildCategoryCard(int index, String title, int content){
+
 
     return GestureDetector(
       onTap: (){
@@ -92,11 +95,13 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
   void initState() {
     super.initState();
     _tabController = TabController(initialIndex: 0, length: 3, vsync: this);
+    hasApartment = false;
+    _selectedCategoryIndex = 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+
     final currentUser = Provider.of<FirebaseUser>(context);
 
     return Scaffold(
@@ -146,6 +151,10 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
                       )
                   ),
                 );
+              }else{
+                setState(() {
+                  hasApartment = true;
+                });
               }
 
               return Padding(
@@ -251,7 +260,7 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
             }
           )
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: hasApartment ? FloatingActionButton(
           onPressed: (){
             Navigator.pushNamed(context, "/NewNoteScreen");
           },
@@ -260,7 +269,7 @@ class _SharedNotesWidgetState extends State<SharedNotesWidget> with SingleTicker
             color: Theme.of(context).colorScheme.primary,
           ),
           backgroundColor: Theme.of(context).colorScheme.onSecondary,
-        ),
+        ) : null,
         drawer: DrawerWidget()
     );
   }
